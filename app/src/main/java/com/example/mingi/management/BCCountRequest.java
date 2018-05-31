@@ -19,6 +19,9 @@ public class BCCountRequest extends StringRequest {
         Log.d("  카운트 리퀘스트 접속 : ", "1");
     }
 
+
+
+
     @Override
     public Map<String, String> getParams(){
 

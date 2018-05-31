@@ -204,7 +204,7 @@ public class BCListActivity extends AppCompatActivity {
 
                 int no  = userList.get(position).getNo();
                 Log.d("  업데이트 리퀘스트 생성 요청 :  "+no, "");
-                UpdateRequest updateRequest = new UpdateRequest(no, responseListener);
+                BCUpdateRequest updateRequest = new BCUpdateRequest(no, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
                 queue.add(updateRequest);
 

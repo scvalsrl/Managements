@@ -7,7 +7,7 @@ import com.android.volley.toolbox.StringRequest;
 
 import java.util.Map;
 
-
+// 안녕 내이름은
 public class BCCountRequest extends StringRequest {
 
     final static  private String URL = "http://scvalsrl.cafe24.com/Count2.php";

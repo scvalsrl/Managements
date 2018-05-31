@@ -18,7 +18,6 @@ public class BC {
     String BC_photo;
     int no;
 
-
     public BC(String BC_name, String BC_level, String BC_com, String BC_phone, String BC_mail, String BC_add, String BC_lat, String BC_lon, String BC_photo, int no) {
         this.BC_name = BC_name;
         this.BC_level = BC_level;

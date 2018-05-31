@@ -269,7 +269,6 @@ public class BusinessCardMain extends AppCompatActivity {
         int bytesRead, bytesAvailable, bufferSize;
         byte[] buffer;
         int maxBufferSize = 1 * 1024 * 1024;
-// ok
         File sourceFile = new File(sourceFileUri);
 
         if (!sourceFile.isFile()) {
@@ -322,7 +321,7 @@ public class BusinessCardMain extends AppCompatActivity {
                 buffer = new byte[bufferSize];
                 // read file and write it into form...
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
+//dfdfdf
                 while (bytesRead > 0) {
                     dos.write(buffer, 0, bufferSize);
                     bytesAvailable = fileInputStream.available();

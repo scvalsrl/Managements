@@ -160,7 +160,7 @@ public class BusinessCardMain extends AppCompatActivity {
                 Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("  리퀘스트 응답 받음 : ", "1");
+
                         try{
                             // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
@@ -228,7 +228,6 @@ public class BusinessCardMain extends AppCompatActivity {
 
                             }else{
 
-                                Log.d(" 카운팅 실패 : ", "1");
 
                             }
 
@@ -509,7 +508,7 @@ public class BusinessCardMain extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[2])
                 != PackageManager.PERMISSION_GRANTED)
         {
-            Log.d("checkPerm", "requestPermissions");
+
             ActivityCompat.requestPermissions(this, permissions, 101);
         }
     }
@@ -558,7 +557,7 @@ public class BusinessCardMain extends AppCompatActivity {
         File photoFile = null;
         try {
             photoFile = createImageFile();
-            Log.d("takePhoto", "createImageFIle done");
+
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -577,14 +576,12 @@ public class BusinessCardMain extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "IP" + timeStamp + "_";
-        Log.d("createImageFile 1111", "imgName: " + imageFileName);
-        // save at test
-        Log.d("createImageFile 22222 ", "sotrageDir: " + Environment.getExternalStorageDirectory().getAbsolutePath());
+
         File storageDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + "/test/");
         if (!storageDir.exists()) {
-            Log.d("createImageFile 33333 ", "directory not exist");
+            Log.d("createImageFile ", "directory not exist");
             storageDir.mkdirs();
-            Log.d("createImageFile 44444 ", "mkdir complete");
+            Log.d("createImageFile ", "mkdir complete");
         }
 
 

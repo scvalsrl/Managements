@@ -22,7 +22,6 @@ public class DeleteRequest extends StringRequest {
 
         super(Method.POST,URL , listener , null);
 
-        Log.d("  딜리트 리퀘스트 들어옴 : ","1");
         parameters = new HashMap<>();
         parameters.put("no", carNo + "");
 
@@ -32,7 +31,7 @@ public class DeleteRequest extends StringRequest {
 
     @Override
     public Map<String , String> getParams(){
-        Log.d("  겟파람 : ","1");
+
         return parameters;
 
     }

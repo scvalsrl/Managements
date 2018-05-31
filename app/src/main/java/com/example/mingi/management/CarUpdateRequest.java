@@ -28,8 +28,6 @@ public class CarUpdateRequest extends StringRequest {
 
 
 
-        Log.d("업데이트 리퀘스트2 들어옴", "no: "+ no);
-
         parameters = new HashMap<>();
 
         parameters.put("id", id);

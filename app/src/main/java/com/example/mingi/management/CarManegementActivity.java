@@ -105,7 +105,7 @@ public class CarManegementActivity extends AppCompatActivity {
             int count = 0;
             String startPlace, endPlace  , startTime, endTime, startDay, endDay, kilometer, carNum;
             int no;
-            Log.d("YearMonthPickerTest", "444 들어옴 : " + jsonArray.length());
+
             while (count< jsonArray.length()){
 
                 JSONObject object = jsonArray.getJSONObject(count);
@@ -116,7 +116,6 @@ public class CarManegementActivity extends AppCompatActivity {
                 startTime = object.getString("startTime");
                 endTime = object.getString("endTime");
                 startDay = object.getString("startDay");
-                Log.d("YearMonthPickerTest", "가져왔을까 : " + startDay );
 
                 endDay = object.getString("endDay");
                 kilometer = object.getString("kilometer");
@@ -164,7 +163,6 @@ public class CarManegementActivity extends AppCompatActivity {
                 MyYearMonthPickerDialog pd = new MyYearMonthPickerDialog();
                 pd.setListener(d);
                 pd.show(getSupportFragmentManager(), "YearMonthPickerTest");
-                Log.d("YearMonthPickerTest", "0 들어옴: ");
 
             }
         });
@@ -181,7 +179,7 @@ public class CarManegementActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
 
                         case R.id.nav_home:
-                            Log.d("김민기5", "onNavigationItemSelected: ");
+
                             Intent intent = new Intent(CarManegementActivity.this, CarJoinActivity.class);
                             intent.putExtra("userID", userID);
                             intent.putExtra("nowLat", nowLat);
@@ -259,7 +257,6 @@ public class CarManegementActivity extends AppCompatActivity {
 
         public void onPostExecute(String result){
 
-            Log.d("YearMonthPickerTest", "33 들어옴: ");
             Intent intent = new Intent(CarManegementActivity.this, CarManegementActivity.class);
             intent.putExtra("userList",result);
             intent.putExtra("nowLat", nowLat);

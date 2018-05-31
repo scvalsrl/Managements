@@ -27,8 +27,6 @@ public class CarJoinRequest extends StringRequest {
         super(Method.POST,URL , listener, null);
 
 
-        Log.d("김민기 조인 리퀘스트 들어옴", "id: "+ id);
-
         parameters = new HashMap<>();
 
         parameters.put("id", id);

@@ -30,11 +30,13 @@ class Task extends AsyncTask {
         this.startY = startLat;
 
         Log.d("right parameter", "endX: "+endX+",endY: "+endY+",startX: " + startX +",startY: " + startY);
+
     }
     @Override
     protected Object doInBackground(Object[] objects) {
         URL url = null;
         try {
+
             Log.d("distance doInBackground", startX + ", " + startY + ", " + endX + ", " + endY);
             url = new URL("https://api2.sktelecom.com/tmap/routes?version=1&tollgateFareOption=16&startX=" + startX +
                     "&startY=" + startY + "&endX=" + endX + "&endY=" + endY + "&appKey=" + clientKey);

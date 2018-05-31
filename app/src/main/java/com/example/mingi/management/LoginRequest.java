@@ -19,7 +19,6 @@ public class LoginRequest extends StringRequest {
         super(Method.POST,URL , listener, null);
 
 
-        Log.d("  로그인 리퀘스트 접속 : ", "1");
         // ID 와 비밀번호를 파라메터로 가져와서 PHP로 가져감
         parameters = new HashMap<>();
         parameters.put("userID", userID);

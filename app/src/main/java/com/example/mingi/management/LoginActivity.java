@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         final String nowLon = fromSplash.getStringExtra("nowLon");
         final String nowName = fromSplash.getStringExtra("nowName");
         final String userID = fromSplash.getStringExtra("userID");
-        Log.d("isGPSEnable", isGPSEnable + "nowLat" + nowLat + " ,nowName " + nowName);
 
 
         // 로그인 버튼 클릭
@@ -65,21 +64,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.d("  로그인 버튼 클릭 : ", "1");
-
                 final String userID = idText.getText().toString();
                 final String userPassword = passwordText.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("  리퀘스트 응답 받음 : ", "1");
+
                         try{
                             // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if(success){  // 성공
-                                Log.d("  로그인 상공 : ", "1");
+                                Log.d("  로그인 상공 : ", "");
 
                                 String userID = jsonResponse.getString("userID");
                                 String userPassword = jsonResponse.getString("userPassword");
@@ -100,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             }else{
-                                Log.d("  로그인 실패 : ", "1");
+                                Log.d("  로그인 실패 : ", "");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("로그인에 실패하였습니다.")
                                         .setNegativeButton("다시시도",null)
@@ -116,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-                Log.d("  로그인 리퀘스트 생성 및 요청 : ", "1");
                 // 로그인 리퀘스트 생성
                 LoginRequest loginRequest = new LoginRequest(userID, userPassword, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);

@@ -18,8 +18,6 @@ public class CarCountRequest extends StringRequest {
     public CarCountRequest(Response.Listener<String> listener){
         super(Method.POST,URL , listener, null);
 
-        Log.d("  카운트 리퀘스트 접속 : ", "1");
-
     }
 
     @Override

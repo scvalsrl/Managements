@@ -20,7 +20,6 @@ public class BCUpdateRequest extends StringRequest {
 
         super(Method.POST,URL , listener , null);
 
-        Log.d("  업데이트 리퀘스트 들어옴 : "+ no," ");
         parameters = new HashMap<>();
         parameters.put("no", no + "");
 
@@ -30,7 +29,7 @@ public class BCUpdateRequest extends StringRequest {
 
     @Override
     public Map<String , String> getParams(){
-        Log.d("  겟파람 : ","1");
+
         return parameters;
     }
 

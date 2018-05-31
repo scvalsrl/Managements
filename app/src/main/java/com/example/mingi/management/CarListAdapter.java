@@ -106,16 +106,15 @@ public class CarListAdapter extends BaseAdapter {
             public void onClick(View v) {
 
 
-                Log.d("  1111 : ", "1");
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
 
                     @Override
                     public void onResponse(String response) {
                         try{
-                            Log.d("  2222 : ", "1");
+
                             JSONObject jsonResponse = new JSONObject(response);
-                            Log.d("  3333 : ", "1");
+
                             boolean success = jsonResponse.getBoolean("success");
 
 
@@ -136,7 +135,6 @@ public class CarListAdapter extends BaseAdapter {
                             String destLon = jsonResponse.getString("destLon");
 
                             if(success){
-                                Log.d("  업데이트 성공 : " , " ");
 
 
                                 // 인텐드에 넣기
@@ -171,7 +169,7 @@ public class CarListAdapter extends BaseAdapter {
 
 
                             }else{
-                                Log.d("  삭제실패 : ", "1");
+
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -184,7 +182,7 @@ public class CarListAdapter extends BaseAdapter {
 
                 String carNo_s=carNo.getText().toString();
                 int carNo_i  = Integer.parseInt(carNo_s);
-                Log.d("  업데이트 리퀘스트 생성 요청 : "+carNo_s, "");
+
                 UpdateRequest updateRequest = new UpdateRequest(carNo_i, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(parentActivity);
                 queue.add(updateRequest);
@@ -212,14 +210,13 @@ public class CarListAdapter extends BaseAdapter {
 
 
 
-                Log.d("  1111 : ", "1");
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
 
                     @Override
                     public void onResponse(String response) {
                         try{
-                            Log.d("  2222 : ", "1");
+
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if(success){
@@ -242,7 +239,6 @@ public class CarListAdapter extends BaseAdapter {
                 String carNo_s=carNo.getText().toString();
                 int carNo_i  = Integer.parseInt(carNo_s);
 
-                Log.d("  딜리트르퀘스트 생성 요청 : "+carNo_i, "");
                 DeleteRequest deleteRequest = new DeleteRequest(carNo_i, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(parentActivity);
                 queue.add(deleteRequest);

@@ -112,7 +112,6 @@ public class CarUpdateActivity extends AppCompatActivity {
         destLat=fromSplash.getExtras().getString("destLat");
         destLon=fromSplash.getExtras().getString("destLon");
 
-        Log.d("김민기 업데이트 중간", ": " + startLat + " " + startLon + " " + destLat + " " + destLon );
 
 
         txtCar.setText(carNum_);
@@ -130,7 +129,6 @@ public class CarUpdateActivity extends AppCompatActivity {
         // get current info
         if(isGPSEnable.compareTo("0") == 0) { // success
 
-            Log.d("김민기", "ㅂㅈㄷ: ");
             // reverse Geo
             nowLat = fromSplash.getStringExtra("nowLat");
             nowLon = fromSplash.getStringExtra("nowLon");
@@ -339,7 +337,7 @@ public class CarUpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean isChange = false;
-                Log.d("isNull", startPlace);
+
                 boolean isStart = startPlace.equals("출발지 입력"); // true: 입력X, false: 입력O
                 boolean isDest = CarUpdateActivity.this.endPlace.equals("도착지 입력");
                 Animation anim = AnimationUtils.loadAnimation(
@@ -693,7 +691,6 @@ public class CarUpdateActivity extends AppCompatActivity {
                 return ;
             }
             try {
-                Log.d("update_calclulate", "destLon: " + destLon + ", startLon: " + startLon + ", destLat: " + destLat + ", startLat: " + startLat);
                 distance = (int) new Task(destLon, destLat, startLon, startLat).execute().get();
                 //Toast.makeText(getApplicationContext(), "distance: " + distance, Toast.LENGTH_SHORT).show();
                 if(distance > -1) {
@@ -717,7 +714,6 @@ public class CarUpdateActivity extends AppCompatActivity {
                 startPlace = data.getStringExtra("startname");
                 startLat = data.getStringExtra("startlat");
                 startLon = data.getStringExtra("startlon");
-                Log.d("right start", "startLat: " + startLat + ",startLon: " + startLon);
                 startText.setText(startPlace);
             }
         }
@@ -726,7 +722,6 @@ public class CarUpdateActivity extends AppCompatActivity {
                 endPlace = data.getStringExtra("destname");
                 destLat = data.getStringExtra("destlat");
                 destLon = data.getStringExtra("destlon");
-                Log.d("right dst", "dstLat: " + destLat + ",dsttLon: " + destLon);
                 destText.setText(endPlace);
             }
         }

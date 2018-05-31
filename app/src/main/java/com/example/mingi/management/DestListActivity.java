@@ -119,7 +119,7 @@ public class DestListActivity extends AppCompatActivity {
             urlStr = inStr;
         }
         public void run() {
-            Log.d("시작", "connect thread dest start");
+
             try {
                 final String output = request(urlStr);
                 handler.post(new Runnable() {
@@ -149,8 +149,6 @@ public class DestListActivity extends AppCompatActivity {
                     conn.setRequestProperty("Accept-Charset", "UTF-8");
 
                     int resCode = conn.getResponseCode();
-
-                    Log.d("resCode", String.valueOf(resCode));
 
                     if (resCode == HttpURLConnection.HTTP_OK) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));

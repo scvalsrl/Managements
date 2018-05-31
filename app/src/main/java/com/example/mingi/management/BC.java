@@ -8,7 +8,6 @@ package com.example.mingi.management;
     // okok
 public class BC {
 
-    String ids;
     String id;
     String BC_name;
     String  BC_level;

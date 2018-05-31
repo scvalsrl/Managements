@@ -88,7 +88,7 @@ public class BCListActivity extends AppCompatActivity {
             int count = 0;
             String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon , BC_photo;
             int no;
-            Log.d("YearMonthPickerTest", "444 들어옴 : " + jsonArray.length());
+
             while (count< jsonArray.length()){
 
                 JSONObject object = jsonArray.getJSONObject(count);
@@ -104,7 +104,7 @@ public class BCListActivity extends AppCompatActivity {
                 BC_lon = object.getString("BC_lon");
                 BC_photo = object.getString("BC_photo");
                 no = object.getInt("no");
-                Log.d("YearMonthPickerTest", "가져왔을까 : " + no +"    " + BC_photo );
+
                 BC bc = new BC(BC_name, BC_level,BC_com , BC_phone , BC_mail , BC_add, BC_lat, BC_lon, BC_photo, no);
                 userList.add(bc);
                 count++;
@@ -139,8 +139,6 @@ public class BCListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-               //  Log.d("김민기2", ": "+ userList.get(position).getNo());
-
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -161,8 +159,6 @@ public class BCListActivity extends AppCompatActivity {
 
 
                             if(success){
-                                Log.d("  업데이트 성공 : " , " ");
-
 
                                 // 인텐드에 넣기
                                 Intent intent = new Intent(BCListActivity.this , CarUpdateActivity.class);
@@ -191,7 +187,7 @@ public class BCListActivity extends AppCompatActivity {
 
 
                             }else{
-                                Log.d("  삭제실패 : ", "1");
+
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -203,7 +199,7 @@ public class BCListActivity extends AppCompatActivity {
 
 
                 int no  = userList.get(position).getNo();
-                Log.d("  업데이트 리퀘스트 생성 요청 :  "+no, "");
+
                 BCUpdateRequest updateRequest = new BCUpdateRequest(no, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
                 queue.add(updateRequest);
@@ -224,7 +220,7 @@ public class BCListActivity extends AppCompatActivity {
                     switch (item.getItemId()) {
 
                         case R.id.nav_home:
-                            Log.d("김민기5", "onNavigationItemSelected: ");
+
                             Intent intent = new Intent(BCListActivity.this, CarJoinActivity.class);
                             intent.putExtra("userID", userID);
                             intent.putExtra("nowLat", nowLat);

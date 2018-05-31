@@ -327,7 +327,7 @@ public class CarJoinActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean isChange = false;
-                Log.d("isNull", startPlace);
+
                 boolean isStart = startPlace.equals("출발지 입력"); // true: 입력X, false: 입력O
                 boolean isDest = endPlace.equals("도착지 입력");
                 Animation anim = AnimationUtils.loadAnimation(
@@ -446,7 +446,7 @@ public class CarJoinActivity extends AppCompatActivity {
                     Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("  리퀘스트 응답 받음 : ", "1");
+
                             try{
                                 // 제이슨 생성
                                 JSONObject jsonResponse = new JSONObject(response);
@@ -520,7 +520,6 @@ public class CarJoinActivity extends AppCompatActivity {
 
                                     no = no_i;
 
-                                    Log.d("김민기 카운팅 no : "+ no," ");
                                     // 화면전환 넣기 //
 
                                     String id = "2109812";
@@ -530,7 +529,7 @@ public class CarJoinActivity extends AppCompatActivity {
                                     String startTime = txtTime.getText().toString();
                                     String endTime = txtTime2.getText().toString();
 
-                                    Log.d("김민기 들어가기전 "+ no , " ");
+
                                     CarJoinRequest carJoinRequest = new CarJoinRequest(id, carNum, startPlace, endPlace, kilometer, startday, endday, startTime, endTime, no, startLat, startLon, destLat, destLon ,responseListener);
                                     RequestQueue queue = Volley.newRequestQueue(CarJoinActivity.this);
 
@@ -859,7 +858,7 @@ public class CarJoinActivity extends AppCompatActivity {
                 startPlace = data.getStringExtra("startname");
                 startLat = data.getStringExtra("startlat");
                 startLon = data.getStringExtra("startlon");
-                Log.d("right start", "startLat: " + startLat + ",startLon: " + startLon);
+
                 startText.setText(startPlace);
             }
         }
@@ -868,7 +867,7 @@ public class CarJoinActivity extends AppCompatActivity {
                 endPlace = data.getStringExtra("destname");
                 destLat = data.getStringExtra("destlat");
                 destLon = data.getStringExtra("destlon");
-                Log.d("right dst", "dstLat: " + destLat + ",dsttLon: " + destLon);
+
                 destText.setText(endPlace);
             }
         }

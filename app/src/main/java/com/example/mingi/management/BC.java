@@ -7,6 +7,7 @@ package com.example.mingi.management;
 // 안녕안녕
 public class BC {
 
+    String ids;
     String id;
     String BC_name;
     String  BC_level;

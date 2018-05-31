@@ -137,78 +137,12 @@ public class BCListActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("BCListActivity", "listview item click 함");
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            String id = jsonResponse.getString("id");
-                            String carNum = jsonResponse.getString("carNum");
-                            String startPlace = jsonResponse.getString("startPlace");
-                            String endPlace = jsonResponse.getString("endPlace");
-                            String startTime = jsonResponse.getString("startTime");
-                            String startDay = jsonResponse.getString("startDay");
-                            String endTime = jsonResponse.getString("endTime");
-                            String endDay = jsonResponse.getString("endDay");
-                            String no = jsonResponse.getString("no");
-                            String kilometer = jsonResponse.getString("kilometer");
-
-
-                            if(success){
-
-                                // 인텐드에 넣기
-                                Intent intent = new Intent(BCListActivity.this , CarUpdateActivity.class);
-
-                                intent.putExtra("id", id);
-                                intent.putExtra("carNum", carNum);
-                                intent.putExtra("startPlace", startPlace);
-                                intent.putExtra("endPlace", endPlace);
-                                intent.putExtra("startTime",startTime);
-                                intent.putExtra("startDay", startDay);
-                                intent.putExtra("endTime", endTime);
-                                intent.putExtra("endDay", endDay);
-                                intent.putExtra("no", no);
-                                intent.putExtra("kilometer",kilometer);
-
-
-
-                                intent.putExtra("isGPSEnable",isGPSEnable);
-                                intent.putExtra("nowLat",nowLat);
-                                intent.putExtra("nowLon",nowLon);
-                                intent.putExtra("nowName",nowName);
-
-
-                                BCListActivity.this.startActivity(intent);
-                                // 화면전환 넣기 //
-
-
-                            }else{
-
-                            }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                };
-
-
-                int no  = userList.get(position).getNo();
-
-                BCUpdateRequest updateRequest = new BCUpdateRequest(no, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
-                queue.add(updateRequest);
-
-
+                Intent goDetail = new Intent(BCListActivity.this, BCDetailActivity.class);
+                startActivity(goDetail);
             }
         });
-
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

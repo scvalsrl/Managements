@@ -86,6 +86,12 @@ public class BCListAdapter extends BaseAdapter {
         v.setTag(userList.get(i).getNo());
 
 
+
+
+
+
+
+
         return v;
 
 

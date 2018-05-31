@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class BCListActivity extends AppCompatActivity {
 
@@ -126,6 +129,17 @@ public class BCListActivity extends AppCompatActivity {
                 bcList.putExtra("nowName", nowName);
                 startActivity(bcList);
 
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d("김민기2", ": "+ userList.get(position).getNo());
+               // Intent intent;
+              //  intent = new Intent(BCListActivity.this,BCDetailActivity.class);
+                //startActivity(intent);
             }
         });
 

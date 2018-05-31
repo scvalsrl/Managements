@@ -6,6 +6,7 @@ package com.example.mingi.management;
 
 // hihi
     // okok
+// good girl
 public class BC {
 
     String id;

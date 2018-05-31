@@ -4,6 +4,8 @@ package com.example.mingi.management;
  * Created by MINGI on 2018-05-10.
  */
 
+// hihi
+    // okok
 // good girl
 public class BC {
 

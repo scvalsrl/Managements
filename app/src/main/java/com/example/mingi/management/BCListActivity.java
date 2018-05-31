@@ -19,6 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -136,10 +139,76 @@ public class BCListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Log.d("김민기2", ": "+ userList.get(position).getNo());
-               // Intent intent;
-              //  intent = new Intent(BCListActivity.this,BCDetailActivity.class);
-                //startActivity(intent);
+               //  Log.d("김민기2", ": "+ userList.get(position).getNo());
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            String id = jsonResponse.getString("id");
+                            String carNum = jsonResponse.getString("carNum");
+                            String startPlace = jsonResponse.getString("startPlace");
+                            String endPlace = jsonResponse.getString("endPlace");
+                            String startTime = jsonResponse.getString("startTime");
+                            String startDay = jsonResponse.getString("startDay");
+                            String endTime = jsonResponse.getString("endTime");
+                            String endDay = jsonResponse.getString("endDay");
+                            String no = jsonResponse.getString("no");
+                            String kilometer = jsonResponse.getString("kilometer");
+
+
+                            if(success){
+                                Log.d("  업데이트 성공 : " , " ");
+
+
+                                // 인텐드에 넣기
+                                Intent intent = new Intent(BCListActivity.this , CarUpdateActivity.class);
+
+                                intent.putExtra("id", id);
+                                intent.putExtra("carNum", carNum);
+                                intent.putExtra("startPlace", startPlace);
+                                intent.putExtra("endPlace", endPlace);
+                                intent.putExtra("startTime",startTime);
+                                intent.putExtra("startDay", startDay);
+                                intent.putExtra("endTime", endTime);
+                                intent.putExtra("endDay", endDay);
+                                intent.putExtra("no", no);
+                                intent.putExtra("kilometer",kilometer);
+
+
+
+                                intent.putExtra("isGPSEnable",isGPSEnable);
+                                intent.putExtra("nowLat",nowLat);
+                                intent.putExtra("nowLon",nowLon);
+                                intent.putExtra("nowName",nowName);
+
+
+                                BCListActivity.this.startActivity(intent);
+                                // 화면전환 넣기 //
+
+
+                            }else{
+                                Log.d("  삭제실패 : ", "1");
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                };
+
+
+                int no  = userList.get(position).getNo();
+                Log.d("  업데이트 리퀘스트 생성 요청 :  "+no, "");
+                UpdateRequest updateRequest = new UpdateRequest(no, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
+                queue.add(updateRequest);
+
+
             }
         });
 

@@ -9,7 +9,7 @@ import java.util.Map;
 
 //왜안되는가?
 public class BCCountRequest extends StringRequest {
-
+// 나도 수정했는디?
     final static  private String URL = "http://scvalsrl.cafe24.com/Count2.php";
 
     private Map<String, String> parameters;
@@ -18,6 +18,9 @@ public class BCCountRequest extends StringRequest {
         super(Method.POST,URL , listener, null);
         Log.d("  카운트 리퀘스트 접속 : ", "1");
     }
+
+
+
 
     @Override
     public Map<String, String> getParams(){

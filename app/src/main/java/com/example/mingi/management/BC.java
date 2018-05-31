@@ -4,7 +4,7 @@ package com.example.mingi.management;
  * Created by MINGI on 2018-05-10.
  */
 
-// 안녕안녕
+// 응그래안녕
 public class BC {
 
     String ids;

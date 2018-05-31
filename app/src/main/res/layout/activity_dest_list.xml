@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DestListActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="13dp"
+        android:text="도착지 설정"
+        android:textColor="@color/listpink"
+        android:textSize="17dp" />
+
+    <LinearLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <!--only for gray outline-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/listeditbox"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:orientation="horizontal"
+                android:background="#ffffff">
+
+                <EditText
+                    android:id="@+id/search_text"
+                    android:layout_width="255dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="6.5dp"
+                    android:background="@drawable/all_side_line"
+                    android:hint="도착지 입력"
+                    android:theme="@style/EditTextStyle"
+                    android:maxLines="1"
+                    android:inputType="text|textNoSuggestions"
+                    android:ems="10"
+                    android:lines="1"/>
+
+                <ImageView
+                    android:id="@+id/nowLoc_btn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/transparency"
+                    android:src="@drawable/ic_current_info" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--only for shadow effect-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:padding="1dp" >
+            <Button
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="5.5dp"
+                android:id="@+id/search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:textSize="19dp"
+                android:background="@drawable/rounded_search_btn"
+                android:shadowColor="@color/listeditbox"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:text="검  색"
+                android:textColor="@color/listpink" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#bbbcbf">
+        <TextView
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:background="#f3f3f4"
+            android:paddingLeft="14dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textSize="14dp"
+            android:text="장소결과"/>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/search_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/frame"></ListView>
+</LinearLayout>

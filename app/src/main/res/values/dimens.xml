@@ -1,0 +1,6 @@
+<resources>
+    <item type="dimen" name="dialog_min_width_major">90%</item>
+    <item type="dimen" name="dialog_min_width_minor">90%</item>
+
+    <item type="dimen" name="dialog_text_size">500dp</item>
+</resources>

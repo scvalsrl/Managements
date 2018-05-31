@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#607E8B</color>
+    <color name="colorPrimaryDark">#445A64</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="listpink">#e64371</color>
+    <color name="white">#FFFAF0</color>
+    <color name="BNKred">#C7050E</color>
+    <color name="transparency">#00ff0000</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="darkGrey">#A9A9A9</color>
+    <color name="darkgray">#6c6c6c</color>
+    <color name="listeditbox">#a6a8aa</color>
+</resources>

@@ -37,12 +37,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,7 +64,13 @@ public class BusinessCardMain extends AppCompatActivity {
     ImageView imageView;
     TextView bcadd;
     EditText bcname , bclevel, bccom, bcphone, bcemail;
-    String nowLat, nowLon, bcadd_str, bclat, bclon;
+    String nowLat_, nowLon_, bcadd_str, bclat, bclon;
+
+    String isGPSEnable;
+    String nowLat;
+    String nowLon;
+    String nowName;
+    String userID;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -90,8 +98,15 @@ public class BusinessCardMain extends AppCompatActivity {
         checkPermissions();
         initView();
 
-        uploadButton = (Button)findViewById(R.id.uploadButton);
+        Intent intent = getIntent();
+        isGPSEnable = intent.getStringExtra("isGPSEnable");
+        nowLat = intent.getStringExtra("nowLat");
+        nowLon = intent.getStringExtra("nowLon");
+        nowName = intent.getStringExtra("nowName");
+        userID = intent.getStringExtra("userID");
 
+
+        uploadButton = (Button)findViewById(R.id.uploadButton);
 
         upLoadServerUri = "http://scvalsrl.cafe24.com/UploadToServer.php";//서버컴퓨터의 ip주소
 
@@ -99,8 +114,8 @@ public class BusinessCardMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent goSearch = new Intent(BusinessCardMain.this, SearchAddrActivity.class);
-                goSearch.putExtra("nowLat", nowLat);
-                goSearch.putExtra("nowLon", nowLon);
+                goSearch.putExtra("nowLat", nowLat_);
+                goSearch.putExtra("nowLon", nowLon_);
                 startActivityForResult(goSearch, 3);
             }
         });
@@ -168,8 +183,8 @@ public class BusinessCardMain extends AppCompatActivity {
                                                     .create()
                                                     .show();
 
+                                            new BackgroundTask2().execute();
 
-                                            finish();
                                         } else {
 
                                             AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
@@ -223,6 +238,7 @@ public class BusinessCardMain extends AppCompatActivity {
                         }
 
                     }
+
                 };
 
 
@@ -237,11 +253,77 @@ public class BusinessCardMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                finish();
+            finish();
+
 
             }
         });
 
+
+    }
+
+
+
+    class BackgroundTask2 extends AsyncTask<Void, Void, String> {
+
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://scvalsrl.cafe24.com/BCList.php";
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+
+                    stringBuilder.append(temp + "\n");
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        public void onPostExecute(String result) {
+
+            Intent intent = new Intent(BusinessCardMain.this, BCListActivity.class);
+            intent.putExtra("userList",result);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon", nowLon);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("userID", userID);
+            BusinessCardMain.this.startActivity(intent);
+            finish();
+            overridePendingTransition(0, 0);
+
+        }
 
     }
 

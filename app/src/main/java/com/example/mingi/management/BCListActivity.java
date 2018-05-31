@@ -56,30 +56,23 @@ public class BCListActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 
+        Intent intent = getIntent();
+
+        isGPSEnable = intent.getStringExtra("isGPSEnable");
+        nowLat = intent.getStringExtra("nowLat");
+        nowLon = intent.getStringExtra("nowLon");
+        nowName = intent.getStringExtra("nowName");
+        userID = intent.getStringExtra("userID");
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("명함 관리");
 
 
-        Intent intent = getIntent();
-
-        final String isGPSEnable_ = intent.getStringExtra("isGPSEnable");
-        final String nowLat_ = intent.getStringExtra("nowLat");
-        final String nowLon_ = intent.getStringExtra("nowLon");
-        final String nowName_ = intent.getStringExtra("nowName");
-        final String userID_ = intent.getStringExtra("userID");
-
-
-        isGPSEnable = isGPSEnable_;
-        nowLat= nowLat_;
-        nowLon = nowLon_;
-        nowName = nowName_;
-        userID = userID_;
-
         listView = (ListView) findViewById(R.id.listVView);
         userList = new ArrayList<BC>();
-        adapter = new BCListAdapter(getApplicationContext(), userList, this,isGPSEnable_ , nowLat_ , nowLon_ , nowName_);
+        adapter = new BCListAdapter(getApplicationContext(), userList, this,isGPSEnable , nowLat , nowLon , nowName);
         listView.setAdapter(adapter);
 
 
@@ -126,6 +119,11 @@ public class BCListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent bcList = new Intent(getApplicationContext(), BusinessCardMain.class);
+                bcList.putExtra("userID", userID);
+                bcList.putExtra("nowLat", nowLat);
+                bcList.putExtra("nowLon", nowLon);
+                bcList.putExtra("isGPSEnable",isGPSEnable);
+                bcList.putExtra("nowName", nowName);
                 startActivity(bcList);
 
             }
@@ -167,68 +165,4 @@ public class BCListActivity extends AppCompatActivity {
 
 
 
-
-    class BackgroundTask extends AsyncTask<Void, Void, String> {
-
-        String target;
-
-        @Override
-        protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList.php";
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((temp = bufferedReader.readLine()) != null) {
-
-                    stringBuilder.append(temp + "\n");
-
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return stringBuilder.toString().trim();
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-            }
-
-
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-
-        }
-
-        public void onPostExecute(String result) {
-
-            Intent intent = new Intent(BCListActivity.this, BCListActivity.class);
-            intent.putExtra("userList", result);
-            intent.putExtra("nowLat", nowLat);
-            intent.putExtra("nowLon", nowLon);
-            intent.putExtra("isGPSEnable", isGPSEnable);
-            intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userID);
-            BCListActivity.this.startActivity(intent);
-
-            finish();
-            overridePendingTransition(0, 0);
-
-        }
-
-    }
 }

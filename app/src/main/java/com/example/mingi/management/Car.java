@@ -3,7 +3,7 @@ package com.example.mingi.management;
 /**
  * Created by MINGI on 2018-05-10.
  */
-// adfdfdfdfdfd
+
 public class Car {
 
     String id;
@@ -26,7 +26,6 @@ public class Car {
         this.startDay = startDay;
         this.endDay = endDay;
         this.kilometer = kilometer;
-
         this.carNum = carNum;
         this.no = no;
 

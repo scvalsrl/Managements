@@ -5,6 +5,7 @@ package com.example.mingi.management;
  */
 
 // hihi
+    // okok
 public class BC {
 
     String ids;

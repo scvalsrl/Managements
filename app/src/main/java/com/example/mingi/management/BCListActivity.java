@@ -138,7 +138,6 @@ public class BCListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                //  Log.d("김민기2", ": "+ userList.get(position).getNo());
                 Log.d("BCListActivity", "listview item click 함");
                 Response.Listener<String> responseListener = new Response.Listener<String>() {

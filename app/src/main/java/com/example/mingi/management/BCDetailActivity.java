@@ -1,9 +1,14 @@
 package com.example.mingi.management;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.Image;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,7 +20,9 @@ public class BCDetailActivity extends AppCompatActivity {
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd;
     Button bcedit, bcdelete;
 
-    String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
+    String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, no;
+
+    private String permissions[] = {"Manifest.permission.CALL_PHONE"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class BCDetailActivity extends AppCompatActivity {
         bcphone_str = "010-1234-4567";
         bcemail_str = "abc@naver.com";
         bcadd_str = "부산광역시 부산진구 주소주소 주소주소(회사명)";
+        no = bcphone_str.replaceAll("-", "");
     }
 
     void setTextView() {
@@ -86,25 +94,46 @@ public class BCDetailActivity extends AppCompatActivity {
                 Toast.makeText(getApplication(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show();
             }
         });
-
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String tel = "tel:" + bcphone_str;
+                Intent goCall = new Intent(Intent.ACTION_CALL, Uri.parse(tel));
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    Log.d("BCDetailActivity", "no call Permission");
+                    return;
+                }
+                startActivity(goCall);
             }
         });
 
         msgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Uri smsUri = Uri.parse("sms:" + no);
+                Intent goSMS = new Intent(Intent.ACTION_SENDTO, smsUri);
+                startActivity(goSMS);
             }
         });
 
         emailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent goEmail = new Intent(Intent.ACTION_SEND);
+                goEmail.putExtra(Intent.EXTRA_EMAIL, new String[] {bcemail_str});
+                goEmail.setType("text/html");
+                goEmail.setPackage("com.google.android.gm");
 
+                if(goEmail.resolveActivity(getPackageManager()) != null) {
+                    startActivity(goEmail);
+                }
             }
         });
 

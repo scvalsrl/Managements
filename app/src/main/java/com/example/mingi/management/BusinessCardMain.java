@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -64,7 +63,7 @@ public class BusinessCardMain extends AppCompatActivity {
     ImageView imageView;
     TextView bcadd;
     EditText bcname , bclevel, bccom, bcphone, bcemail;
-    String nowLat_, nowLon_, bcadd_str, bclat, bclon;
+    String bcadd_str, bclat, bclon;
 
     String isGPSEnable;
     String nowLat;
@@ -114,8 +113,8 @@ public class BusinessCardMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent goSearch = new Intent(BusinessCardMain.this, SearchAddrActivity.class);
-                goSearch.putExtra("nowLat", nowLat_);
-                goSearch.putExtra("nowLon", nowLon_);
+                goSearch.putExtra("nowLat", nowLat);
+                goSearch.putExtra("nowLon", nowLon);
                 startActivityForResult(goSearch, 3);
             }
         });
@@ -150,7 +149,6 @@ public class BusinessCardMain extends AppCompatActivity {
                             }
                         });
                         uploadFile(uploadFilePath + "" + uploadFileName);
-
 
                     }
                 }).start();

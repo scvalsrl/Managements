@@ -1,5 +1,6 @@
 package com.example.mingi.management;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -62,7 +63,16 @@ public class BCDetailActivity extends AppCompatActivity {
         bcedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent goEdit = new Intent(getApplicationContext(), BCEditActivity.class);
 
+                goEdit.putExtra("bcname", bcname_str);
+                goEdit.putExtra("bclevel", bclevel_str);
+                goEdit.putExtra("bccom", bccom_str);
+                goEdit.putExtra("bcphone", bcphone_str);
+                goEdit.putExtra("bcemail", bcemail_str);
+                goEdit.putExtra("bcadd", bcadd_str);
+
+                startActivity(goEdit);
             }
         });
 

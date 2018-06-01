@@ -59,7 +59,8 @@
         <activity android:name=".BCJoinActivity" />
         <activity android:name=".uploadActivity" />
         <activity android:name=".SearchAddrActivity" />
-        <activity android:name=".BCDetailActivity"></activity>
+        <activity android:name=".BCDetailActivity" />
+        <activity android:name=".BCEditActivity"></activity>
     </application>
 
 </manifest>

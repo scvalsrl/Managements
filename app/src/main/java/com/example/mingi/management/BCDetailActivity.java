@@ -1,6 +1,7 @@
 package com.example.mingi.management;
 
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class BCDetailActivity extends AppCompatActivity {
-    ImageView imgView;
+    ImageView imgView, emailBtn, callBtn, msgBtn;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd;
     Button bcedit, bcdelete;
 
@@ -39,6 +40,9 @@ public class BCDetailActivity extends AppCompatActivity {
         bcdelete = (Button) findViewById(R.id.bcdelete);
 
         imgView = (ImageView) findViewById(R.id.imgView);
+        emailBtn = (ImageView) findViewById(R.id.emailbtn);
+        callBtn = (ImageView) findViewById(R.id.callbtn);
+        msgBtn = (ImageView) findViewById(R.id.msgbtn);
     }
 
     void setTestString() {
@@ -82,5 +86,27 @@ public class BCDetailActivity extends AppCompatActivity {
                 Toast.makeText(getApplication(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show();
             }
         });
+
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        msgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        emailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 }

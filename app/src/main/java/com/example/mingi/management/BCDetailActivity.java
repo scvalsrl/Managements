@@ -9,6 +9,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -128,6 +129,8 @@ public class BCDetailActivity extends AppCompatActivity {
                 String tel = "tel:" + bcphone_str;
                 Intent goCall = new Intent(Intent.ACTION_CALL, Uri.parse(tel));
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(BCDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 101);
+
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding

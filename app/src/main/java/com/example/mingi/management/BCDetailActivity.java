@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,9 +26,6 @@ public class BCDetailActivity extends AppCompatActivity {
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, no, bclat_str, bclon_str, bcphoto_str;
 
     String isGPSEnable, nowLat, nowLon, nowName ,userID;
-
-
-    private String permissions[] = {"Manifest.permission.CALL_PHONE"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +143,7 @@ public class BCDetailActivity extends AppCompatActivity {
         msgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri smsUri = Uri.parse("sms:" + no);
+                Uri smsUri = Uri.parse("sms:" + bcphone_str);
                 Intent goSMS = new Intent(Intent.ACTION_SENDTO, smsUri);
                 startActivity(goSMS);
             }

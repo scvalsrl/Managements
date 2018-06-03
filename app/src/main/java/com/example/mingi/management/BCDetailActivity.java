@@ -1,6 +1,8 @@
 package com.example.mingi.management;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,15 +18,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class BCDetailActivity extends AppCompatActivity {
     ImageView imgView, emailBtn, callBtn, msgBtn;
-    TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd;
+    TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
     Button bcedit, bcdelete;
 
-    String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, no, bclat_str, bclon_str, bcphoto_str;
-
+    String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName ,userID;
 
     @Override
@@ -50,6 +62,8 @@ public class BCDetailActivity extends AppCompatActivity {
         bclat_str = intent.getStringExtra("BC_lat");
         bclon_str = intent.getStringExtra("BC_lon");
         bcphoto_str = intent.getStringExtra("BC_photo");
+        no = intent.getStringExtra("no");
+        Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
 
         initView();
         btnClick();
@@ -63,6 +77,7 @@ public class BCDetailActivity extends AppCompatActivity {
         bcphone = (TextView) findViewById(R.id.bcphone);
         bcemail = (TextView) findViewById(R.id.bcemail);
         bcadd = (TextView) findViewById(R.id.bcadd);
+        bcno = (TextView) findViewById(R.id.bcno);
 
         bcedit = (Button) findViewById(R.id.bcedit);
         bcdelete = (Button) findViewById(R.id.bcdelete);
@@ -78,6 +93,8 @@ public class BCDetailActivity extends AppCompatActivity {
 
 
     void setTextView() {
+
+        bcno.setText(no);
         bcname.setText(bcname_str);
         bclevel.setText(bclevel_str);
         bccom.setText(bccom_str);
@@ -99,6 +116,16 @@ public class BCDetailActivity extends AppCompatActivity {
                 goEdit.putExtra("bcphone", bcphone_str);
                 goEdit.putExtra("bcemail", bcemail_str);
                 goEdit.putExtra("bcadd", bcadd_str);
+                goEdit.putExtra("bclat", bclat_str);
+                goEdit.putExtra("bclon", bclon_str);
+                goEdit.putExtra("bcphoto", bcphoto_str);
+                goEdit.putExtra("no", no);
+
+                goEdit.putExtra("userID", userID);
+                goEdit.putExtra("nowLat", nowLat);
+                goEdit.putExtra("nowLon", nowLon);
+                goEdit.putExtra("isGPSEnable",isGPSEnable);
+                goEdit.putExtra("nowName", nowName);
 
                 startActivity(goEdit);
 
@@ -108,9 +135,66 @@ public class BCDetailActivity extends AppCompatActivity {
 
 
         bcdelete.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplication(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show();
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCDetailActivity.this);
+
+                builder
+                        .setMessage("명함을 삭제 합니다")
+                        .setCancelable(false)
+                        .setPositiveButton("확인",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(
+                                            DialogInterface dialog, int id) {
+
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+
+                                            @Override
+                                            public void onResponse(String response) {
+                                                try{
+
+                                                    JSONObject jsonResponse = new JSONObject(response);
+                                                    boolean success = jsonResponse.getBoolean("success");
+                                                    if(success){
+                                                        new BCDetailActivity.BackgroundTask2().execute();
+                                                    }else{
+                                                        Log.d("  삭제실패 : ", "1");
+                                                    }
+                                                }catch (Exception e){
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+
+                                        };
+
+
+                                        int No_i  = Integer.parseInt(no);
+
+                                        DeleteRequest2 deleteRequest = new DeleteRequest2(No_i, responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(BCDetailActivity.this);
+                                        queue.add(deleteRequest);
+
+
+
+                                    }
+                                })
+                        .setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(
+                                            DialogInterface dialog, int id) {
+                                        // 다이얼로그를 취소한다
+                                        dialog.cancel();
+                                    }
+                                }).create()
+                        .show();
+
+
+
             }
         });
 
@@ -190,5 +274,72 @@ public class BCDetailActivity extends AppCompatActivity {
             bmImage.setImageBitmap(result);
         }
     }
+
+
+    class BackgroundTask2 extends AsyncTask<Void, Void, String> {
+
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://scvalsrl.cafe24.com/BCList.php";
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+
+                    stringBuilder.append(temp + "\n");
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        public void onPostExecute(String result) {
+
+            Intent intent = new Intent(BCDetailActivity.this, BCListActivity.class);
+            intent.putExtra("userList",result);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon", nowLon);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("userID", userID);
+            BCDetailActivity.this.startActivity(intent);
+            finish();
+            overridePendingTransition(0, 0);
+
+        }
+
+    }
+
+
+
 
 }

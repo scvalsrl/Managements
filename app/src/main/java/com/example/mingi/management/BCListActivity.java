@@ -149,8 +149,7 @@ public class BCListActivity extends AppCompatActivity {
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon , BC_photo;
-
-
+                                String no;
                                 BC_name = jsonResponse.getString("BC_name");
                                 BC_level = jsonResponse.getString("BC_level");
                                 BC_com = jsonResponse.getString("BC_com");
@@ -160,8 +159,7 @@ public class BCListActivity extends AppCompatActivity {
                                 BC_lat = jsonResponse.getString("BC_lat");
                                 BC_lon = jsonResponse.getString("BC_lon");
                                 BC_photo = jsonResponse.getString("BC_photo");
-
-
+                                no = jsonResponse.getString("no");
 
                                 if ( success ) {
 
@@ -177,6 +175,7 @@ public class BCListActivity extends AppCompatActivity {
                                     intent.putExtra("BC_lat", BC_lat);
                                     intent.putExtra("BC_lon", BC_lon);
                                     intent.putExtra("BC_photo", BC_photo);
+                                    intent.putExtra("no", no);
 
 
                                     intent.putExtra("userID", userID);

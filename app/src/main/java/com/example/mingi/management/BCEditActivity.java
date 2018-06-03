@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +45,7 @@ public class BCEditActivity extends AppCompatActivity {
     Button bccamera, bcupload;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
-    String bclat, bclon;
+    String bclat, bclon, userID, no, bcphoto_str , bclat_str , bclon_str;
     String isGPSEnable, nowLat, nowLon, nowName;
 
     //for camera
@@ -62,9 +65,11 @@ public class BCEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcedit);
+
+        getDataFromDetail();
         initView();
         checkPermissions();
-        getDataFromDetail();
+
         setInitView();
         setClickBtn();
     }
@@ -79,7 +84,6 @@ public class BCEditActivity extends AppCompatActivity {
 
         bcupload = (Button) findViewById(R.id.uploadBtn);
         bccamera = (Button) findViewById(R.id.cameraBtn);
-
         imageView = (ImageView) findViewById(R.id.imgView);
     }
 
@@ -123,17 +127,23 @@ public class BCEditActivity extends AppCompatActivity {
     }
 
     void getDataFromDetail() {
-        Intent fromDetail = getIntent();
-        bcname_str = fromDetail.getStringExtra("bcname");
-        bclevel_str = fromDetail.getStringExtra("bclevel");
-        bccom_str = fromDetail.getStringExtra("bccom");
-        bcphone_str = fromDetail.getStringExtra("bcphone");
-        bcemail_str = fromDetail.getStringExtra("bcemail");
-        bcadd_str = fromDetail.getStringExtra("bcadd");
-        nowLat = fromDetail.getStringExtra("nowLat");
-        nowLon = fromDetail.getStringExtra("nowLon");
-        isGPSEnable = fromDetail.getStringExtra("isGPSEnable");
-        nowName = fromDetail.getStringExtra("nowName");
+        Intent intent = getIntent();
+        isGPSEnable = intent.getStringExtra("isGPSEnable");
+        nowLat = intent.getStringExtra("nowLat");
+        nowLon = intent.getStringExtra("nowLon");
+        nowName = intent.getStringExtra("nowName");
+        userID = intent.getStringExtra("userID");
+
+        bcname_str = intent.getStringExtra("bcname");
+        bclevel_str = intent.getStringExtra("bclevel");
+        bccom_str = intent.getStringExtra("bccom");
+        bcphone_str = intent.getStringExtra("bcphone");
+        bcemail_str = intent.getStringExtra("bcemail");
+        bcadd_str = intent.getStringExtra("bcadd");
+        bclat_str = intent.getStringExtra("bclat");
+        bclon_str = intent.getStringExtra("bclon");
+        bcphoto_str = intent.getStringExtra("bcphoto");
+        no = intent.getStringExtra("no");
     }
 
     void setInitView() {
@@ -143,6 +153,10 @@ public class BCEditActivity extends AppCompatActivity {
         bcphone.setText(bcphone_str);
         bcemail.setText(bcemail_str);
         bcadd.setText(bcadd_str);
+
+        new BCEditActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
+                .execute("http://scvalsrl.cafe24.com/uploads/"+bcphoto_str);
+
     }
 
     void setClickBtn() {
@@ -347,4 +361,30 @@ public class BCEditActivity extends AppCompatActivity {
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
     }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
 }

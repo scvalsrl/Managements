@@ -151,6 +151,11 @@
                         android:textSize="17dp"
                         android:paddingLeft="4dp" />
 
+                    <TextView
+                        android:id="@+id/bcno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="0dp" />
                     <ImageView
                         android:layout_marginTop="4dp"
                         android:layout_marginLeft="8dp"

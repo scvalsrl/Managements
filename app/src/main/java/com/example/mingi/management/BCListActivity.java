@@ -138,10 +138,75 @@ public class BCListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("BCListActivity", "listview item click 함");
-                Intent goDetail = new Intent(BCListActivity.this, BCDetailActivity.class);
-                startActivity(goDetail);
-            }
+
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+
+                                String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon , BC_photo;
+
+
+                                BC_name = jsonResponse.getString("BC_name");
+                                BC_level = jsonResponse.getString("BC_level");
+                                BC_com = jsonResponse.getString("BC_com");
+                                BC_phone = jsonResponse.getString("BC_phone");
+                                BC_mail = jsonResponse.getString("BC_mail");
+                                BC_add = jsonResponse.getString("BC_add");
+                                BC_lat = jsonResponse.getString("BC_lat");
+                                BC_lon = jsonResponse.getString("BC_lon");
+                                BC_photo = jsonResponse.getString("BC_photo");
+
+
+
+                                if ( success ) {
+
+                                    // 인텐드에 넣기
+                                    Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
+
+                                    intent.putExtra("BC_name", BC_name);
+                                    intent.putExtra("BC_level", BC_level);
+                                    intent.putExtra("BC_com", BC_com);
+                                    intent.putExtra("BC_phone", BC_phone);
+                                    intent.putExtra("BC_mail", BC_mail);
+                                    intent.putExtra("BC_add", BC_add);
+                                    intent.putExtra("BC_lat", BC_lat);
+                                    intent.putExtra("BC_lon", BC_lon);
+                                    intent.putExtra("BC_photo", BC_photo);
+
+
+                                    intent.putExtra("userID", userID);
+                                    intent.putExtra("isGPSEnable", isGPSEnable);
+                                    intent.putExtra("nowLat", nowLat);
+                                    intent.putExtra("nowLon", nowLon);
+                                    intent.putExtra("nowName", nowName);
+
+
+                                    BCListActivity.this.startActivity(intent);
+                                    // 화면전환 넣기 //
+
+
+                                } else {
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    };
+
+                    BCDetailRequest bcDetailRequest = new BCDetailRequest(userList.get(i).getNo(), responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
+                    queue.add(bcDetailRequest);
+
+
+                }
         });
     }
 

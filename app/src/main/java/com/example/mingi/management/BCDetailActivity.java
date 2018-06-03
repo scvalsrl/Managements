@@ -3,8 +3,11 @@ package com.example.mingi.management;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,13 +17,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.InputStream;
 
 public class BCDetailActivity extends AppCompatActivity {
     ImageView imgView, emailBtn, callBtn, msgBtn;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd;
     Button bcedit, bcdelete;
 
-    String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, no;
+    String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, no, bclat_str, bclon_str, bcphoto_str;
+
+    String isGPSEnable, nowLat, nowLon, nowName ,userID;
+
 
     private String permissions[] = {"Manifest.permission.CALL_PHONE"};
 
@@ -28,10 +35,28 @@ public class BCDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcdetail);
+
+
+        Intent intent = getIntent();
+
+        isGPSEnable = intent.getStringExtra("isGPSEnable");
+        nowLat = intent.getStringExtra("nowLat");
+        nowLon = intent.getStringExtra("nowLon");
+        nowName = intent.getStringExtra("nowName");
+        userID = intent.getStringExtra("userID");
+
+        bcname_str = intent.getStringExtra("BC_name");
+        bclevel_str = intent.getStringExtra("BC_level");
+        bccom_str = intent.getStringExtra("BC_com");
+        bcphone_str = intent.getStringExtra("BC_phone");
+        bcemail_str = intent.getStringExtra("BC_mail");
+        bcadd_str = intent.getStringExtra("BC_add");
+        bclat_str = intent.getStringExtra("BC_lat");
+        bclon_str = intent.getStringExtra("BC_lon");
+        bcphoto_str = intent.getStringExtra("BC_photo");
+
         initView();
         btnClick();
-
-        setTestString();
         setTextView();
     }
 
@@ -46,21 +71,15 @@ public class BCDetailActivity extends AppCompatActivity {
         bcedit = (Button) findViewById(R.id.bcedit);
         bcdelete = (Button) findViewById(R.id.bcdelete);
 
-        imgView = (ImageView) findViewById(R.id.imgView);
+
+        new BCDetailActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
+                .execute("http://scvalsrl.cafe24.com/uploads/"+bcphoto_str);
+
         emailBtn = (ImageView) findViewById(R.id.emailbtn);
         callBtn = (ImageView) findViewById(R.id.callbtn);
         msgBtn = (ImageView) findViewById(R.id.msgbtn);
     }
 
-    void setTestString() {
-        bcname_str = "가나다";
-        bclevel_str = "직급직급";
-        bccom_str = "회사이름이야";
-        bcphone_str = "010-1234-4567";
-        bcemail_str = "abc@naver.com";
-        bcadd_str = "부산광역시 부산진구 주소주소 주소주소(회사명)";
-        no = bcphone_str.replaceAll("-", "");
-    }
 
     void setTextView() {
         bcname.setText(bcname_str);
@@ -70,6 +89,7 @@ public class BCDetailActivity extends AppCompatActivity {
         bcemail.setText(bcemail_str);
         bcadd.setText(bcadd_str);
     }
+
 
     void btnClick() {
         bcedit.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +105,11 @@ public class BCDetailActivity extends AppCompatActivity {
                 goEdit.putExtra("bcadd", bcadd_str);
 
                 startActivity(goEdit);
+
             }
         });
+
+
 
         bcdelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +117,11 @@ public class BCDetailActivity extends AppCompatActivity {
                 Toast.makeText(getApplication(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
+
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,4 +166,31 @@ public class BCDetailActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
 }

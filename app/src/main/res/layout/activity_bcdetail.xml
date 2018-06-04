@@ -6,212 +6,216 @@
         android:layout_height="match_parent"
         tools:context=".BCDetailActivity"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/darkgray">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginTop="2dp"
-                android:background="#ffffff">
-
-                <ImageView
-                    android:id="@+id/imgView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent" >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:layout_marginTop="4dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/darkgray">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="20dp"
-                    android:background="#ffffff"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="이   름"
-                            android:textSize="20dp"
-                            android:textColor="#000000"
-                            android:paddingRight="9dp"/>
-                        <TextView
-                            android:id="@+id/bcname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:paddingLeft="4dp"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginTop="2dp"
+                    android:background="#ffffff">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="9dp"
-                            android:text="직   급"
-                            android:textColor="#000000"
-                            android:textSize="20dp" />
-                        <TextView
-                            android:id="@+id/bclevel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:paddingLeft="4dp"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    <ImageView
+                        android:id="@+id/imgView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="회사명"
-                            android:textSize="20dp"
-                            android:paddingRight="4dp"
-                            android:textColor="#000000"/>
-                        <TextView
-                            android:id="@+id/bccom"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:paddingLeft="4dp"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="휴대폰"
-                            android:textSize="20dp"
-                            android:paddingRight="4dp"
-                            android:textColor="#000000"/>
-                        <TextView
-                            android:id="@+id/bcphone"
-                            android:layout_width="220dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:paddingLeft="4dp"
-                            android:paddingRight="4dp"/>
-
-                        <ImageView
-                            android:layout_marginTop="5dp"
-                            android:layout_marginLeft="4dp"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/ic_phone"
-                            android:id="@+id/callbtn"/>
-
-                        <ImageView
-                            android:layout_marginTop="4dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_msg"
-                            android:id="@+id/msgbtn"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="이메일"
-                            android:textSize="20dp"
-                            android:paddingRight="4dp"
-                            android:textColor="#000000"/>
-                        <TextView
-                            android:id="@+id/bcemail"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="17dp"
-                            android:paddingLeft="4dp" />
-
-                        <TextView
-                            android:id="@+id/bcno"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="0dp" />
-                        <ImageView
-                            android:layout_marginTop="4dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/ic_msg"
-                            android:id="@+id/emailbtn"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="주   소"
-                            android:textSize="20dp"
-                            android:paddingRight="9dp"
-                            android:textColor="#000000"/>
-                        <TextView
-                            android:id="@+id/bcadd"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="15dp"
-                            android:paddingLeft="4dp" />
-                    </LinearLayout>
-                    <!--
-                    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
-                        android:id="@+id/mainFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp">
-                    </fragment>
-                    -->
-                    <FrameLayout
-                        android:id="@+id/mainFragment2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </FrameLayout>
+                        android:layout_height="match_parent" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/bcedit"
-                        android:text="수정"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <Button
-                        android:id="@+id/bcdelete"
-                        android:text="삭제"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:layout_marginTop="4dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="20dp"
+                        android:background="#ffffff"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="이   름"
+                                android:textSize="20dp"
+                                android:textColor="#000000"
+                                android:paddingRight="9dp"/>
+                            <TextView
+                                android:id="@+id/bcname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="17dp"
+                                android:paddingLeft="4dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="9dp"
+                                android:text="직   급"
+                                android:textColor="#000000"
+                                android:textSize="20dp" />
+                            <TextView
+                                android:id="@+id/bclevel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="17dp"
+                                android:paddingLeft="4dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="회사명"
+                                android:textSize="20dp"
+                                android:paddingRight="4dp"
+                                android:textColor="#000000"/>
+                            <TextView
+                                android:id="@+id/bccom"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="17dp"
+                                android:paddingLeft="4dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="휴대폰"
+                                android:textSize="20dp"
+                                android:paddingRight="4dp"
+                                android:textColor="#000000"/>
+                            <TextView
+                                android:id="@+id/bcphone"
+                                android:layout_width="220dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="17dp"
+                                android:paddingLeft="4dp"
+                                android:paddingRight="4dp"/>
+
+                            <ImageView
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/ic_phone"
+                                android:id="@+id/callbtn"/>
+
+                            <ImageView
+                                android:layout_marginTop="4dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_msg"
+                                android:id="@+id/msgbtn"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="이메일"
+                                android:textSize="20dp"
+                                android:paddingRight="4dp"
+                                android:textColor="#000000"/>
+                            <TextView
+                                android:id="@+id/bcemail"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="17dp"
+                                android:paddingLeft="4dp" />
+
+                            <TextView
+                                android:id="@+id/bcno"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="0dp" />
+                            <ImageView
+                                android:layout_marginTop="4dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:src="@drawable/ic_msg"
+                                android:id="@+id/emailbtn"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="주   소"
+                                android:textSize="20dp"
+                                android:paddingRight="9dp"
+                                android:textColor="#000000"/>
+                            <TextView
+                                android:id="@+id/bcadd"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="15dp"
+                                android:paddingLeft="4dp" />
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <FrameLayout
+                                android:id="@+id/mainFragment2"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp">
+                            </FrameLayout>
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/fullMap"
+                                android:text="확대"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/bcedit"
+                            android:text="수정"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <Button
+                            android:id="@+id/bcdelete"
+                            android:text="삭제"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
     </LinearLayout>

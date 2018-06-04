@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,11 +18,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONObject;
 
@@ -31,13 +38,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class BCDetailActivity extends AppCompatActivity {
+public class BCDetailActivity extends FragmentActivity implements OnMapReadyCallback {
     ImageView imgView, emailBtn, callBtn, msgBtn;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
     Button bcedit, bcdelete;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName ,userID;
+
+    GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +75,10 @@ public class BCDetailActivity extends AppCompatActivity {
         Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
 
         initView();
+        // SupportMapFragment 통해 레이아웃에 만든 fragment의 ID 참조하고 구글맵 호출
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment);
+        mapFragment.getMapAsync(this); // getMapAstnc must be called on the main thread
+        // getMapAsync가 onMapReady를 자동 호출
         btnClick();
         setTextView();
     }
@@ -90,7 +103,6 @@ public class BCDetailActivity extends AppCompatActivity {
         callBtn = (ImageView) findViewById(R.id.callbtn);
         msgBtn = (ImageView) findViewById(R.id.msgbtn);
     }
-
 
     void setTextView() {
 
@@ -249,6 +261,19 @@ public class BCDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng location= new LatLng(Double.valueOf(bclat_str), Double.valueOf(bclon_str));
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(location).title("회사이름을 넣으셈");
+
+        mMap.addMarker(markerOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+    }
+
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -295,9 +320,7 @@ public class BCDetailActivity extends AppCompatActivity {
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
                 while ((temp = bufferedReader.readLine()) != null) {
-
                     stringBuilder.append(temp + "\n");
-
                 }
 
                 bufferedReader.close();
@@ -334,7 +357,6 @@ public class BCDetailActivity extends AppCompatActivity {
             BCDetailActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
-
         }
 
     }

@@ -3,6 +3,7 @@ package com.example.mingi.management;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,9 +25,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainFragment extends Fragment implements OnMapReadyCallback{
     View rootView;
     MapView mapView;
-    Double lat = null;
-    Double lon = null;
-    String name = null;
+    Double lat = 35.149586;
+    Double lon = 129.060660;
+    String name = "부산은행";
 
     public MainFragment() {}
 
@@ -44,7 +45,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback{
         lat = Double.parseDouble(getArguments().getString("lat"));
         lon = Double.parseDouble(getArguments().getString("lon"));
         name = getArguments().getString("name");
-
+        Log.d("MainFragment", "bundle받음 lat: "+ lat + ", lon: " + lon + ",name: " + name);
         rootView = inflater.inflate(R.layout.map_content, container, false);
         mapView = (MapView) rootView.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);

@@ -47,14 +47,14 @@ import java.util.concurrent.ExecutionException;
 
 public class CarJoinActivity extends AppCompatActivity {
     /*mingi*/
-    int count = 0;
     Button join;
     TextView txtDate, txtTime, txtDate2, txtTime2, txtCar;
-
+    NavigationView navigationView;
     Calendar currentTime;
     int hour, minute;
     String format, userID;
     String gps;
+    BottomNavigationView bottomnav;
 
     int y, m, d;
 
@@ -69,41 +69,33 @@ public class CarJoinActivity extends AppCompatActivity {
     String startLat, startLon, destLat, destLon, nowName, kilometer;
     int distance = -1;
 
-    final Context context = this;
-
-
     String nowLat = "129.065782";
     String nowLon = "35.145404";
-
-
-    LocationManager locationManager;
-
-    // For reverseGeocording API
-    Handler handler = new Handler();
-    public static String defaultUrl = "https://api2.sktelecom.com/tmap/geo/reversegeocoding?version=1&appKey=03772af9-f665-47d1-9008-207ca403d775&lat=";
-    String urlStr = null;
-    boolean isChange = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_join);
         findcontrol();
-        BottomNavigationView bottomnav = findViewById(R.id.bottom_navigation);
-        bottomnav.setOnNavigationItemSelectedListener(navListener);
+        setActionBar();
 
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("운행일지 등록");
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
+        getFromIntent();
+
+        SetNavigation();
+        startDateTime();
+        DestDateTime();
+        setStartDestTxt();
+        ChangeStartDest();
+        joinBtn();
+
+        setCar();
+    }
+
+    private void getFromIntent() {
         Intent fromSplash = getIntent();
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
         userID = fromSplash.getStringExtra("userID");
@@ -128,196 +120,71 @@ public class CarJoinActivity extends AppCompatActivity {
             calculateDistance(isStart, isDest);
 
         }
+    }
 
+    private void setActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("운행일지 등록");
+    }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
+    private void setCar() {
+        txtCar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.txtCar:
 
-                int id = item.getItemId();
-                Intent drawer_intent;
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(CarJoinActivity.this, R.style.MyAlertDialogStyle);
+                        alertBuilder.setIcon(R.drawable.ic_directions_car_black_24dp);
+                        alertBuilder.setTitle("차량을 선택해주세요");
 
-                switch (id) {
-                    case R.id.navigation_item_carjoin:
-                        drawer_intent = new Intent(getApplicationContext(), CarJoinActivity.class);
-                        startActivity(drawer_intent);
-                        overridePendingTransition(0, 0);
+                        // List Adapter 생성
+                        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                                CarJoinActivity.this,
+                                android.R.layout.select_dialog_item);
 
-                        finish();
+                        adapter.add("02미 8815 (YF쏘나타)");
+                        adapter.add("12가 3386 (아반떼 쿠페)");
+                        adapter.add("15러 1517 (쏘나타)");
+                        adapter.add("22바 9539 (제네시스)");
+                        adapter.add("35우 4012 (싼타페)");
+                        adapter.add("45노 6521 (K3)");
+                        adapter.add("50더 1234 (카니발)");
+                        adapter.add("52딘 6543 (카니발)");
+                        adapter.add("59호 5544 (K5)");
+                        adapter.add("64오 1775 (그렌져)");
 
+                        // 버튼 생성
+                        alertBuilder.setNegativeButton("취소",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        // Adapter 셋팅
+                        alertBuilder.setAdapter(adapter,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        String strName = adapter.getItem(id);
+                                        txtCar.setText(strName);
+                                    }
+                                });
+                        alertBuilder.show();
                         break;
-                    case R.id.navigation_item_carlist:
 
-
-                        break;
-                    case R.id.navigation_item_peoplelist:
-
-                        Intent intent = getIntent();
-                        userID = intent.getExtras().getString("userID");
-
-                        String userPassword = intent.getExtras().getString("userID");
-
-                        drawer_intent = new Intent(getApplicationContext(), CarlistActivity.class);
-
-
-                        drawer_intent.putExtra("userID", userID);
-                        drawer_intent.putExtra("userPassword", userPassword);
-
-                        startActivity(drawer_intent);
-                        overridePendingTransition(0, 0);
-
-                        finish();
-
-                        break;
-                    case R.id.navigation_item_logout:
-
+                    default:
                         break;
                 }
 
-                return true;
             }
         });
+    }
 
-        txtDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Calendar calendar = Calendar.getInstance();
-                d = calendar.get(Calendar.DAY_OF_MONTH);
-                m = calendar.get(Calendar.MONTH);
-                y = calendar.get(Calendar.YEAR);
-
-                DatePickerDialog pickerDialog = new DatePickerDialog(CarJoinActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
-                        i1 += 1;
-                        String Day = i + "/" + i1 + "/" + i2;
-                        txtDate.setText(Day);
-
-
-                    }
-                }, y, m, d);
-                pickerDialog.show();
-
-            }
-        });
-
-        txtTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                currentTime = Calendar.getInstance();
-                hour = currentTime.get(Calendar.HOUR_OF_DAY);
-                minute = currentTime.get(Calendar.MINUTE);
-
-                seletedTimeFormat(hour);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(CarJoinActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                        seletedTimeFormat(hourOfDay);
-
-                        String time = hourOfDay + ":" + minute + " " + format;
-                        txtTime.setText(time);
-
-
-                    }
-                }, hour, minute, true);
-
-                timePickerDialog.show();
-
-            }
-
-        });
-
-
-        //////////////////////////////////
-
-
-        txtDate2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Calendar calendar = Calendar.getInstance();
-                d = calendar.get(Calendar.DAY_OF_MONTH);
-                m = calendar.get(Calendar.MONTH);
-                y = calendar.get(Calendar.YEAR);
-
-                DatePickerDialog pickerDialog = new DatePickerDialog(CarJoinActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
-                        i1 += 1;
-                        String Day = i + "/" + i1 + "/" + i2;
-                        txtDate2.setText(Day);
-
-                    }
-                }, y, m, d);
-                pickerDialog.show();
-
-            }
-        });
-
-
-        txtTime2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                currentTime = Calendar.getInstance();
-                hour = currentTime.get(Calendar.HOUR_OF_DAY);
-                minute = currentTime.get(Calendar.MINUTE);
-
-                seletedTimeFormat(hour);
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(CarJoinActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                        seletedTimeFormat(hourOfDay);
-
-                        String time = hourOfDay + ":" + minute + " " + format;
-                        txtTime2.setText(time);
-
-
-                    }
-                }, hour, minute, true);
-
-                timePickerDialog.show();
-
-            }
-
-        });
-
-        ///////////
-        startText.setOnClickListener(new TextView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CarJoinActivity.this, ListActivity.class);
-                intent.putExtra("curLat", nowLat);
-                intent.putExtra("curLon", nowLon);
-                intent.putExtra("curAddr", nowName);
-                startActivityForResult(intent, 0);
-            }
-        });
-
-        destText.setOnClickListener(new TextView.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CarJoinActivity.this, DestListActivity.class);
-                intent.putExtra("curLat", nowLat);
-                intent.putExtra("curLon", nowLon);
-                intent.putExtra("curAddr", nowName);
-                startActivityForResult(intent, 1);
-            }
-        });
-
+    private void ChangeStartDest() {
         changeBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -380,8 +247,9 @@ public class CarJoinActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
+    private void joinBtn() {
         join.setOnClickListener(new View.OnClickListener() {
             int no;
 
@@ -425,7 +293,6 @@ public class CarJoinActivity extends AppCompatActivity {
                             .setNegativeButton("확인", null)
                             .create()
                             .show();
-
                 } else if (endday.equals("도착 날짜를 선택해주세요") || endTime.equals("도착 시간을 선택해주세요")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
                     builder.setMessage(" 도착 일자를 설정해주세요.")
@@ -434,11 +301,9 @@ public class CarJoinActivity extends AppCompatActivity {
                             .show();
 
                 } else {
-
                     Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
                             try {
                                 // 제이슨 생성
                                 JSONObject jsonResponse = new JSONObject(response);
@@ -480,7 +345,6 @@ public class CarJoinActivity extends AppCompatActivity {
                                                             .create()
                                                             .show();
 
-
                                                 } else {
 
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
@@ -501,8 +365,6 @@ public class CarJoinActivity extends AppCompatActivity {
 
 
                                     };
-
-
                                     String no_s = jsonResponse.getString("no");
 
                                     int no_i = Integer.parseInt(no_s);
@@ -511,14 +373,12 @@ public class CarJoinActivity extends AppCompatActivity {
                                     no = no_i;
 
                                     // 화면전환 넣기 //
-
                                     String id = "2109812";
                                     String carNum = txtCar.getText().toString();
                                     String startday = txtDate.getText().toString();
                                     String endday = txtDate2.getText().toString();
                                     String startTime = txtTime.getText().toString();
                                     String endTime = txtTime2.getText().toString();
-
 
                                     CarJoinRequest carJoinRequest = new CarJoinRequest(id, carNum, startPlace, endPlace, kilometer, startday, endday, startTime, endTime, no, startLat, startLon, destLat, destLon, responseListener);
                                     RequestQueue queue = Volley.newRequestQueue(CarJoinActivity.this);
@@ -537,80 +397,205 @@ public class CarJoinActivity extends AppCompatActivity {
 
                         }
                     };
-
-
                     CarCountRequest carcountrequest = new CarCountRequest(responseListener2);
                     RequestQueue queue2 = Volley.newRequestQueue(CarJoinActivity.this);
                     queue2.add(carcountrequest);
-
-
                 }
+            }
+        });
+    }
 
+    private void setStartDestTxt() {
+        startText.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CarJoinActivity.this, ListActivity.class);
+                intent.putExtra("curLat", nowLat);
+                intent.putExtra("curLon", nowLon);
+                intent.putExtra("curAddr", nowName);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        destText.setOnClickListener(new TextView.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CarJoinActivity.this, DestListActivity.class);
+                intent.putExtra("curLat", nowLat);
+                intent.putExtra("curLon", nowLon);
+                intent.putExtra("curAddr", nowName);
+                startActivityForResult(intent, 1);
+            }
+        });
+    }
+
+    private void DestDateTime() {
+        txtDate2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar calendar = Calendar.getInstance();
+                d = calendar.get(Calendar.DAY_OF_MONTH);
+                m = calendar.get(Calendar.MONTH);
+                y = calendar.get(Calendar.YEAR);
+
+                DatePickerDialog pickerDialog = new DatePickerDialog(CarJoinActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                        i1 += 1;
+                        String Day = i + "/" + i1 + "/" + i2;
+                        txtDate2.setText(Day);
+
+                    }
+                }, y, m, d);
+                pickerDialog.show();
 
             }
         });
 
-        txtCar.setOnClickListener(new View.OnClickListener() {
+
+        txtTime2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                switch (v.getId()) {
-                    case R.id.txtCar:
+                currentTime = Calendar.getInstance();
+                hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                minute = currentTime.get(Calendar.MINUTE);
 
-                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(CarJoinActivity.this, R.style.MyAlertDialogStyle);
-                        alertBuilder.setIcon(R.drawable.ic_directions_car_black_24dp);
-                        alertBuilder.setTitle("차량을 선택해주세요");
+                seletedTimeFormat(hour);
 
-                        // List Adapter 생성
-                        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                                CarJoinActivity.this,
-                                android.R.layout.select_dialog_item);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(CarJoinActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                        adapter.add("02미 8815 (YF쏘나타)");
-                        adapter.add("12가 3386 (아반떼 쿠페)");
-                        adapter.add("15러 1517 (쏘나타)");
-                        adapter.add("22바 9539 (제네시스)");
-                        adapter.add("35우 4012 (싼타페)");
-                        adapter.add("45노 6521 (K3)");
-                        adapter.add("50더 1234 (카니발)");
-                        adapter.add("52딘 6543 (카니발)");
-                        adapter.add("59호 5544 (K5)");
-                        adapter.add("64오 1775 (그렌져)");
+                        seletedTimeFormat(hourOfDay);
+
+                        String time = hourOfDay + ":" + minute + " " + format;
+                        txtTime2.setText(time);
 
 
-                        // 버튼 생성
-                        alertBuilder.setNegativeButton("취소",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                    }
+                }, hour, minute, true);
 
-                        // Adapter 셋팅
-                        alertBuilder.setAdapter(adapter,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        String strName = adapter.getItem(id);
-                                        txtCar.setText(strName);
-                                    }
-                                });
-                        alertBuilder.show();
-                        break;
+                timePickerDialog.show();
 
-                    default:
-                        break;
-                }
+            }
+
+        });
+    }
+
+    private void startDateTime() {
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar calendar = Calendar.getInstance();
+                d = calendar.get(Calendar.DAY_OF_MONTH);
+                m = calendar.get(Calendar.MONTH);
+                y = calendar.get(Calendar.YEAR);
+
+                DatePickerDialog pickerDialog = new DatePickerDialog(CarJoinActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                        i1 += 1;
+                        String Day = i + "/" + i1 + "/" + i2;
+                        txtDate.setText(Day);
+
+
+                    }
+                }, y, m, d);
+                pickerDialog.show();
 
             }
         });
 
+        txtTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+
+                currentTime = Calendar.getInstance();
+                hour = currentTime.get(Calendar.HOUR_OF_DAY);
+                minute = currentTime.get(Calendar.MINUTE);
+
+                seletedTimeFormat(hour);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(CarJoinActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        seletedTimeFormat(hourOfDay);
+
+                        String time = hourOfDay + ":" + minute + " " + format;
+                        txtTime.setText(time);
+
+
+                    }
+                }, hour, minute, true);
+
+                timePickerDialog.show();
+
+            }
+
+        });
+    }
+
+    private void SetNavigation() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            public boolean onNavigationItemSelected(MenuItem item) {
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
+
+                int id = item.getItemId();
+                Intent drawer_intent;
+
+                switch (id) {
+                    case R.id.navigation_item_carjoin:
+                        drawer_intent = new Intent(getApplicationContext(), CarJoinActivity.class);
+                        startActivity(drawer_intent);
+                        overridePendingTransition(0, 0);
+
+                        finish();
+
+                        break;
+                    case R.id.navigation_item_carlist:
+
+
+                        break;
+                    case R.id.navigation_item_peoplelist:
+
+                        Intent intent = getIntent();
+                        userID = intent.getExtras().getString("userID");
+
+                        String userPassword = intent.getExtras().getString("userID");
+
+                        drawer_intent = new Intent(getApplicationContext(), CarlistActivity.class);
+
+
+                        drawer_intent.putExtra("userID", userID);
+                        drawer_intent.putExtra("userPassword", userPassword);
+
+                        startActivity(drawer_intent);
+                        overridePendingTransition(0, 0);
+
+                        finish();
+
+                        break;
+                    case R.id.navigation_item_logout:
+
+                        break;
+                }
+
+                return true;
+            }
+        });
     }
 
     public void seletedTimeFormat(int hour) {
-
         if (hour == 0) {
             hour += 12;
             format = "AM";
@@ -622,15 +607,11 @@ public class CarJoinActivity extends AppCompatActivity {
         } else {
             format = "AM";
         }
-
     }
 
     private void findcontrol() {
-
-
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);
-
 
         txtDate2 = (TextView) findViewById(R.id.txtDate2);
         txtTime2 = (TextView) findViewById(R.id.txtTime2);
@@ -642,8 +623,10 @@ public class CarJoinActivity extends AppCompatActivity {
         distanceText = findViewById(R.id.distancetext);
         changeBtn = findViewById(R.id.changeBtn);
         txtCar = (TextView) findViewById(R.id.txtCar);
-
-
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        bottomnav = findViewById(R.id.bottom_navigation);
+        bottomnav.setOnNavigationItemSelectedListener(navListener);
     }
 
 

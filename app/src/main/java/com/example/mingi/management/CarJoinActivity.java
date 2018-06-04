@@ -115,7 +115,7 @@ public class CarJoinActivity extends AppCompatActivity {
             startLat = nowLat;
             startLon = nowLon;
 
-            boolean isStart = startPlace.equals("출발지 입력"); // true: ?낅젰X, false: ?낅젰O
+            boolean isStart = startPlace.equals("출발지 입력");
             boolean isDest = endPlace.equals("도착지 입력");
             calculateDistance(isStart, isDest);
 
@@ -814,6 +814,7 @@ public class CarJoinActivity extends AppCompatActivity {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+
         }
     }
 

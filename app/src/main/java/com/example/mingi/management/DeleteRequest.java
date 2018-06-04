@@ -18,9 +18,9 @@ public class DeleteRequest extends StringRequest {
     final static private String URL = "http://scvalsrl.cafe24.com/CarDelete.php";
     private Map<String, String> parameters;
 
-    public DeleteRequest(int carNo, Response.Listener<String> listener){
+    public DeleteRequest(int carNo, Response.Listener<String> listener) {
 
-        super(Method.POST,URL , listener , null);
+        super(Method.POST, URL, listener, null);
 
         parameters = new HashMap<>();
         parameters.put("no", carNo + "");
@@ -30,7 +30,7 @@ public class DeleteRequest extends StringRequest {
 
 
     @Override
-    public Map<String , String> getParams(){
+    public Map<String, String> getParams() {
 
         return parameters;
 

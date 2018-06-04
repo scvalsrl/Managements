@@ -28,12 +28,12 @@ public class CarListAdapter extends BaseAdapter {
     private Activity parentActivity;
 
     private String isGPSEnable;
-    private  String nowLat;
-    private  String nowLon;
-    private  String nowName;
+    private String nowLat;
+    private String nowLon;
+    private String nowName;
 
 
-    public CarListAdapter(Context context, List<Car> userList , Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName ){
+    public CarListAdapter(Context context, List<Car> userList, Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName) {
         this.context = context;
         this.userList = userList;
         this.parentActivity = parentActivity;
@@ -61,21 +61,20 @@ public class CarListAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup){
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
 
-        View v = View.inflate(context, R.layout.car,null);
+        View v = View.inflate(context, R.layout.car, null);
 
         TextView startPlace = (TextView) v.findViewById(R.id.startPlace);
         TextView endPlace = (TextView) v.findViewById(R.id.endPlace);
         TextView startTime = (TextView) v.findViewById(R.id.startTime);
         TextView endTime = (TextView) v.findViewById(R.id.endTime);
-        TextView  startDay = (TextView) v.findViewById(R.id.startDay);
+        TextView startDay = (TextView) v.findViewById(R.id.startDay);
         TextView endDay = (TextView) v.findViewById(R.id.endDay);
         TextView kilometer = (TextView) v.findViewById(R.id.kilometer);
         TextView carNum = (TextView) v.findViewById(R.id.carNum);
         final TextView carNo = (TextView) v.findViewById(R.id.carNo);
-
 
 
         startPlace.setText(userList.get(i).getStartPlace());
@@ -89,7 +88,6 @@ public class CarListAdapter extends BaseAdapter {
         carNo.setText(String.valueOf(userList.get(i).getNo()));
 
 
-
         v.setTag(userList.get(i).getNo());
 
 
@@ -98,8 +96,6 @@ public class CarListAdapter extends BaseAdapter {
 
 
         updateButton.setOnClickListener(new View.OnClickListener() {
-
-
 
 
             @Override
@@ -111,7 +107,7 @@ public class CarListAdapter extends BaseAdapter {
 
                     @Override
                     public void onResponse(String response) {
-                        try{
+                        try {
 
                             JSONObject jsonResponse = new JSONObject(response);
 
@@ -134,44 +130,43 @@ public class CarListAdapter extends BaseAdapter {
                             String destLat = jsonResponse.getString("destLat");
                             String destLon = jsonResponse.getString("destLon");
 
-                            if(success){
+                            if (success) {
 
 
                                 // 인텐드에 넣기
-                                Intent intent = new Intent(parentActivity , CarUpdateActivity.class);
+                                Intent intent = new Intent(parentActivity, CarUpdateActivity.class);
 
                                 intent.putExtra("id", id);
                                 intent.putExtra("carNum", carNum);
                                 intent.putExtra("startPlace", startPlace);
                                 intent.putExtra("endPlace", endPlace);
-                                intent.putExtra("startTime",startTime);
+                                intent.putExtra("startTime", startTime);
                                 intent.putExtra("startDay", startDay);
                                 intent.putExtra("endTime", endTime);
                                 intent.putExtra("endDay", endDay);
                                 intent.putExtra("no", no);
-                                intent.putExtra("kilometer",kilometer);
+                                intent.putExtra("kilometer", kilometer);
 
                                 intent.putExtra("startLat", startLat);
                                 intent.putExtra("startLon", startLon);
                                 intent.putExtra("destLat", destLat);
-                                intent.putExtra("destLon",destLon);
+                                intent.putExtra("destLon", destLon);
 
 
-
-                                intent.putExtra("isGPSEnable",isGPSEnable);
-                                intent.putExtra("nowLat",nowLat);
-                                intent.putExtra("nowLon",nowLon);
-                                intent.putExtra("nowName",nowName);
+                                intent.putExtra("isGPSEnable", isGPSEnable);
+                                intent.putExtra("nowLat", nowLat);
+                                intent.putExtra("nowLon", nowLon);
+                                intent.putExtra("nowName", nowName);
 
 
                                 parentActivity.startActivity(intent);
                                 // 화면전환 넣기 //
 
 
-                            }else{
+                            } else {
 
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -180,8 +175,8 @@ public class CarListAdapter extends BaseAdapter {
                 };
 
 
-                String carNo_s=carNo.getText().toString();
-                int carNo_i  = Integer.parseInt(carNo_s);
+                String carNo_s = carNo.getText().toString();
+                int carNo_i = Integer.parseInt(carNo_s);
 
                 UpdateRequest updateRequest = new UpdateRequest(carNo_i, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(parentActivity);
@@ -191,7 +186,7 @@ public class CarListAdapter extends BaseAdapter {
         });
 
 
-        deleteButton.setOnClickListener(new View.OnClickListener(){
+        deleteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -208,41 +203,38 @@ public class CarListAdapter extends BaseAdapter {
                                             DialogInterface dialog, int id) {
 
 
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                try {
+
+                                                    JSONObject jsonResponse = new JSONObject(response);
+                                                    boolean success = jsonResponse.getBoolean("success");
+                                                    if (success) {
+
+                                                        userList.remove(i);
+                                                        notifyDataSetChanged();
+
+                                                    } else {
+                                                        Log.d("  삭제실패 : ", "1");
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+
+                                        };
 
 
-                    @Override
-                    public void onResponse(String response) {
-                        try{
+                                        String carNo_s = carNo.getText().toString();
+                                        int carNo_i = Integer.parseInt(carNo_s);
 
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-
-                                userList.remove(i);
-                                notifyDataSetChanged();
-
-                            }else{
-                                Log.d("  삭제실패 : ", "1");
-                            }
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                };
-
-
-                String carNo_s=carNo.getText().toString();
-                int carNo_i  = Integer.parseInt(carNo_s);
-
-                DeleteRequest deleteRequest = new DeleteRequest(carNo_i, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(parentActivity);
-                queue.add(deleteRequest);
-
+                                        DeleteRequest deleteRequest = new DeleteRequest(carNo_i, responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(parentActivity);
+                                        queue.add(deleteRequest);
 
 
                                     }
@@ -258,17 +250,10 @@ public class CarListAdapter extends BaseAdapter {
                         .show();
 
 
-
             }
 
 
-
         });
-
-
-
-
-
 
 
         return v;

@@ -14,9 +14,9 @@ public class DeleteRequest2 extends StringRequest {
     final static private String URL = "http://scvalsrl.cafe24.com/BCDelete.php";
     private Map<String, String> parameters;
 
-    public DeleteRequest2(int No, Response.Listener<String> listener){
+    public DeleteRequest2(int No, Response.Listener<String> listener) {
 
-        super(Method.POST,URL , listener , null);
+        super(Method.POST, URL, listener, null);
 
         parameters = new HashMap<>();
         parameters.put("no", No + "");
@@ -26,7 +26,7 @@ public class DeleteRequest2 extends StringRequest {
 
 
     @Override
-    public Map<String , String> getParams(){
+    public Map<String, String> getParams() {
 
         return parameters;
 

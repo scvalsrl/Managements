@@ -14,18 +14,15 @@ import java.util.Map;
 
 public class CarUpdateRequest extends StringRequest {
 
-    final static  private String URL = "http://scvalsrl.cafe24.com/CarUpdate2.php";
+    final static private String URL = "http://scvalsrl.cafe24.com/CarUpdate2.php";
 
     private Map<String, String> parameters;
 
 
-    public CarUpdateRequest(String id , String carNum, String start , String end, String kilometer, String day1 , String day2 , String time1 , String time2 , int no ,
-                          String startLat , String startLon , String destLat , String destLon ,   Response.Listener<String> listener){
+    public CarUpdateRequest(String id, String carNum, String start, String end, String kilometer, String day1, String day2, String time1, String time2, int no,
+                            String startLat, String startLon, String destLat, String destLon, Response.Listener<String> listener) {
 
-        super(Method.POST,URL , listener, null);
-
-
-
+        super(Method.POST, URL, listener, null);
 
 
         parameters = new HashMap<>();
@@ -49,7 +46,7 @@ public class CarUpdateRequest extends StringRequest {
     }
 
     @Override
-    public Map<String, String> getParams(){
+    public Map<String, String> getParams() {
 
         return parameters;
     }

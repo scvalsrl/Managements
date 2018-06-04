@@ -44,7 +44,7 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
     Button bcedit, bcdelete;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
-    String isGPSEnable, nowLat, nowLon, nowName ,userID;
+    String isGPSEnable, nowLat, nowLon, nowName, userID;
 
     GoogleMap mMap;
 
@@ -97,7 +97,7 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
 
 
         new BCDetailActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
-                .execute("http://scvalsrl.cafe24.com/uploads/"+bcphoto_str);
+                .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
 
         emailBtn = (ImageView) findViewById(R.id.emailbtn);
         callBtn = (ImageView) findViewById(R.id.callbtn);
@@ -136,14 +136,13 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
                 goEdit.putExtra("userID", userID);
                 goEdit.putExtra("nowLat", nowLat);
                 goEdit.putExtra("nowLon", nowLon);
-                goEdit.putExtra("isGPSEnable",isGPSEnable);
+                goEdit.putExtra("isGPSEnable", isGPSEnable);
                 goEdit.putExtra("nowName", nowName);
 
                 startActivity(goEdit);
 
             }
         });
-
 
 
         bcdelete.setOnClickListener(new View.OnClickListener() {
@@ -167,16 +166,16 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
 
                                             @Override
                                             public void onResponse(String response) {
-                                                try{
+                                                try {
 
                                                     JSONObject jsonResponse = new JSONObject(response);
                                                     boolean success = jsonResponse.getBoolean("success");
-                                                    if(success){
+                                                    if (success) {
                                                         new BCDetailActivity.BackgroundTask2().execute();
-                                                    }else{
+                                                    } else {
                                                         Log.d("  삭제실패 : ", "1");
                                                     }
-                                                }catch (Exception e){
+                                                } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
 
@@ -185,12 +184,11 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
                                         };
 
 
-                                        int No_i  = Integer.parseInt(no);
+                                        int No_i = Integer.parseInt(no);
 
                                         DeleteRequest2 deleteRequest = new DeleteRequest2(No_i, responseListener);
                                         RequestQueue queue = Volley.newRequestQueue(BCDetailActivity.this);
                                         queue.add(deleteRequest);
-
 
 
                                     }
@@ -206,12 +204,8 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
                         .show();
 
 
-
             }
         });
-
-
-
 
 
         callBtn.setOnClickListener(new View.OnClickListener() {
@@ -249,11 +243,11 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 Intent goEmail = new Intent(Intent.ACTION_SEND);
-                goEmail.putExtra(Intent.EXTRA_EMAIL, new String[] {bcemail_str});
+                goEmail.putExtra(Intent.EXTRA_EMAIL, new String[]{bcemail_str});
                 goEmail.setType("text/html");
                 goEmail.setPackage("com.google.android.gm");
 
-                if(goEmail.resolveActivity(getPackageManager()) != null) {
+                if (goEmail.resolveActivity(getPackageManager()) != null) {
                     startActivity(goEmail);
                 }
             }
@@ -348,20 +342,19 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
         public void onPostExecute(String result) {
 
             Intent intent = new Intent(BCDetailActivity.this, BCListActivity.class);
-            intent.putExtra("userList",result);
+            intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             BCDetailActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
         }
 
     }
-
-
 
 
 }

@@ -65,7 +65,7 @@ public class ListActivity extends AppCompatActivity {
 
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (i == KeyEvent.KEYCODE_ENTER)) {
                     Log.d("ListActivity_onKey", "Press Enter");
                     searchLocation(finalCurLat, finalCurLong, startname);
                 }
@@ -87,14 +87,14 @@ public class ListActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if(startname != null) {
+                if (startname != null) {
                     destIntent.putExtra("startname", startname);
                     destIntent.putExtra("startlat", finalCurLat);
                     destIntent.putExtra("startlon", finalCurLong);
-                    setResult(0,destIntent);
+                    setResult(0, destIntent);
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "현재 위치를 가져올 수 없습니다." , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "현재 위치를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -102,8 +102,8 @@ public class ListActivity extends AppCompatActivity {
 
     private void searchLocation(String finalCurLat, String finalCurLong, String startname) {
         String userStr = search_text.getText().toString();
-        String urlStr = defaultUrl + userStr + "&centerLat="+ finalCurLat + "&centerLon=" + finalCurLong;
-        if(startname == null) {
+        String urlStr = defaultUrl + userStr + "&centerLat=" + finalCurLat + "&centerLon=" + finalCurLong;
+        if (startname == null) {
             urlStr = defaultUrl + userStr + "&centerLat=35.1473&centerLon=129.0673";
         }
         ConnectThread thread = new ConnectThread(urlStr);
@@ -116,6 +116,7 @@ public class ListActivity extends AppCompatActivity {
         public ConnectThread(String inStr) {
             urlStr = inStr;
         }
+
         public void run() {
             Log.d("시작", "connect thread dest start");
             try {
@@ -124,7 +125,7 @@ public class ListActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
-                        if(output != null) {
+                        if (output != null) {
                             findInfo(output);
                         }
 
@@ -139,8 +140,8 @@ public class ListActivity extends AppCompatActivity {
             StringBuilder output = new StringBuilder();
             try {
                 URL url = new URL(urlStr);
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                if(conn != null) {
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                if (conn != null) {
                     conn.setConnectTimeout(10000);
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
@@ -153,9 +154,9 @@ public class ListActivity extends AppCompatActivity {
                     if (resCode == HttpURLConnection.HTTP_OK) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                         String line = null;
-                        while(true) {
+                        while (true) {
                             line = reader.readLine();
-                            if(line == null) {
+                            if (line == null) {
                                 break;
                             }
                             output.append(line + "\n");
@@ -184,7 +185,7 @@ public class ListActivity extends AppCompatActivity {
             JSONArray jarray = jobj.getJSONArray("poi");
             jsonResultsLength = jarray.length();
 
-            if(jsonResultsLength > 0) {
+            if (jsonResultsLength > 0) {
                 names = new String[jsonResultsLength];
                 lats = new String[jsonResultsLength];
                 lons = new String[jsonResultsLength];
@@ -193,7 +194,7 @@ public class ListActivity extends AppCompatActivity {
                 roadNames = new String[jsonResultsLength];
                 roadNos = new String[jsonResultsLength];
 
-                for(int i = 0; i < jsonResultsLength; i++) {
+                for (int i = 0; i < jsonResultsLength; i++) {
                     JSONObject jObject = jarray.getJSONObject(i);
                     names[i] = jObject.optString("name");
                     lats[i] = jObject.optString("frontLat");
@@ -205,14 +206,14 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
 
-            if(jsonResultsLength > 0) {
-                search_list = (ListView)findViewById(R.id.search_list);
+            if (jsonResultsLength > 0) {
+                search_list = (ListView) findViewById(R.id.search_list);
 
                 ArrayList<Listitem> datas = new ArrayList<Listitem>();
-                for(int i = 0; i < jsonResultsLength; i++) {
+                for (int i = 0; i < jsonResultsLength; i++) {
                     datas.add(new Listitem(names[i], upperaddrs[i],
                             midaddrs[i], roadNames[i], roadNos[i],
-                            lats[i],lons[i]));
+                            lats[i], lons[i]));
                 }
                 final LocationAdapter adapter = new LocationAdapter(this, datas, getLayoutInflater());
                 search_list.setAdapter(adapter);
@@ -223,11 +224,11 @@ public class ListActivity extends AppCompatActivity {
                         mLat = lats[position];
                         mLng = lons[position];
                         mName = names[position];
-                        destIntent.putExtra("startname",mName);
-                        destIntent.putExtra("startlat",mLat);
-                        destIntent.putExtra("startlon",mLng);
+                        destIntent.putExtra("startname", mName);
+                        destIntent.putExtra("startlat", mLat);
+                        destIntent.putExtra("startlon", mLng);
                         // Toast.makeText(getApplicationContext(), mLng, Toast.LENGTH_SHORT).show();
-                        setResult(0,destIntent);
+                        setResult(0, destIntent);
                         finish();
                     }
                 });

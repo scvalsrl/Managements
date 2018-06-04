@@ -28,11 +28,14 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,7 +48,7 @@ public class CarUpdateActivity extends AppCompatActivity {
     /*mingi*/
     int count = 0;
     Button join;
-    TextView txtDate, txtTime, txtDate2 , txtTime2, txtCar;
+    TextView txtDate, txtTime, txtDate2, txtTime2, txtCar;
 
     Calendar currentTime;
     int hour, minute;
@@ -53,7 +56,7 @@ public class CarUpdateActivity extends AppCompatActivity {
     String gps, userIDS;
     String id, no;
 
-    int y,m,d;
+    int y, m, d;
 
     private DrawerLayout mDrawerLayout = null;
     private ActionBarDrawerToggle mToggle;
@@ -86,7 +89,7 @@ public class CarUpdateActivity extends AppCompatActivity {
         actionBar.setTitle("수정 화면");
 
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
 
@@ -96,22 +99,21 @@ public class CarUpdateActivity extends AppCompatActivity {
 
         Intent fromSplash = getIntent();
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
-        id=fromSplash.getExtras().getString("id");
-        String carNum_ =fromSplash.getExtras().getString("carNum");
-        startPlace =fromSplash.getExtras().getString("startPlace");
-        endPlace =fromSplash.getExtras().getString("endPlace");
+        id = fromSplash.getExtras().getString("id");
+        String carNum_ = fromSplash.getExtras().getString("carNum");
+        startPlace = fromSplash.getExtras().getString("startPlace");
+        endPlace = fromSplash.getExtras().getString("endPlace");
         String startTime_ = fromSplash.getExtras().getString("startTime");
-        String startDay_ =fromSplash.getExtras().getString("startDay");
-        String endTime_ =fromSplash.getExtras().getString("endTime");
-        String endDay_ =fromSplash.getExtras().getString("endDay");
-        no=fromSplash.getExtras().getString("no");
+        String startDay_ = fromSplash.getExtras().getString("startDay");
+        String endTime_ = fromSplash.getExtras().getString("endTime");
+        String endDay_ = fromSplash.getExtras().getString("endDay");
+        no = fromSplash.getExtras().getString("no");
         String kilometer_ = fromSplash.getExtras().getString("kilometer");
 
-        startLat=fromSplash.getExtras().getString("startLat");
-        startLon=fromSplash.getExtras().getString("startLon");
-        destLat=fromSplash.getExtras().getString("destLat");
-        destLon=fromSplash.getExtras().getString("destLon");
-
+        startLat = fromSplash.getExtras().getString("startLat");
+        startLon = fromSplash.getExtras().getString("startLon");
+        destLat = fromSplash.getExtras().getString("destLat");
+        destLon = fromSplash.getExtras().getString("destLon");
 
 
         txtCar.setText(carNum_);
@@ -127,7 +129,7 @@ public class CarUpdateActivity extends AppCompatActivity {
         gps = isGPSEnable;
 
         // get current info
-        if(isGPSEnable.compareTo("0") == 0) { // success
+        if (isGPSEnable.compareTo("0") == 0) { // success
 
             // reverse Geo
             nowLat = fromSplash.getStringExtra("nowLat");
@@ -136,20 +138,20 @@ public class CarUpdateActivity extends AppCompatActivity {
 
             boolean isStart = startPlace.equals("출발지 입력"); // true: ?낅젰X, false: ?낅젰O
             boolean isDest = endPlace.equals("도착지 입력");
-             calculateDistance(isStart, isDest);
+            calculateDistance(isStart, isDest);
         }
 
 
-        NavigationView navigationView = (NavigationView)findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
-            public boolean onNavigationItemSelected(MenuItem item){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 item.setChecked(true);
                 mDrawerLayout.closeDrawers();
 
                 int id = item.getItemId();
                 Intent drawer_intent;
 
-                switch (id){
+                switch (id) {
                     case R.id.navigation_item_carjoin:
                         drawer_intent = new Intent(getApplicationContext(), CarJoinActivity.class);
                         startActivity(drawer_intent);
@@ -161,14 +163,13 @@ public class CarUpdateActivity extends AppCompatActivity {
                     case R.id.navigation_item_carlist:
 
 
-
                         break;
                     case R.id.navigation_item_peoplelist:
 
                         Intent intent = getIntent();
-                        String userID =intent.getExtras().getString("userID");
+                        String userID = intent.getExtras().getString("userID");
                         userIDS = userID;
-                        String userPassword =intent.getExtras().getString("userID");
+                        String userPassword = intent.getExtras().getString("userID");
 
                         drawer_intent = new Intent(getApplicationContext(), CarlistActivity.class);
 
@@ -191,21 +192,21 @@ public class CarUpdateActivity extends AppCompatActivity {
             }
         });
 
-        txtDate.setOnClickListener(new View.OnClickListener(){
+        txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Calendar calendar = Calendar.getInstance();
-                d=calendar.get(Calendar.DAY_OF_MONTH);
-                m =calendar.get(Calendar.MONTH);
+                d = calendar.get(Calendar.DAY_OF_MONTH);
+                m = calendar.get(Calendar.MONTH);
                 y = calendar.get(Calendar.YEAR);
 
                 DatePickerDialog pickerDialog = new DatePickerDialog(CarUpdateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-                        i1+=1;
-                        String Day = i+"/"+i1 + "/"+i2;
+                        i1 += 1;
+                        String Day = i + "/" + i1 + "/" + i2;
                         txtDate.setText(Day);
 
 
@@ -221,7 +222,7 @@ public class CarUpdateActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                currentTime =  Calendar.getInstance();
+                currentTime = Calendar.getInstance();
                 hour = currentTime.get(Calendar.HOUR_OF_DAY);
                 minute = currentTime.get(Calendar.MINUTE);
 
@@ -233,12 +234,12 @@ public class CarUpdateActivity extends AppCompatActivity {
 
                         seletedTimeFormat(hourOfDay);
 
-                        String time = hourOfDay + ":" +minute +" "+ format;
+                        String time = hourOfDay + ":" + minute + " " + format;
                         txtTime.setText(time);
 
 
                     }
-                }, hour,minute, true);
+                }, hour, minute, true);
 
                 timePickerDialog.show();
 
@@ -247,26 +248,24 @@ public class CarUpdateActivity extends AppCompatActivity {
         });
 
 
-
         //////////////////////////////////
 
 
-
-        txtDate2.setOnClickListener(new View.OnClickListener(){
+        txtDate2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Calendar calendar = Calendar.getInstance();
-                d=calendar.get(Calendar.DAY_OF_MONTH);
-                m =calendar.get(Calendar.MONTH);
+                d = calendar.get(Calendar.DAY_OF_MONTH);
+                m = calendar.get(Calendar.MONTH);
                 y = calendar.get(Calendar.YEAR);
 
                 DatePickerDialog pickerDialog = new DatePickerDialog(CarUpdateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
-                        i1+=1;
-                        String Day = i+"/"+i1 + "/"+i2;
+                        i1 += 1;
+                        String Day = i + "/" + i1 + "/" + i2;
                         txtDate2.setText(Day);
 
                     }
@@ -277,13 +276,12 @@ public class CarUpdateActivity extends AppCompatActivity {
         });
 
 
-
         txtTime2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                currentTime =  Calendar.getInstance();
+                currentTime = Calendar.getInstance();
                 hour = currentTime.get(Calendar.HOUR_OF_DAY);
                 minute = currentTime.get(Calendar.MINUTE);
 
@@ -295,12 +293,12 @@ public class CarUpdateActivity extends AppCompatActivity {
 
                         seletedTimeFormat(hourOfDay);
 
-                        String time = hourOfDay + ":" +minute +" "+ format;
+                        String time = hourOfDay + ":" + minute + " " + format;
                         txtTime2.setText(time);
 
 
                     }
-                }, hour,minute, true);
+                }, hour, minute, true);
 
                 timePickerDialog.show();
 
@@ -312,9 +310,9 @@ public class CarUpdateActivity extends AppCompatActivity {
         startText.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(CarUpdateActivity.this, ListActivity.class);
-                intent.putExtra("curLat",nowLat);
-                intent.putExtra("curLon",nowLon);
+                Intent intent = new Intent(CarUpdateActivity.this, ListActivity.class);
+                intent.putExtra("curLat", nowLat);
+                intent.putExtra("curLon", nowLon);
                 intent.putExtra("curAddr", nowName);
                 startActivityForResult(intent, 0);
             }
@@ -324,15 +322,15 @@ public class CarUpdateActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(CarUpdateActivity.this, DestListActivity.class);
-                intent.putExtra("curLat",nowLat);
-                intent.putExtra("curLon",nowLon);
+                Intent intent = new Intent(CarUpdateActivity.this, DestListActivity.class);
+                intent.putExtra("curLat", nowLat);
+                intent.putExtra("curLon", nowLon);
                 intent.putExtra("curAddr", nowName);
                 startActivityForResult(intent, 1);
             }
         });
 
-        changeBtn.setOnClickListener(new View.OnClickListener(){
+        changeBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -378,47 +376,44 @@ public class CarUpdateActivity extends AppCompatActivity {
                 String startTime = txtTime.getText().toString();
                 String endTime = txtTime2.getText().toString();
 
-                if(startLat.equals(destLat) && startLon.equals(destLon)) {
+                if (startLat.equals(destLat) && startLon.equals(destLon)) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
                     builder.setMessage(" 출발지와 목적지가 동일합니다.")
-                            .setNegativeButton("확인",null)
+                            .setNegativeButton("확인", null)
                             .create()
                             .show();
 
-                }
-                else if(carNum.equals("차량을 선택해주세요") ) {
+                } else if (carNum.equals("차량을 선택해주세요")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
                     builder.setMessage(" 차량을 선택해주세요.")
-                            .setNegativeButton("확인",null)
+                            .setNegativeButton("확인", null)
                             .create()
                             .show();
 
-                } else if(startPlace.equals("출발지 입력") || CarUpdateActivity.this.endPlace.equals("도착지 입력" ) ) {
+                } else if (startPlace.equals("출발지 입력") || CarUpdateActivity.this.endPlace.equals("도착지 입력")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
                     builder.setMessage(" 경로를 설정해주세요.")
-                            .setNegativeButton("확인",null)
+                            .setNegativeButton("확인", null)
                             .create()
                             .show();
 
-                }else if(startday.equals("출발 날짜를 선택해주세요") || startTime.equals("출발 시간을 선택해주세요" ) ) {
+                } else if (startday.equals("출발 날짜를 선택해주세요") || startTime.equals("출발 시간을 선택해주세요")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
                     builder.setMessage(" 출발 일자를 설정해주세요.")
-                            .setNegativeButton("확인",null)
+                            .setNegativeButton("확인", null)
                             .create()
                             .show();
 
-                } else if(endday.equals("도착 날짜를 선택해주세요") || endTime.equals("도착 시간을 선택해주세요" ) ) {
+                } else if (endday.equals("도착 날짜를 선택해주세요") || endTime.equals("도착 시간을 선택해주세요")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
                     builder.setMessage(" 도착 일자를 설정해주세요.")
-                            .setNegativeButton("확인",null)
+                            .setNegativeButton("확인", null)
                             .create()
                             .show();
-
 
 
                 } else {
-
 
 
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -441,22 +436,17 @@ public class CarUpdateActivity extends AppCompatActivity {
                                     builder.setMessage("성공적으로 수정 되었습니다")
                                             .setCancelable(false)
                                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                        public void onClick(
-                                                                DialogInterface dialog, int id) {
-                                                            // 프로그램을 종료한다
-                                                            new BackgroundTask().execute();
-                                                            overridePendingTransition(0, 0);
-                                                            finish();
+                                                public void onClick(
+                                                        DialogInterface dialog, int id) {
+                                                    // 프로그램을 종료한다
+                                                    new BackgroundTask().execute();
+                                                    overridePendingTransition(0, 0);
+                                                    finish();
 
-                                                        }
-                                                    }).
+                                                }
+                                            }).
                                             create()
                                             .show();
-
-
-
-
-
 
 
                                 } else {
@@ -480,8 +470,8 @@ public class CarUpdateActivity extends AppCompatActivity {
                     };
 
 
-                    Log.d("김민기 업데이트 생성 " , " ");
-                    CarUpdateRequest carUpdateRequest = new CarUpdateRequest(id, carNum, startPlace, CarUpdateActivity.this.endPlace, kilometer, startday, endday, startTime, endTime, Integer.parseInt(no) , startLat ,startLon , destLat, destLon , responseListener);
+                    Log.d("김민기 업데이트 생성 ", " ");
+                    CarUpdateRequest carUpdateRequest = new CarUpdateRequest(id, carNum, startPlace, CarUpdateActivity.this.endPlace, kilometer, startday, endday, startTime, endTime, Integer.parseInt(no), startLat, startLon, destLat, destLon, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(CarUpdateActivity.this);
 
                     queue.add(carUpdateRequest);
@@ -499,10 +489,6 @@ public class CarUpdateActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
-
 
 
         txtCar.setOnClickListener(new View.OnClickListener() {
@@ -562,36 +548,35 @@ public class CarUpdateActivity extends AppCompatActivity {
         });
 
 
-
     }
 
-    public void seletedTimeFormat(int hour){
+    public void seletedTimeFormat(int hour) {
 
-        if(hour==0){
+        if (hour == 0) {
             hour += 12;
             format = "AM";
-        }else if(hour ==12){
+        } else if (hour == 12) {
             format = "PM";
-        }else if(hour >12){
+        } else if (hour > 12) {
             hour -= 12;
             format = "PM";
-        }else{
+        } else {
             format = "AM";
         }
 
     }
 
-    private void findcontrol(){
+    private void findcontrol() {
 
 
         txtDate = (TextView) findViewById(R.id.txtDate);
-        txtTime =  (TextView) findViewById(R.id.txtTime);
+        txtTime = (TextView) findViewById(R.id.txtTime);
 
 
         txtDate2 = (TextView) findViewById(R.id.txtDate2);
-        txtTime2 =  (TextView) findViewById(R.id.txtTime2);
+        txtTime2 = (TextView) findViewById(R.id.txtTime2);
 
-        join =  (Button) findViewById(R.id.join);
+        join = (Button) findViewById(R.id.join);
 
         startText = findViewById(R.id.startText);
         destText = findViewById(R.id.endText);
@@ -599,11 +584,10 @@ public class CarUpdateActivity extends AppCompatActivity {
         changeBtn = findViewById(R.id.changeBtn);
 
         cancel = findViewById(R.id.cancel);
-        txtCar =  (TextView) findViewById(R.id.txtCar);
+        txtCar = (TextView) findViewById(R.id.txtCar);
 
 
     }
-
 
 
     @Override
@@ -621,20 +605,20 @@ public class CarUpdateActivity extends AppCompatActivity {
         String target;
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             target = "http://scvalsrl.cafe24.com/CarList.php";
         }
 
         @Override
         protected String doInBackground(Void... voids) {
-            try{
+            try {
                 URL url = new URL(target);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
-                while( (temp = bufferedReader.readLine() ) != null ){
+                while ((temp = bufferedReader.readLine()) != null) {
 
                     stringBuilder.append(temp + "\n");
 
@@ -645,7 +629,7 @@ public class CarUpdateActivity extends AppCompatActivity {
                 httpURLConnection.disconnect();
                 return stringBuilder.toString().trim();
 
-            }catch (Exception e){
+            } catch (Exception e) {
 
                 e.printStackTrace();
 
@@ -659,16 +643,16 @@ public class CarUpdateActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
-        public void onPostExecute(String result){
+        public void onPostExecute(String result) {
 
             Intent intent = new Intent(CarUpdateActivity.this, CarManegementActivity.class);
-            intent.putExtra("userList",result);
+            intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userIDS);
-
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             CarUpdateActivity.this.startActivity(intent);
             overridePendingTransition(0, 0);
             finish();
@@ -679,21 +663,21 @@ public class CarUpdateActivity extends AppCompatActivity {
 
     void calculateDistance(boolean isStart, boolean isDest) {
         if (!isStart && !isDest) {
-            if(startLat.equals(destLat) && startLon.equals(destLon)) {
+            if (startLat.equals(destLat) && startLon.equals(destLon)) {
                 distanceText.setText(" 0 km");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
                 builder.setMessage(" 출발지와 목적지가 같습니다 ")
-                        .setNegativeButton("확인",null)
+                        .setNegativeButton("확인", null)
                         .create()
                         .show();
 
-                return ;
+                return;
             }
             try {
                 distance = (int) new Task(destLon, destLat, startLon, startLat).execute().get();
                 //Toast.makeText(getApplicationContext(), "distance: " + distance, Toast.LENGTH_SHORT).show();
-                if(distance > -1) {
+                if (distance > -1) {
                     float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
                     kilometer = Float.toString(distanceKM);
                     distanceText.setText(kilometer);
@@ -709,16 +693,16 @@ public class CarUpdateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 0) {
-            if(resultCode == 0 && data != null) {
+        if (requestCode == 0) {
+            if (resultCode == 0 && data != null) {
                 startPlace = data.getStringExtra("startname");
                 startLat = data.getStringExtra("startlat");
                 startLon = data.getStringExtra("startlon");
                 startText.setText(startPlace);
             }
         }
-        if(requestCode == 1) {
-            if(resultCode == 1 && data != null) {
+        if (requestCode == 1) {
+            if (resultCode == 1 && data != null) {
                 endPlace = data.getStringExtra("destname");
                 destLat = data.getStringExtra("destlat");
                 destLon = data.getStringExtra("destlon");

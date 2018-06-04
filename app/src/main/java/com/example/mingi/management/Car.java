@@ -7,17 +7,17 @@ package com.example.mingi.management;
 public class Car {
 
     String id;
-    String  carNum;
-    String  startPlace;
+    String carNum;
+    String startPlace;
     String endPlace;
     String startTime;
-    String  startDay;
-    String  endTime;
+    String startDay;
+    String endTime;
     String endDay;
     String kilometer;
     int no;
 
-    public Car(String startPlace, String endPlace, String startTime , String endTime , String startDay, String endDay, String kilometer, String carNum, int no){
+    public Car(String startPlace, String endPlace, String startTime, String endTime, String startDay, String endDay, String kilometer, String carNum, int no) {
 
         this.startPlace = startPlace;
         this.endPlace = endPlace;

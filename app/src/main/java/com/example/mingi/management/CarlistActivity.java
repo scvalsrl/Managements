@@ -22,13 +22,10 @@ public class CarlistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_carlist);
 
 
-
         Button managemetnButton = (Button) findViewById(R.id.managementButton);
 
 
-
-
-        managemetnButton.setOnClickListener(new View.OnClickListener(){
+        managemetnButton.setOnClickListener(new View.OnClickListener() {
 
 
             @Override
@@ -47,22 +44,21 @@ public class CarlistActivity extends AppCompatActivity {
         String target;
 
 
-
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             target = "http://scvalsrl.cafe24.com/CarList.php";
         }
 
         @Override
         protected String doInBackground(Void... voids) {
-            try{
+            try {
                 URL url = new URL(target);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
-                while( (temp = bufferedReader.readLine() ) != null ){
+                while ((temp = bufferedReader.readLine()) != null) {
 
                     stringBuilder.append(temp + "\n");
 
@@ -73,7 +69,7 @@ public class CarlistActivity extends AppCompatActivity {
                 httpURLConnection.disconnect();
                 return stringBuilder.toString().trim();
 
-            }catch (Exception e){
+            } catch (Exception e) {
 
                 e.printStackTrace();
 
@@ -87,10 +83,10 @@ public class CarlistActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
-        public void onPostExecute(String result){
+        public void onPostExecute(String result) {
 
             Intent intent = new Intent(CarlistActivity.this, CarManegementActivity.class);
-            intent.putExtra("userList",result);
+            intent.putExtra("userList", result);
             CarlistActivity.this.startActivity(intent);
 
 

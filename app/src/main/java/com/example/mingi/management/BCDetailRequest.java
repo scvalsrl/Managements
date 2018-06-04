@@ -16,20 +16,19 @@ public class BCDetailRequest extends StringRequest {
     final static private String URL = "http://scvalsrl.cafe24.com/BCDetail.php";
     private Map<String, String> parameters;
 
-    public BCDetailRequest(int no, Response.Listener<String> listener){
+    public BCDetailRequest(int no, Response.Listener<String> listener) {
 
-        super(Method.POST,URL , listener , null);
+        super(Method.POST, URL, listener, null);
 
         parameters = new HashMap<>();
         parameters.put("no", no + "");
-
 
 
     }
 
 
     @Override
-    public Map<String , String> getParams(){
+    public Map<String, String> getParams() {
 
         return parameters;
     }

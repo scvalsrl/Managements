@@ -38,7 +38,7 @@ public class BCDetailActivity extends AppCompatActivity {
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName, userID;
-    Fragment mapFragment;
+    String com_name; // for map marker
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +69,19 @@ public class BCDetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             MainFragment mainFragment = new MainFragment();
             Bundle bundle = new Bundle(2); // # of datas
-            Log.d("BCDetailActivity", "in savedInstanceState==null");
+
             bundle.putString("lat", bclat_str);
             bundle.putString("lon", bclon_str);
-            bundle.putString("name", "회사이름");
+
+            int start_name = bcadd_str.indexOf("(");
+
+            if(start_name != -1) {
+                com_name = bcadd_str.substring(start_name + 1, bcadd_str.length() - 1);
+            } else {
+                com_name = "회사";
+            }
+
+            bundle.putString("name", com_name);
             mainFragment.setArguments(bundle);
 
             getSupportFragmentManager().beginTransaction()
@@ -262,6 +271,7 @@ public class BCDetailActivity extends AppCompatActivity {
                 Intent goFMap = new Intent(getApplicationContext(), BCFullMapActivity.class);
                 goFMap.putExtra("lat", bclat_str);
                 goFMap.putExtra("lon", bclon_str);
+                goFMap.putExtra("name", com_name);
                 startActivity(goFMap);
             }
         });

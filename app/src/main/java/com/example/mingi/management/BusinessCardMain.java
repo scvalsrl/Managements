@@ -211,11 +211,8 @@ public class BusinessCardMain extends AppCompatActivity {
                                 String bc_phone = bcphone.getText().toString();
                                 String bc_mail = bcemail.getText().toString();
                                 String bc_add = bcadd.getText().toString();
-                                String bc_lat = "100";
-                                String bc_lon = "200";
 
-
-                                BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bc_lat, bc_lon, uploadFileName, no_i, responseListener);
+                                BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bclat, bclon, uploadFileName, no_i, responseListener);
                                 RequestQueue queue = Volley.newRequestQueue(BusinessCardMain.this);
 
                                 queue.add(bcJoinRequest);

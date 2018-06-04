@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,7 +37,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class BCDetailActivity extends FragmentActivity implements OnMapReadyCallback {
+public class BCDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     ImageView imgView, emailBtn, callBtn, msgBtn;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
     Button bcedit, bcdelete;
@@ -73,12 +72,27 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
         bcphoto_str = intent.getStringExtra("BC_photo");
         no = intent.getStringExtra("no");
         Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
+        Log.d("BCDetailActivity", "fromIntent-lat: "+ bclat_str + ",lon: " + bclon_str);
+        if (savedInstanceState == null) {
+            MainFragment mainFragment = new MainFragment();
+            Bundle bundle = new Bundle(2); // # of datas
+            Log.d("BCDetailActivity", "in savedInstanceState==null");
+            bundle.putString("lat", bclat_str);
+            bundle.putString("lon", bclon_str);
+            bundle.putString("name", "회사이름");
+            mainFragment.setArguments(bundle);
 
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainFragment2, mainFragment, "main")
+                    .commit();
+        }
         initView();
+        /*
         // SupportMapFragment 통해 레이아웃에 만든 fragment의 ID 참조하고 구글맵 호출
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment);
         mapFragment.getMapAsync(this); // getMapAstnc must be called on the main thread
         // getMapAsync가 onMapReady를 자동 호출
+        */
         btnClick();
         setTextView();
     }
@@ -324,23 +338,17 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
-
-
             return null;
         }
 
         @Override
         public void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
-
         }
 
         public void onPostExecute(String result) {
-
             Intent intent = new Intent(BCDetailActivity.this, BCListActivity.class);
             intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
@@ -353,8 +361,5 @@ public class BCDetailActivity extends FragmentActivity implements OnMapReadyCall
             finish();
             overridePendingTransition(0, 0);
         }
-
     }
-
-
 }

@@ -35,9 +35,21 @@ public class MainFragment extends Fragment implements OnMapReadyCallback{
     public void onCreateOptionsMenu(Menu menu, MenuInflater Inflater) { }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
     }
 
     @Override

@@ -230,9 +230,10 @@ public class BCListActivity extends AppCompatActivity {
                             overridePendingTransition(0, 0);
                             finish();
                             break;
-                        case R.id.nav_search:
-
+                        case R.id.nav_favorites:
+                            new BCListActivity.BackgroundTask().execute();
                             break;
+
 
                     }
 
@@ -240,6 +241,69 @@ public class BCListActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    class BackgroundTask extends AsyncTask<Void, Void, String> {
+
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://scvalsrl.cafe24.com/CarList.php";
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+
+                    stringBuilder.append(temp + "\n");
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        public void onPostExecute(String result) {
+
+            Intent intent = new Intent(BCListActivity.this, CarManegementActivity.class);
+            intent.putExtra("userList", result);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon", nowLon);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("userID", userID);
+            BCListActivity.this.startActivity(intent);
+            finish();
+            overridePendingTransition(0, 0);
+
+        }
+
+    }
 
 
 }

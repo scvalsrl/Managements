@@ -708,4 +708,6 @@ public class BusinessCardMain extends AppCompatActivity {
             startActivityForResult(i, CROP_FROM_CAMERA);
         }
     }
+
+
 }

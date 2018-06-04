@@ -58,7 +58,6 @@
         <activity android:name=".TempActivity" />
         <activity android:name=".BusinessCardMain" />
         <activity android:name=".BCListActivity" />
-        <activity android:name=".BCJoinActivity" />
         <activity android:name=".uploadActivity" />
         <activity android:name=".SearchAddrActivity" />
         <activity android:name=".BCDetailActivity" />

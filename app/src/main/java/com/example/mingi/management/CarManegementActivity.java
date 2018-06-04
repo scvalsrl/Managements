@@ -16,8 +16,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,21 +38,21 @@ public class CarManegementActivity extends AppCompatActivity {
     private List<Car> userList;
 
 
-     String isGPSEnable;
-     String nowLat;
-     String nowLon;
-     String nowName;
-     String userID;
-     String year_s;
-     String month_s;
+    String isGPSEnable;
+    String nowLat;
+    String nowLon;
+    String nowName;
+    String userID;
+    String year_s;
+    String month_s;
 
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-            year_s =  Integer.toString(year);
-            month_s =  Integer.toString(monthOfYear);
-            Log.d("YearMonthPickerTest zz ", year_s +" "+ month_s);
+            year_s = Integer.toString(year);
+            month_s = Integer.toString(monthOfYear);
+            Log.d("YearMonthPickerTest zz ", year_s + " " + month_s);
 
             new BackgroundTask2().execute();
 
@@ -67,8 +69,8 @@ public class CarManegementActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 
-        Button Jlist = (Button)findViewById(R.id.Jlist);
-        Button Dlist = (Button)findViewById(R.id.Dlist);
+        Button Jlist = (Button) findViewById(R.id.Jlist);
+        Button Dlist = (Button) findViewById(R.id.Dlist);
         Button btnYearMonthPicker = findViewById(R.id.btn_year_month_picker);
 
 
@@ -88,25 +90,25 @@ public class CarManegementActivity extends AppCompatActivity {
 
 
         isGPSEnable = isGPSEnable_;
-        nowLat= nowLat_;
+        nowLat = nowLat_;
         nowLon = nowLon_;
         nowName = nowName_;
         userID = userID_;
 
         listView = (ListView) findViewById(R.id.listVView);
         userList = new ArrayList<Car>();
-        adapter = new CarListAdapter(getApplicationContext(), userList, this,isGPSEnable_ , nowLat_ , nowLon_ , nowName_);
+        adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_);
         listView.setAdapter(adapter);
 
 
-        try{
+        try {
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("userList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
             int count = 0;
-            String startPlace, endPlace  , startTime, endTime, startDay, endDay, kilometer, carNum;
+            String startPlace, endPlace, startTime, endTime, startDay, endDay, kilometer, carNum;
             int no;
 
-            while (count< jsonArray.length()){
+            while (count < jsonArray.length()) {
 
                 JSONObject object = jsonArray.getJSONObject(count);
 
@@ -122,18 +124,17 @@ public class CarManegementActivity extends AppCompatActivity {
                 carNum = object.getString("carNum");
                 no = object.getInt("no");
 
-                Car car = new Car(startPlace, endPlace, startTime , endTime , startDay, endDay, kilometer, carNum, no);
+                Car car = new Car(startPlace, endPlace, startTime, endTime, startDay, endDay, kilometer, carNum, no);
                 userList.add(car);
                 count++;
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
         }
-
 
 
         Jlist.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +147,6 @@ public class CarManegementActivity extends AppCompatActivity {
         });
 
 
-
         Dlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +157,7 @@ public class CarManegementActivity extends AppCompatActivity {
         });
 
 
-        btnYearMonthPicker.setOnClickListener(new View.OnClickListener(){
+        btnYearMonthPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MyYearMonthPickerDialog pd = new MyYearMonthPickerDialog();
@@ -184,7 +184,7 @@ public class CarManegementActivity extends AppCompatActivity {
                             intent.putExtra("userID", userID);
                             intent.putExtra("nowLat", nowLat);
                             intent.putExtra("nowLon", nowLon);
-                            intent.putExtra("isGPSEnable",isGPSEnable);
+                            intent.putExtra("isGPSEnable", isGPSEnable);
                             intent.putExtra("nowName", nowName);
                             CarManegementActivity.this.startActivity(intent);
 
@@ -209,13 +209,13 @@ public class CarManegementActivity extends AppCompatActivity {
         private Map<String, String> parameters;
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             target = "http://scvalsrl.cafe24.com/CarList2.php";
         }
 
         @Override
         protected String doInBackground(Void... voids) {
-            try{
+            try {
                 Log.d("YearMonthPickerTest", "1111 들어옴!!:! ");
                 URL url = new URL(target);
                 parameters = new HashMap<>();
@@ -228,7 +228,7 @@ public class CarManegementActivity extends AppCompatActivity {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
-                while( (temp = bufferedReader.readLine() ) != null ){
+                while ((temp = bufferedReader.readLine()) != null) {
 
                     stringBuilder.append(temp + "\n");
 
@@ -240,7 +240,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
                 return stringBuilder.toString().trim();
 
-            }catch (Exception e){
+            } catch (Exception e) {
 
                 e.printStackTrace();
 
@@ -255,10 +255,10 @@ public class CarManegementActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
-        public void onPostExecute(String result){
+        public void onPostExecute(String result) {
 
             Intent intent = new Intent(CarManegementActivity.this, CarManegementActivity.class);
-            intent.putExtra("userList",result);
+            intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", isGPSEnable);
@@ -280,24 +280,24 @@ public class CarManegementActivity extends AppCompatActivity {
         private Map<String, String> parameters;
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             target = "http://scvalsrl.cafe24.com/CarList1.php";
         }
 
         @Override
         protected String doInBackground(Void... voids) {
-            try{
+            try {
                 URL url = new URL(target);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
-                while( (temp = bufferedReader.readLine() ) != null ){
+                while ((temp = bufferedReader.readLine()) != null) {
 
                     stringBuilder.append(temp + "\n");
 
-            }
+                }
 
                 bufferedReader.close();
                 inputStream.close();
@@ -305,7 +305,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
                 return stringBuilder.toString().trim();
 
-            }catch (Exception e){
+            } catch (Exception e) {
 
                 e.printStackTrace();
 
@@ -321,10 +321,10 @@ public class CarManegementActivity extends AppCompatActivity {
 
         }
 
-        public void onPostExecute(String result){
+        public void onPostExecute(String result) {
 
             Intent intent = new Intent(CarManegementActivity.this, CarManegementActivity.class);
-            intent.putExtra("userList",result);
+            intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", isGPSEnable);

@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class LoginRequest extends StringRequest {
 
-    final static  private String URL = "http://scvalsrl.cafe24.com/Login.php";
+    final static private String URL = "http://scvalsrl.cafe24.com/Login.php";
 
     private Map<String, String> parameters;
 
-    public LoginRequest(String userID , String userPassword, Response.Listener<String> listener){
-        super(Method.POST,URL , listener, null);
+    public LoginRequest(String userID, String userPassword, Response.Listener<String> listener) {
+        super(Method.POST, URL, listener, null);
 
 
         // ID 와 비밀번호를 파라메터로 가져와서 PHP로 가져감
@@ -28,7 +28,7 @@ public class LoginRequest extends StringRequest {
     }
 
     @Override
-    public Map<String, String> getParams(){
+    public Map<String, String> getParams() {
 
         return parameters;
 

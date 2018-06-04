@@ -24,7 +24,7 @@ public class ListMapActivity extends AppCompatActivity {
         name = outIntent.getStringExtra("name");
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(name);
-        checkBtn = (Button)findViewById(R.id.checkBtn);
+        checkBtn = (Button) findViewById(R.id.checkBtn);
 
         if (savedInstanceState == null) {
             MainFragment mainFragment = new MainFragment();

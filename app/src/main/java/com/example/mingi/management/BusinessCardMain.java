@@ -59,10 +59,10 @@ public class BusinessCardMain extends AppCompatActivity {
 
     Uri photoUri;
 
-    Button uploadBtn, camBtn , bcJoin, bccancel;
+    Button uploadBtn, camBtn, bcJoin, bccancel;
     ImageView imageView;
     TextView bcadd;
-    EditText bcname , bclevel, bccom, bcphone, bcemail;
+    EditText bcname, bclevel, bccom, bcphone, bcemail;
     String bcadd_str, bclat, bclon;
 
     String isGPSEnable;
@@ -72,8 +72,8 @@ public class BusinessCardMain extends AppCompatActivity {
     String userID;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.CAMERA}; // permission set
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA}; // permission set
 
     private static final int MULTIPLE_PERMISSIONS = 101; // permission agree -> use callback func
     private String mCurrentPhotoPath;
@@ -86,8 +86,6 @@ public class BusinessCardMain extends AppCompatActivity {
 
     final String uploadFilePath = "storage/emulated/0/test/";//경로를 모르겠으면, 갤러리 어플리케이션 가서 메뉴->상세 정보
     String uploadFileName = ""; //전송하고자하는 파일 이름
-
-
 
 
     @Override
@@ -105,7 +103,7 @@ public class BusinessCardMain extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
 
 
-        uploadButton = (Button)findViewById(R.id.uploadButton);
+        uploadButton = (Button) findViewById(R.id.uploadButton);
 
         upLoadServerUri = "http://scvalsrl.cafe24.com/UploadToServer.php";//서버컴퓨터의 ip주소
 
@@ -154,83 +152,82 @@ public class BusinessCardMain extends AppCompatActivity {
                 }).start();
 
 
-
                 Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        try{
+                        try {
                             // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
-                            if(success){  // 성공
+                            if (success) {  // 성공
                                 Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONObject jsonResponse = new JSONObject(response);
-                                        boolean success = jsonResponse.getBoolean("success");
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
 
-                                        if (success) {
+                                            if (success) {
 
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
 
-                                            builder.setMessage("성공적으로 등록 되었습니다")
-                                                    .setPositiveButton("확인", null)
-                                                    .create()
-                                                    .show();
+                                                builder.setMessage("성공적으로 등록 되었습니다")
+                                                        .setPositiveButton("확인", null)
+                                                        .create()
+                                                        .show();
 
-                                            new BackgroundTask2().execute();
+                                                new BackgroundTask2().execute();
 
-                                        } else {
+                                            } else {
 
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
-                                            builder.setMessage("등록에 실패 했습니다.")
-                                                    .setNegativeButton("다시시도", null).create().show();
-                                            Intent intent = new Intent(BusinessCardMain.this, BusinessCardMain.class);
-                                            BusinessCardMain.this.startActivity(intent);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                                                builder.setMessage("등록에 실패 했습니다.")
+                                                        .setNegativeButton("다시시도", null).create().show();
+                                                Intent intent = new Intent(BusinessCardMain.this, BusinessCardMain.class);
+                                                BusinessCardMain.this.startActivity(intent);
+
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
 
                                         }
 
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-
                                     }
 
-                                }
+
+                                };
+                                String no_s = jsonResponse.getString("no");
+
+                                int no_i = Integer.parseInt(no_s);
+                                no_i++;
+
+                                String id = "2109812";
+                                String bc_name = bcname.getText().toString();
+                                String bc_level = bclevel.getText().toString();
+                                String bc_com = bccom.getText().toString();
+                                String bc_phone = bcphone.getText().toString();
+                                String bc_mail = bcemail.getText().toString();
+                                String bc_add = bcadd.getText().toString();
+                                String bc_lat = "100";
+                                String bc_lon = "200";
 
 
-                            };
-                            String no_s = jsonResponse.getString("no");
+                                BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bc_lat, bc_lon, uploadFileName, no_i, responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(BusinessCardMain.this);
 
-                            int no_i = Integer.parseInt(no_s);
-                            no_i++;
-
-                            String id = "2109812";
-                            String bc_name = bcname.getText().toString();
-                            String bc_level = bclevel.getText().toString();
-                            String bc_com = bccom.getText().toString();
-                            String bc_phone = bcphone.getText().toString();
-                            String bc_mail = bcemail.getText().toString();
-                            String bc_add = bcadd.getText().toString();
-                            String bc_lat = "100";
-                            String bc_lon = "200";
+                                queue.add(bcJoinRequest);
 
 
-                            BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bc_lat, bc_lon, uploadFileName , no_i ,responseListener);
-                            RequestQueue queue = Volley.newRequestQueue(BusinessCardMain.this);
-
-                            queue.add(bcJoinRequest);
-
-
-                            }else{
+                            } else {
 
 
                             }
 
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -250,7 +247,7 @@ public class BusinessCardMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            finish();
+                finish();
 
 
             }
@@ -258,7 +255,6 @@ public class BusinessCardMain extends AppCompatActivity {
 
 
     }
-
 
 
     class BackgroundTask2 extends AsyncTask<Void, Void, String> {
@@ -310,13 +306,14 @@ public class BusinessCardMain extends AppCompatActivity {
         public void onPostExecute(String result) {
 
             Intent intent = new Intent(BusinessCardMain.this, BCListActivity.class);
-            intent.putExtra("userList",result);
+            intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
             BusinessCardMain.this.startActivity(intent);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
             overridePendingTransition(0, 0);
 
@@ -325,15 +322,12 @@ public class BusinessCardMain extends AppCompatActivity {
     }
 
 
-
     public void onClick(View v) {
 
         startActivity(new Intent(this, uploadActivity.class));
         finish();
 
     }
-
-
 
 
     public int uploadFile(String sourceFileUri) {
@@ -354,11 +348,10 @@ public class BusinessCardMain extends AppCompatActivity {
             dialog.dismiss();
 
             Log.e("uploadFile", "Source File not exist :"
-                    +uploadFilePath + "" + uploadFileName);
+                    + uploadFilePath + "" + uploadFileName);
             runOnUiThread(new Runnable() {
 
                 public void run() {
-
 
 
                 }
@@ -410,7 +403,6 @@ public class BusinessCardMain extends AppCompatActivity {
                 }
 
 
-
                 // send multipart form data necesssary after file data...
                 dos.writeBytes(lineEnd);
                 dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
@@ -422,11 +414,11 @@ public class BusinessCardMain extends AppCompatActivity {
                 Log.i("uploadFile", "HTTP Response is : "
                         + serverResponseMessage + ": " + serverResponseCode);
 
-                if(serverResponseCode == 200){
+                if (serverResponseCode == 200) {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                    +uploadFileName;
+                                    + uploadFileName;
 
                             Toast.makeText(BusinessCardMain.this, "File Upload Complete.",
                                     Toast.LENGTH_SHORT).show();
@@ -477,7 +469,6 @@ public class BusinessCardMain extends AppCompatActivity {
         } // End else block
 
 
-
     }
 
 
@@ -505,8 +496,7 @@ public class BusinessCardMain extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[1])
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[2])
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, permissions, 101);
         }
@@ -514,20 +504,20 @@ public class BusinessCardMain extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch(requestCode) {
+        switch (requestCode) {
             case MULTIPLE_PERMISSIONS: {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++) {
-                        if(permissions[i].equals(this.permissions[0])) {
-                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        if (permissions[i].equals(this.permissions[0])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
                             }
-                        } else if(permissions[i].equals(this.permissions[1])) {
-                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        } else if (permissions[i].equals(this.permissions[1])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
                             }
-                        } else if(permissions[i].equals(this.permissions[2])) {
-                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        } else if (permissions[i].equals(this.permissions[2])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
                             }
                         }
@@ -544,6 +534,7 @@ public class BusinessCardMain extends AppCompatActivity {
         Toast.makeText(this, "권한 요청에 동의해주셔야 이용가능합니다. 설정에서 권한 허용 하시기 바랍니다.", Toast.LENGTH_SHORT).show();
         finish();
     }
+
     private void pickFromAlbum() {
         Intent takePicture = new Intent(Intent.ACTION_PICK);
         takePicture.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -563,7 +554,7 @@ public class BusinessCardMain extends AppCompatActivity {
             finish();
         }
 
-        if(photoFile != null) {
+        if (photoFile != null) {
             photoUri = FileProvider.getUriForFile(this,
                     "com.example.mingi.management.provider", photoFile);
             goCamera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -571,7 +562,7 @@ public class BusinessCardMain extends AppCompatActivity {
         }
     }
 
-    private File createImageFile() throws IOException{
+    private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "IP" + timeStamp + "_";
@@ -591,7 +582,7 @@ public class BusinessCardMain extends AppCompatActivity {
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         Log.d("createImageFile ", mCurrentPhotoPath);
         uploadFileName = mCurrentPhotoPath.substring(30);
-        Log.d("createImageFile 김민기  ",  mCurrentPhotoPath.substring(30) );
+        Log.d("createImageFile 김민기  ", mCurrentPhotoPath.substring(30));
         return image;
     }
 
@@ -599,13 +590,13 @@ public class BusinessCardMain extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Toast.makeText(getBaseContext(), "resultCode: " + resultCode, Toast.LENGTH_SHORT).show();
 
-        if(requestCode == PICK_FROM_ALBUM) {
-            if(data == null) {
+        if (requestCode == PICK_FROM_ALBUM) {
+            if (data == null) {
                 Log.d("onActivityResult", "PICK_FROM_ALBUM but data is NULL");
                 return;
             }
 
-            if(resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 /*
                 try {
                     Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
@@ -616,14 +607,11 @@ public class BusinessCardMain extends AppCompatActivity {
                 photoUri = data.getData();
                 cropImage();
             }
-        }
-
-        else if(requestCode == PICK_FROM_CAMERA) {
-            if(data == null) {
+        } else if (requestCode == PICK_FROM_CAMERA) {
+            if (data == null) {
                 Log.d("onActivityResult", "PICK_FROM_CAMERA but data is NULL");
                 return;
-            }
-            else {
+            } else {
                 cropImage();
                 // for showing photo on album
                 MediaScannerConnection.scanFile(this, new String[]{photoUri.getPath()}, null,
@@ -634,13 +622,11 @@ public class BusinessCardMain extends AppCompatActivity {
                             }
                         });
             }
-        }
-        else if(requestCode == CROP_FROM_CAMERA) {
-            if(data == null) {
+        } else if (requestCode == CROP_FROM_CAMERA) {
+            if (data == null) {
                 Log.d("onActivityResult", "CROP_FROM_CAMERA but data is NULL");
                 return;
-            }
-            else {
+            } else {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
                     Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 1000, 500);
@@ -655,9 +641,9 @@ public class BusinessCardMain extends AppCompatActivity {
             }
         }
 
-        if(resultCode == 3) { // search company address
-            if(requestCode == 3) {
-                if(requestCode == 3 && data != null) {
+        if (resultCode == 3) { // search company address
+            if (requestCode == 3) {
+                if (requestCode == 3 && data != null) {
                     bcadd_str = data.getStringExtra("destname");
                     bclat = data.getStringExtra("destlat");
                     bclon = data.getStringExtra("destlon");

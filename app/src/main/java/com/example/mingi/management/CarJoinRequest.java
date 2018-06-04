@@ -16,15 +16,15 @@ import java.util.Map;
 
 public class CarJoinRequest extends StringRequest {
 
-    final static  private String URL = "http://scvalsrl.cafe24.com/CarRegister.php";
+    final static private String URL = "http://scvalsrl.cafe24.com/CarRegister.php";
 
     private Map<String, String> parameters;
 
 
-    public CarJoinRequest(String id , String carNum, String start , String end, String kilometer, String day1 , String day2 ,  String time1 , String time2 , int no ,
-                          String startLat , String startLon , String destLat, String destLon , Response.Listener<String> listener){
+    public CarJoinRequest(String id, String carNum, String start, String end, String kilometer, String day1, String day2, String time1, String time2, int no,
+                          String startLat, String startLon, String destLat, String destLon, Response.Listener<String> listener) {
 
-        super(Method.POST,URL , listener, null);
+        super(Method.POST, URL, listener, null);
 
 
         parameters = new HashMap<>();
@@ -35,7 +35,6 @@ public class CarJoinRequest extends StringRequest {
         parameters.put("startPlace", start);
         parameters.put("endPlace", end);
         parameters.put("kilometer", kilometer);
-
 
 
         parameters.put("startDay", day1);
@@ -53,7 +52,7 @@ public class CarJoinRequest extends StringRequest {
     }
 
     @Override
-    public Map<String, String> getParams(){
+    public Map<String, String> getParams() {
 
         return parameters;
     }

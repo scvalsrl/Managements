@@ -37,12 +37,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,10 +58,10 @@ public class BCEditActivity extends AppCompatActivity {
     ImageView imageView;
     EditText bcname, bclevel, bccom, bcphone, bcemail;
     TextView bcadd;
-    Button bccamera, bcupload, bcjoin , bccancel;
+    Button bccamera, bcupload, bcjoin, bccancel;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
-    String bclat, bclon, userID, no, bcphoto_str , bclat_str , bclon_str;
+    String bclat, bclon, userID, no, bcphoto_str, bclat_str, bclon_str;
     String isGPSEnable, nowLat, nowLon, nowName;
 
     //for camera
@@ -74,7 +76,7 @@ public class BCEditActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     Uri photoUri;
     String uploadFileName = ""; //전송하고자하는 파일 이름
-    String temp ="";
+    String temp = "";
 
     int serverResponseCode = 0;
     ProgressDialog dialog = null;
@@ -113,20 +115,20 @@ public class BCEditActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch(requestCode) {
+        switch (requestCode) {
             case MULTIPLE_PERMISSIONS: {
                 if (grantResults.length > 0) {
                     for (int i = 0; i < permissions.length; i++) {
-                        if(permissions[i].equals(this.permissions[0])) {
-                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        if (permissions[i].equals(this.permissions[0])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
                             }
-                        } else if(permissions[i].equals(this.permissions[1])) {
-                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        } else if (permissions[i].equals(this.permissions[1])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
                             }
-                        } else if(permissions[i].equals(this.permissions[2])) {
-                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        } else if (permissions[i].equals(this.permissions[2])) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                                 showNoPermissionToastAndFinish();
                             }
                         }
@@ -143,6 +145,7 @@ public class BCEditActivity extends AppCompatActivity {
         Toast.makeText(this, "권한 요청에 동의해주셔야 이용가능합니다. 설정에서 권한 허용 하시기 바랍니다.", Toast.LENGTH_SHORT).show();
         finish();
     }
+
     private void pickFromAlbum() {
         Intent takePicture = new Intent(Intent.ACTION_PICK);
         takePicture.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -157,7 +160,7 @@ public class BCEditActivity extends AppCompatActivity {
         nowLon = intent.getStringExtra("nowLon");
         nowName = intent.getStringExtra("nowName");
         userID = intent.getStringExtra("userID");
-        Log.d("ㅇㅇdd", "userID: "+ userID);
+        Log.d("ㅇㅇdd", "userID: " + userID);
         bcname_str = intent.getStringExtra("bcname");
         bclevel_str = intent.getStringExtra("bclevel");
         bccom_str = intent.getStringExtra("bccom");
@@ -180,7 +183,7 @@ public class BCEditActivity extends AppCompatActivity {
         bcadd.setText(bcadd_str);
 
         new BCEditActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
-                .execute("http://scvalsrl.cafe24.com/uploads/"+bcphoto_str);
+                .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
 
     }
 
@@ -206,7 +209,7 @@ public class BCEditActivity extends AppCompatActivity {
 
                 dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
 
-                if( ! uploadFileName.equals(temp)){
+                if (!uploadFileName.equals(temp)) {
                     new Thread(new Runnable() {
                         public void run() {
                             runOnUiThread(new Runnable() {
@@ -228,52 +231,84 @@ public class BCEditActivity extends AppCompatActivity {
                 bcemail_str = bcemail.getText().toString();
                 bcadd_str = bcadd.getText().toString();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         try {
+                            // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
-                            if (success) {
+                            if (success) {  // 성공
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                                Response.Listener<String> responseListener = new Response.Listener<String>() {
 
-                                builder.setMessage("성공적으로 수정 되었습니다")
-                                        .setCancelable(false)
-                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                            public void onClick(
-                                                    DialogInterface dialog, int id) {
-                                                // 프로그램을 종료한다
-                                                finish();
+                                    @Override
+                                    public void onResponse(String response) {
+
+                                        try {
+
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+                                            if (success) {
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+
+                                                builder.setMessage("성공적으로 수정 되었습니다")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                            public void onClick(
+                                                                    DialogInterface dialog, int id) {
+                                                                // 프로그램을 종료한다
+                                                                new BCEditActivity.BackgroundTask2().execute();
+
+                                                            }
+                                                        }).
+                                                        create()
+                                                        .show();
+
+                                            } else {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                                                builder.setMessage("등록에 실패 했습니다.")
+                                                        .setNegativeButton("다시시도", null).create().show();
+                                                Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
+                                                BCEditActivity.this.startActivity(intent);
                                             }
-                                        }).
-                                        create()
-                                        .show();
 
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
-                                builder.setMessage("등록에 실패 했습니다.")
-                                        .setNegativeButton("다시시도", null).create().show();
-                                Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
-                                BCEditActivity.this.startActivity(intent);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                };
+
+
+
+
+                                int update_no = Integer.parseInt(jsonResponse.getString("no"));
+                                update_no++;
+
+                                BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
+                                        bclon_str, uploadFileName, update_no ,Integer.parseInt(no), responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
+                                queue.add(bcUpdateRequest);
+
+
                             }
 
-                        } catch (JSONException e) {
+
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-
                     }
-
 
                 };
 
-                BCUpdateRequest bcUpdateRequest = new BCUpdateRequest( userID ,  bcname_str,  bclevel_str ,  bccom_str,  bcphone_str,  bcemail_str ,  bcadd_str ,  bclat_str ,
-                        bclon_str , uploadFileName , Integer.parseInt(no) , responseListener);
-                RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
-                queue.add(bcUpdateRequest);
+                BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
+                RequestQueue queue2 = Volley.newRequestQueue(BCEditActivity.this);
+                queue2.add(bcCountRequest);
 
             }
         });
@@ -295,8 +330,7 @@ public class BCEditActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[1])
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getApplicationContext(), permissions[2])
-                != PackageManager.PERMISSION_GRANTED)
-        {
+                != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, permissions, 101);
         }
@@ -314,7 +348,7 @@ public class BCEditActivity extends AppCompatActivity {
             finish();
         }
 
-        if(photoFile != null) {
+        if (photoFile != null) {
             photoUri = FileProvider.getUriForFile(this,
                     "com.example.mingi.management.provider", photoFile);
             goCamera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
@@ -322,7 +356,7 @@ public class BCEditActivity extends AppCompatActivity {
         }
     }
 
-    private File createImageFile() throws IOException{
+    private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "IP" + timeStamp + "_";
@@ -340,7 +374,7 @@ public class BCEditActivity extends AppCompatActivity {
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         Log.d("createImageFile ", mCurrentPhotoPath);
         uploadFileName = mCurrentPhotoPath.substring(30);
-        Log.d("createImageFile 김민기2  ",  uploadFileName );
+        Log.d("createImageFile 김민기2  ", uploadFileName);
         return image;
 
     }
@@ -349,13 +383,13 @@ public class BCEditActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Toast.makeText(getBaseContext(), "resultCode: " + resultCode, Toast.LENGTH_SHORT).show();
 
-        if(requestCode == PICK_FROM_ALBUM) {
-            if(data == null) {
+        if (requestCode == PICK_FROM_ALBUM) {
+            if (data == null) {
                 Log.d("onActivityResult", "PICK_FROM_ALBUM but data is NULL");
                 return;
             }
 
-            if(resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 /*
                 try {
                     Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
@@ -366,14 +400,11 @@ public class BCEditActivity extends AppCompatActivity {
                 photoUri = data.getData();
                 cropImage();
             }
-        }
-
-        else if(requestCode == PICK_FROM_CAMERA) {
-            if(data == null) {
+        } else if (requestCode == PICK_FROM_CAMERA) {
+            if (data == null) {
                 Log.d("onActivityResult", "PICK_FROM_CAMERA but data is NULL");
                 return;
-            }
-            else {
+            } else {
                 cropImage();
                 // for showing photo on album
                 MediaScannerConnection.scanFile(this, new String[]{photoUri.getPath()}, null,
@@ -384,13 +415,11 @@ public class BCEditActivity extends AppCompatActivity {
                             }
                         });
             }
-        }
-        else if(requestCode == CROP_FROM_CAMERA) {
-            if(data == null) {
+        } else if (requestCode == CROP_FROM_CAMERA) {
+            if (data == null) {
                 Log.d("onActivityResult", "CROP_FROM_CAMERA but data is NULL");
                 return;
-            }
-            else {
+            } else {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
                     Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 1000, 500);
@@ -405,9 +434,9 @@ public class BCEditActivity extends AppCompatActivity {
             }
         }
 
-        if(resultCode == 3) { // search company address
-            if(requestCode == 3) {
-                if(requestCode == 3 && data != null) {
+        if (resultCode == 3) { // search company address
+            if (requestCode == 3) {
+                if (requestCode == 3 && data != null) {
                     bcadd_str = data.getStringExtra("destname");
                     bclat = data.getStringExtra("destlat");
                     bclon = data.getStringExtra("destlon");
@@ -517,11 +546,10 @@ public class BCEditActivity extends AppCompatActivity {
             dialog.dismiss();
 
             Log.e("uploadFile", "Source File not exist :"
-                    +uploadFilePath + "" + uploadFileName);
+                    + uploadFilePath + "" + uploadFileName);
             runOnUiThread(new Runnable() {
 
                 public void run() {
-
 
 
                 }
@@ -573,7 +601,6 @@ public class BCEditActivity extends AppCompatActivity {
                 }
 
 
-
                 // send multipart form data necesssary after file data...
                 dos.writeBytes(lineEnd);
                 dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
@@ -585,11 +612,11 @@ public class BCEditActivity extends AppCompatActivity {
                 Log.i("uploadFile", "HTTP Response is : "
                         + serverResponseMessage + ": " + serverResponseCode);
 
-                if(serverResponseCode == 200){
+                if (serverResponseCode == 200) {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
-                                    +uploadFileName;
+                                    + uploadFileName;
 
                             Toast.makeText(BCEditActivity.this, "File Upload Complete.",
                                     Toast.LENGTH_SHORT).show();
@@ -640,8 +667,70 @@ public class BCEditActivity extends AppCompatActivity {
         } // End else block
 
 
-
     }
 
+    class BackgroundTask2 extends AsyncTask<Void, Void, String> {
+
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://scvalsrl.cafe24.com/BCList.php";
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+
+                    stringBuilder.append(temp + "\n");
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
+        }
+
+        public void onPostExecute(String result) {
+
+            Intent intent = new Intent(BCEditActivity.this, BCListActivity.class);
+            intent.putExtra("userList", result);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon", nowLon);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("userID", userID);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            BCEditActivity.this.startActivity(intent);
+            finish();
+            overridePendingTransition(0, 0);
+
+        }
+
+    }
 
 }

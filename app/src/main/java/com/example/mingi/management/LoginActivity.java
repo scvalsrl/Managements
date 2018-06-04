@@ -22,8 +22,6 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,17 +31,16 @@ public class LoginActivity extends AppCompatActivity {
         actionBar.setTitle("BNK 운행일지");
 
 
-
-        final EditText idText= (EditText) findViewById(R.id.idText);
+        final EditText idText = (EditText) findViewById(R.id.idText);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
-        final  Button loginButton = (Button) findViewById(R.id.loginButton);
+        final Button loginButton = (Button) findViewById(R.id.loginButton);
         final TextView registerButton = (TextView) findViewById(R.id.registerButton);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Intent registerIntent = new Intent(LoginActivity.this , RegisterActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
             }
 
@@ -58,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // 로그인 버튼 클릭
-        loginButton.setOnClickListener(new View.OnClickListener(){
+        loginButton.setOnClickListener(new View.OnClickListener() {
 
 
             @Override
@@ -71,11 +68,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        try{
+                        try {
                             // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            if(success){  // 성공
+                            if (success) {  // 성공
                                 Log.d("  로그인 상공 : ", "");
 
                                 String userID = jsonResponse.getString("userID");
@@ -88,25 +85,24 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("userPassword", userPassword);
                                 intent.putExtra("nowLat", nowLat);
                                 intent.putExtra("nowLon", nowLon);
-                                intent.putExtra("isGPSEnable",isGPSEnable);
+                                intent.putExtra("isGPSEnable", isGPSEnable);
                                 intent.putExtra("nowName", nowName);
                                 LoginActivity.this.startActivity(intent);
                                 // 화면전환 넣기 //
                                 finish();
 
 
-
-                            }else{
+                            } else {
                                 Log.d("  로그인 실패 : ", "");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("로그인에 실패하였습니다.")
-                                        .setNegativeButton("다시시도",null)
+                                        .setNegativeButton("다시시도", null)
                                         .create()
                                         .show();
                             }
 
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -124,10 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
 
-
         });
-
-
 
 
     }

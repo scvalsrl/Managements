@@ -79,18 +79,18 @@ public class BCListActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listVView);
         userList = new ArrayList<BC>();
-        adapter = new BCListAdapter(getApplicationContext(), userList, this,isGPSEnable , nowLat , nowLon , nowName);
+        adapter = new BCListAdapter(getApplicationContext(), userList, this, isGPSEnable, nowLat, nowLon, nowName);
         listView.setAdapter(adapter);
 
 
-        try{
+        try {
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("userList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
             int count = 0;
-            String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon , BC_photo;
+            String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo;
             int no;
 
-            while (count< jsonArray.length()){
+            while (count < jsonArray.length()) {
 
                 JSONObject object = jsonArray.getJSONObject(count);
 
@@ -106,13 +106,13 @@ public class BCListActivity extends AppCompatActivity {
                 BC_photo = object.getString("BC_photo");
                 no = object.getInt("no");
 
-                BC bc = new BC(BC_name, BC_level,BC_com , BC_phone , BC_mail , BC_add, BC_lat, BC_lon, BC_photo, no);
+                BC bc = new BC(BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo, no);
                 userList.add(bc);
                 count++;
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -129,7 +129,7 @@ public class BCListActivity extends AppCompatActivity {
                 bcList.putExtra("userID", userID);
                 bcList.putExtra("nowLat", nowLat);
                 bcList.putExtra("nowLon", nowLon);
-                bcList.putExtra("isGPSEnable",isGPSEnable);
+                bcList.putExtra("isGPSEnable", isGPSEnable);
                 bcList.putExtra("nowName", nowName);
                 startActivity(bcList);
 
@@ -140,73 +140,73 @@ public class BCListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
 
 
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
 
-                                String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon , BC_photo;
-                                String no;
-                                BC_name = jsonResponse.getString("BC_name");
-                                BC_level = jsonResponse.getString("BC_level");
-                                BC_com = jsonResponse.getString("BC_com");
-                                BC_phone = jsonResponse.getString("BC_phone");
-                                BC_mail = jsonResponse.getString("BC_mail");
-                                BC_add = jsonResponse.getString("BC_add");
-                                BC_lat = jsonResponse.getString("BC_lat");
-                                BC_lon = jsonResponse.getString("BC_lon");
-                                BC_photo = jsonResponse.getString("BC_photo");
-                                no = jsonResponse.getString("no");
+                            String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo;
+                            String no;
+                            BC_name = jsonResponse.getString("BC_name");
+                            BC_level = jsonResponse.getString("BC_level");
+                            BC_com = jsonResponse.getString("BC_com");
+                            BC_phone = jsonResponse.getString("BC_phone");
+                            BC_mail = jsonResponse.getString("BC_mail");
+                            BC_add = jsonResponse.getString("BC_add");
+                            BC_lat = jsonResponse.getString("BC_lat");
+                            BC_lon = jsonResponse.getString("BC_lon");
+                            BC_photo = jsonResponse.getString("BC_photo");
+                            no = jsonResponse.getString("no");
 
-                                if ( success ) {
+                            if (success) {
 
-                                    // 인텐드에 넣기
-                                    Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
+                                // 인텐드에 넣기
+                                Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
 
-                                    intent.putExtra("BC_name", BC_name);
-                                    intent.putExtra("BC_level", BC_level);
-                                    intent.putExtra("BC_com", BC_com);
-                                    intent.putExtra("BC_phone", BC_phone);
-                                    intent.putExtra("BC_mail", BC_mail);
-                                    intent.putExtra("BC_add", BC_add);
-                                    intent.putExtra("BC_lat", BC_lat);
-                                    intent.putExtra("BC_lon", BC_lon);
-                                    intent.putExtra("BC_photo", BC_photo);
-                                    intent.putExtra("no", no);
-
-
-                                    intent.putExtra("userID", userID);
-                                    intent.putExtra("isGPSEnable", isGPSEnable);
-                                    intent.putExtra("nowLat", nowLat);
-                                    intent.putExtra("nowLon", nowLon);
-                                    intent.putExtra("nowName", nowName);
+                                intent.putExtra("BC_name", BC_name);
+                                intent.putExtra("BC_level", BC_level);
+                                intent.putExtra("BC_com", BC_com);
+                                intent.putExtra("BC_phone", BC_phone);
+                                intent.putExtra("BC_mail", BC_mail);
+                                intent.putExtra("BC_add", BC_add);
+                                intent.putExtra("BC_lat", BC_lat);
+                                intent.putExtra("BC_lon", BC_lon);
+                                intent.putExtra("BC_photo", BC_photo);
+                                intent.putExtra("no", no);
 
 
-                                    BCListActivity.this.startActivity(intent);
-                                    // 화면전환 넣기 //
+                                intent.putExtra("userID", userID);
+                                intent.putExtra("isGPSEnable", isGPSEnable);
+                                intent.putExtra("nowLat", nowLat);
+                                intent.putExtra("nowLon", nowLon);
+                                intent.putExtra("nowName", nowName);
 
 
-                                } else {
+                                BCListActivity.this.startActivity(intent);
+                                // 화면전환 넣기 //
 
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+
+                            } else {
+
                             }
-
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
-                    };
+                    }
 
-                    BCDetailRequest bcDetailRequest = new BCDetailRequest(userList.get(i).getNo(), responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
-                    queue.add(bcDetailRequest);
+                };
+
+                BCDetailRequest bcDetailRequest = new BCDetailRequest(userList.get(i).getNo(), responseListener);
+                RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
+                queue.add(bcDetailRequest);
 
 
-                }
+            }
         });
     }
 
@@ -224,7 +224,7 @@ public class BCListActivity extends AppCompatActivity {
                             intent.putExtra("userID", userID);
                             intent.putExtra("nowLat", nowLat);
                             intent.putExtra("nowLon", nowLon);
-                            intent.putExtra("isGPSEnable",isGPSEnable);
+                            intent.putExtra("isGPSEnable", isGPSEnable);
                             intent.putExtra("nowName", nowName);
                             BCListActivity.this.startActivity(intent);
                             overridePendingTransition(0, 0);
@@ -240,7 +240,6 @@ public class BCListActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
 
 
 }

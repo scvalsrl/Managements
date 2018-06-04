@@ -32,12 +32,12 @@ public class BCListAdapter extends BaseAdapter {
     private List<BC> userList;
     private Activity parentActivity;
     private String isGPSEnable;
-    private  String nowLat;
-    private  String nowLon;
-    private  String nowName;
+    private String nowLat;
+    private String nowLon;
+    private String nowName;
 
 
-    public BCListAdapter(Context context, List<BC> userList , Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName ){
+    public BCListAdapter(Context context, List<BC> userList, Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName) {
         this.context = context;
         this.userList = userList;
         this.parentActivity = parentActivity;
@@ -65,18 +65,18 @@ public class BCListAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup){
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
 
-        View v = View.inflate(context, R.layout.bc,null);
+        View v = View.inflate(context, R.layout.bc, null);
 
         TextView bc_name = (TextView) v.findViewById(R.id.bc_name);
-        TextView bc_level =(TextView) v.findViewById(R.id.bc_level);
+        TextView bc_level = (TextView) v.findViewById(R.id.bc_level);
         TextView bc_com = (TextView) v.findViewById(R.id.bc_com);
-        final TextView  no = (TextView) v.findViewById(R.id.no2);
+        final TextView no = (TextView) v.findViewById(R.id.no2);
 
         new DownloadImageTask((ImageView) v.findViewById(R.id.img))
-                .execute("http://scvalsrl.cafe24.com/uploads/"+userList.get(i).getBC_photo());
+                .execute("http://scvalsrl.cafe24.com/uploads/" + userList.get(i).getBC_photo());
 
         bc_name.setText(userList.get(i).getBC_name());
         bc_level.setText(userList.get(i).getBC_level());
@@ -86,15 +86,7 @@ public class BCListAdapter extends BaseAdapter {
         v.setTag(userList.get(i).getNo());
 
 
-
-
-
-
-
-
         return v;
-
-
 
 
     }
@@ -123,10 +115,6 @@ public class BCListAdapter extends BaseAdapter {
             bmImage.setImageBitmap(result);
         }
     }
-
-
-
-
 
 
 }

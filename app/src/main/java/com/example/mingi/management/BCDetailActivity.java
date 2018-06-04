@@ -188,7 +188,7 @@ public class BCDetailActivity extends AppCompatActivity {
 
                                         int No_i = Integer.parseInt(no);
 
-                                        DeleteRequest2 deleteRequest = new DeleteRequest2(No_i, responseListener);
+                                        DeleteRequest2 deleteRequest = new DeleteRequest2(bcphoto_str,No_i, responseListener);
                                         RequestQueue queue = Volley.newRequestQueue(BCDetailActivity.this);
                                         queue.add(deleteRequest);
 

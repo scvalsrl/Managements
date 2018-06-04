@@ -12,10 +12,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </FrameLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:id="@+id/minimize"
-            android:text="축소"/>
+            android:src="@drawable/ic_minimize"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

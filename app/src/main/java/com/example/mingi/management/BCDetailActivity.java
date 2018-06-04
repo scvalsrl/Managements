@@ -32,9 +32,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class BCDetailActivity extends AppCompatActivity {
-    ImageView imgView, emailBtn, callBtn, msgBtn;
+    ImageView imgView, emailBtn, callBtn, msgBtn, bcfullmap;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
-    Button bcedit, bcdelete, bcfullmap;
+    Button bcedit, bcdelete;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName, userID;
@@ -105,7 +105,7 @@ public class BCDetailActivity extends AppCompatActivity {
 
         bcedit = (Button) findViewById(R.id.bcedit);
         bcdelete = (Button) findViewById(R.id.bcdelete);
-        bcfullmap = (Button) findViewById(R.id.fullMap);
+
 
         new BCDetailActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
                 .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
@@ -113,6 +113,7 @@ public class BCDetailActivity extends AppCompatActivity {
         emailBtn = (ImageView) findViewById(R.id.emailbtn);
         callBtn = (ImageView) findViewById(R.id.callbtn);
         msgBtn = (ImageView) findViewById(R.id.msgbtn);
+        bcfullmap = (ImageView) findViewById(R.id.fullMap);
     }
 
     void setTextView() {

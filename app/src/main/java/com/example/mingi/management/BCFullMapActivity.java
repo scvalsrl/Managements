@@ -1,16 +1,18 @@
 package com.example.mingi.management;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class BCFullMapActivity extends AppCompatActivity {
     String lat, lon, name;
-    Button minimizeBtn;
+    ImageView minimizeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class BCFullMapActivity extends AppCompatActivity {
     }
 
     void initView() {
-        minimizeBtn = (Button) findViewById(R.id.minimize);
+        minimizeBtn = (ImageView) findViewById(R.id.minimize);
     }
 
     void clickBtn() {

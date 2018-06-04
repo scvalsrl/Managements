@@ -20,12 +20,12 @@ public class BCUpdateRequest extends StringRequest {
 
 
     public BCUpdateRequest(String id, String BC_name, String BC_level, String BC_com, String BC_phone, String BC_mail, String BC_add, String BC_lat,
-                           String BC_lon, String BC_photo,int update_no, int no, Response.Listener<String> listener) {
+                           String BC_lon, String BC_photo,int update_no, int no,String temp , Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
 
+        String file = "uploads/";
 
         parameters = new HashMap<>();
-
         parameters.put("id", id);
         parameters.put("BC_name", BC_name);
         parameters.put("BC_level", BC_level);
@@ -38,6 +38,7 @@ public class BCUpdateRequest extends StringRequest {
         parameters.put("BC_photo", BC_photo);
         parameters.put("update_no", update_no+"");
         parameters.put("no", no + "");
+        parameters.put("bcphoto", file + temp);
 
 
         Log.d("김민기 업데이트 들어옴", " : " + BC_photo);

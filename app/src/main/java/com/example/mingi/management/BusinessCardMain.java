@@ -473,6 +473,7 @@ public class BusinessCardMain extends AppCompatActivity {
             dialog.dismiss();
 
             return serverResponseCode;
+
         } // End else block
 
 

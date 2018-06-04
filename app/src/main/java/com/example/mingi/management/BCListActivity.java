@@ -69,6 +69,7 @@ public class BCListActivity extends AppCompatActivity {
         nowLon = intent.getStringExtra("nowLon");
         nowName = intent.getStringExtra("nowName");
         userID = intent.getStringExtra("userID");
+        Log.d("김민기", "userID: " + userID);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);

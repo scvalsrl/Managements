@@ -50,8 +50,8 @@ public class CarJoinActivity extends AppCompatActivity {
 
     Calendar currentTime;
     int hour, minute;
-    String format;
-    String gps, userIDS;
+    String format , userID;
+    String gps;
 
     int y,m,d;
 
@@ -106,7 +106,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
         Intent fromSplash = getIntent();
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
-
+        userID = fromSplash.getStringExtra("userID");
         gps = isGPSEnable;
 
         if(isGPSEnable.compareTo("0") == 0) { // success
@@ -156,8 +156,8 @@ public class CarJoinActivity extends AppCompatActivity {
                     case R.id.navigation_item_peoplelist:
 
                         Intent intent = getIntent();
-                        String userID =intent.getExtras().getString("userID");
-                        userIDS = userID;
+                        userID =intent.getExtras().getString("userID");
+
                         String userPassword =intent.getExtras().getString("userID");
 
                         drawer_intent = new Intent(getApplicationContext(), CarlistActivity.class);
@@ -725,7 +725,7 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userIDS);
+            intent.putExtra("userID", userID);
             CarJoinActivity.this.startActivity(intent);
 
             finish();
@@ -789,7 +789,7 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userIDS);
+            intent.putExtra("userID", userID);
             CarJoinActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);

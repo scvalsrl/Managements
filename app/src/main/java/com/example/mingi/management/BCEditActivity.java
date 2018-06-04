@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -18,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,10 +30,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +56,7 @@ public class BCEditActivity extends AppCompatActivity {
     ImageView imageView;
     EditText bcname, bclevel, bccom, bcphone, bcemail;
     TextView bcadd;
-    Button bccamera, bcupload;
+    Button bccamera, bcupload, bcjoin , bccancel;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
     String bclat, bclon, userID, no, bcphoto_str , bclat_str , bclon_str;
@@ -60,6 +74,12 @@ public class BCEditActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     Uri photoUri;
     String uploadFileName = ""; //전송하고자하는 파일 이름
+    String temp ="";
+
+    int serverResponseCode = 0;
+    ProgressDialog dialog = null;
+    String upLoadServerUri = "http://scvalsrl.cafe24.com/UploadToServer.php";
+    final String uploadFilePath = "storage/emulated/0/test/";//경로를 모르겠으면, 갤러리 어플리케이션 가서 메뉴->상세 정보
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +91,8 @@ public class BCEditActivity extends AppCompatActivity {
         checkPermissions();
 
         setInitView();
+        uploadFileName = bcphoto_str;
+
         setClickBtn();
     }
 
@@ -84,6 +106,8 @@ public class BCEditActivity extends AppCompatActivity {
 
         bcupload = (Button) findViewById(R.id.uploadBtn);
         bccamera = (Button) findViewById(R.id.cameraBtn);
+        bcjoin = (Button) findViewById(R.id.bcjoin);
+        bccancel = (Button) findViewById(R.id.bccancel);
         imageView = (ImageView) findViewById(R.id.imgView);
     }
 
@@ -133,7 +157,7 @@ public class BCEditActivity extends AppCompatActivity {
         nowLon = intent.getStringExtra("nowLon");
         nowName = intent.getStringExtra("nowName");
         userID = intent.getStringExtra("userID");
-
+        Log.d("ㅇㅇdd", "userID: "+ userID);
         bcname_str = intent.getStringExtra("bcname");
         bclevel_str = intent.getStringExtra("bclevel");
         bccom_str = intent.getStringExtra("bccom");
@@ -143,6 +167,7 @@ public class BCEditActivity extends AppCompatActivity {
         bclat_str = intent.getStringExtra("bclat");
         bclon_str = intent.getStringExtra("bclon");
         bcphoto_str = intent.getStringExtra("bcphoto");
+        temp = bcphoto_str;
         no = intent.getStringExtra("no");
     }
 
@@ -174,6 +199,93 @@ public class BCEditActivity extends AppCompatActivity {
                 pickFromAlbum();
             }
         });
+
+        bcjoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
+
+                if( ! uploadFileName.equals(temp)){
+                    new Thread(new Runnable() {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+
+                                }
+                            });
+                            uploadFile(uploadFilePath + "" + uploadFileName);
+
+                        }
+                    }).start();
+                }
+
+
+                bcname_str = bcname.getText().toString();
+                bclevel_str = bclevel.getText().toString();
+                bccom_str = bccom.getText().toString();
+                bcphone_str = bcphone.getText().toString();
+                bcemail_str = bcemail.getText().toString();
+                bcadd_str = bcadd.getText().toString();
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+
+                                builder.setMessage("성공적으로 수정 되었습니다")
+                                        .setCancelable(false)
+                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog, int id) {
+                                                // 프로그램을 종료한다
+                                                finish();
+                                            }
+                                        }).
+                                        create()
+                                        .show();
+
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                                builder.setMessage("등록에 실패 했습니다.")
+                                        .setNegativeButton("다시시도", null).create().show();
+                                Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
+                                BCEditActivity.this.startActivity(intent);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+
+                };
+
+                BCUpdateRequest bcUpdateRequest = new BCUpdateRequest( userID ,  bcname_str,  bclevel_str ,  bccom_str,  bcphone_str,  bcemail_str ,  bcadd_str ,  bclat_str ,
+                        bclon_str , uploadFileName , Integer.parseInt(no) , responseListener);
+                RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
+                queue.add(bcUpdateRequest);
+
+            }
+        });
+
+        bccancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
     }
 
     private void checkPermissions() {
@@ -222,16 +334,15 @@ public class BCEditActivity extends AppCompatActivity {
             Log.d("createImageFile ", "mkdir complete");
         }
 
-
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-
 
         Log.d("createImageFile", "complete creating image file");
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         Log.d("createImageFile ", mCurrentPhotoPath);
         uploadFileName = mCurrentPhotoPath.substring(30);
-        Log.d("createImageFile 김민기  ",  mCurrentPhotoPath.substring(30) );
+        Log.d("createImageFile 김민기2  ",  uploadFileName );
         return image;
+
     }
 
     @Override
@@ -386,5 +497,151 @@ public class BCEditActivity extends AppCompatActivity {
             bmImage.setImageBitmap(result);
         }
     }
+
+
+    public int uploadFile(String sourceFileUri) {
+
+        String fileName = sourceFileUri;
+        HttpURLConnection conn = null;
+        DataOutputStream dos = null;
+        String lineEnd = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+        File sourceFile = new File(sourceFileUri);
+
+        if (!sourceFile.isFile()) {
+            dialog.dismiss();
+
+            Log.e("uploadFile", "Source File not exist :"
+                    +uploadFilePath + "" + uploadFileName);
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+
+
+                }
+
+            });
+
+
+            return 0;
+        } else {
+            try {
+
+                // open a URL connection to the Servlet
+                FileInputStream fileInputStream = new FileInputStream(sourceFile);
+                URL url = new URL(upLoadServerUri);
+
+                // Open a HTTP  connection to  the URL
+
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setDoInput(true); // Allow Inputs
+                conn.setDoOutput(true); // Allow Outputs
+                conn.setUseCaches(false); // Don't use a Cached Copy
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("ENCTYPE", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+                conn.setRequestProperty("uploaded_file", fileName);
+
+                dos = new DataOutputStream(conn.getOutputStream());
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\";filename=\""
+                        + fileName + "\"" + lineEnd);
+
+                dos.writeBytes(lineEnd);
+
+                // create a buffer of  maximum size
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                buffer = new byte[bufferSize];
+                // read file and write it into form...
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                while (bytesRead > 0) {
+                    dos.write(buffer, 0, bufferSize);
+                    bytesAvailable = fileInputStream.available();
+                    bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                    bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+                }
+
+
+
+                // send multipart form data necesssary after file data...
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+
+                // Responses from the server (code and message)
+                serverResponseCode = conn.getResponseCode();
+                String serverResponseMessage = conn.getResponseMessage();
+
+                Log.i("uploadFile", "HTTP Response is : "
+                        + serverResponseMessage + ": " + serverResponseCode);
+
+                if(serverResponseCode == 200){
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
+                                    +uploadFileName;
+
+                            Toast.makeText(BCEditActivity.this, "File Upload Complete.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                //close the streams //
+                fileInputStream.close();
+                dos.flush();
+                dos.close();
+
+            } catch (MalformedURLException ex) {
+
+
+                dialog.dismiss();
+                ex.printStackTrace();
+
+                runOnUiThread(new Runnable() {
+
+                    public void run() {
+                        Toast.makeText(BCEditActivity.this, "MalformedURLException",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+
+                Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
+
+            } catch (Exception e) {
+                dialog.dismiss();
+
+                e.printStackTrace();
+
+                runOnUiThread(new Runnable() {
+
+                    public void run() {
+                        Toast.makeText(BCEditActivity.this, "Got Exception : see logcat ",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+            }
+            dialog.dismiss();
+
+            return serverResponseCode;
+
+        } // End else block
+
+
+
+    }
+
 
 }

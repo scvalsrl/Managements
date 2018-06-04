@@ -207,9 +207,11 @@ public class BCEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String check = "";
                 dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
 
                 if (!uploadFileName.equals(temp)) {
+                    check = temp;
                     new Thread(new Runnable() {
                         public void run() {
                             runOnUiThread(new Runnable() {
@@ -290,7 +292,7 @@ public class BCEditActivity extends AppCompatActivity {
                                 update_no++;
 
                                 BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
-                                        bclon_str, uploadFileName, update_no ,Integer.parseInt(no), responseListener);
+                                        bclon_str, uploadFileName, update_no ,Integer.parseInt(no),temp, responseListener);
                                 RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
                                 queue.add(bcUpdateRequest);
 

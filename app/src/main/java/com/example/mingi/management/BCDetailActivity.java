@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.GoogleMap;
 
 import org.json.JSONObject;
 
@@ -35,7 +34,7 @@ import java.net.URL;
 public class BCDetailActivity extends AppCompatActivity {
     ImageView imgView, emailBtn, callBtn, msgBtn;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
-    Button bcedit, bcdelete;
+    Button bcedit, bcdelete, bcfullmap;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName, userID;
@@ -97,7 +96,7 @@ public class BCDetailActivity extends AppCompatActivity {
 
         bcedit = (Button) findViewById(R.id.bcedit);
         bcdelete = (Button) findViewById(R.id.bcdelete);
-
+        bcfullmap = (Button) findViewById(R.id.fullMap);
 
         new BCDetailActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
                 .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
@@ -256,6 +255,16 @@ public class BCDetailActivity extends AppCompatActivity {
             }
         });
 
+        bcfullmap.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent goFMap = new Intent(getApplicationContext(), BCFullMapActivity.class);
+                goFMap.putExtra("lat", bclat_str);
+                goFMap.putExtra("lon", bclon_str);
+                startActivity(goFMap);
+            }
+        });
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

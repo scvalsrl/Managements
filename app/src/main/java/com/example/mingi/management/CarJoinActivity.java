@@ -26,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -810,7 +811,7 @@ public class CarJoinActivity extends AppCompatActivity {
             Log.d("CarJoinActivity", "distance 계산 후: " + distance);
             if(distance > -1) {
                 Log.d("CarJoinActivity", "distance > -1 " + distance);
-                float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
+                final float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
                 kilometer = Float.toString(distanceKM);
                 AlertDialog.Builder userdistanceBuilder = new AlertDialog.Builder(CarJoinActivity.this);
                 userdistanceBuilder.setTitle("총 " + kilometer +"km입니다.");
@@ -820,6 +821,20 @@ public class CarJoinActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_SHORT).show();
+
+                                EditDialog editDialog = new EditDialog(CarJoinActivity.this);
+                                editDialog.setDialogListener(new MyDialogListener() {
+                                    @Override
+                                    public void onPositiveClicked(String km) {
+                                        distanceText.setText(km);
+                                    }
+
+                                    @Override
+                                    public void onNegativeClicked() {
+
+                                    }
+                                });
+                                editDialog.show();
                             }
                         })
                         .setNegativeButton("아니오", new DialogInterface.OnClickListener(){

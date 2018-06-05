@@ -80,6 +80,7 @@ public class DestListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userStr = search_text.getText().toString();
+                Log.d("도착지 리스트", "검색 버튼 누름" + userStr);
                 String urlStr = defaultUrl + userStr + "&centerLat=" + finalCurLat + "&centerLon=" + finalCurLong;
                 ConnectThread thread = new ConnectThread(urlStr);
                 thread.start();

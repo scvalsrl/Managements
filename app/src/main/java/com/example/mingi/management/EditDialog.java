@@ -5,10 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 public class EditDialog extends Dialog implements View.OnClickListener {
     private MyDialogListener dialogListener;
@@ -17,6 +20,7 @@ public class EditDialog extends Dialog implements View.OnClickListener {
     private Context context;
     private TextView okBtn;
     private EditText kmEt;
+    private String kmPattern;
 
 
     public EditDialog(@NonNull Context context) {
@@ -41,18 +45,25 @@ public class EditDialog extends Dialog implements View.OnClickListener {
         kmEt = (EditText) findViewById(R.id.kmedit);
 
         okBtn.setOnClickListener(this);
+
+        kmPattern = "^[0-9]*$|^[0-9]*\\.[0-9]*$";
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.okbtn:
-                Toast.makeText(context, "ok 누름", Toast.LENGTH_SHORT).show();
                 String km = kmEt.getText().toString();
                 dialogListener.onPositiveClicked(km);
-                dismiss();
-                break;
+                boolean isKm = Pattern.matches(kmPattern, km);
+                if(isKm == true) {
+                    Log.d("EditDialog", "숫자입력 바로됨");
+                    dismiss();
+                    break;
+                }
+                else {
+                    Toast.makeText(context, "숫자.숫자 형식으로 입력해주세요", Toast.LENGTH_SHORT).show();
+                }
         }
-
     }
 }

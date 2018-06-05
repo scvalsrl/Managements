@@ -66,6 +66,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_car_manegement);
         BottomNavigationView bottomnav = findViewById(R.id.bottom_navigation);
+        bottomnav.setSelectedItemId(R.id.nav_favorites);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 

@@ -142,20 +142,15 @@ public class BusinessCardMain extends AppCompatActivity {
                 new Thread(new Runnable() {
                     public void run() {
                         runOnUiThread(new Runnable() {
-                            public void run() {
-
-                            }
+                            public void run() {   }
                         });
                         uploadFile(uploadFilePath + "" + uploadFileName);
-
                     }
                 }).start();
-
 
                 Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         try {
                             // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
@@ -177,22 +172,16 @@ public class BusinessCardMain extends AppCompatActivity {
                                                         .setPositiveButton("확인", null)
                                                         .create()
                                                         .show();
-
                                                 new BackgroundTask2().execute();
-
                                             } else {
-
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
                                                 builder.setMessage("등록에 실패 했습니다.")
                                                         .setNegativeButton("다시시도", null).create().show();
                                                 Intent intent = new Intent(BusinessCardMain.this, BusinessCardMain.class);
                                                 BusinessCardMain.this.startActivity(intent);
-
                                             }
-
                                         } catch (JSONException e) {
                                             e.printStackTrace();
-
                                         }
 
                                     }
@@ -594,13 +583,6 @@ public class BusinessCardMain extends AppCompatActivity {
             }
 
             if (resultCode == Activity.RESULT_OK) {
-                /*
-                try {
-                    Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                    imageView.setImageBitmap(image_bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
                 photoUri = data.getData();
                 cropImage();
             }

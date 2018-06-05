@@ -814,14 +814,22 @@ public class CarJoinActivity extends AppCompatActivity {
                 final float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
                 kilometer = Float.toString(distanceKM);
                 AlertDialog.Builder userdistanceBuilder = new AlertDialog.Builder(CarJoinActivity.this);
-                userdistanceBuilder.setTitle("총 " + kilometer +"km입니다.");
-                userdistanceBuilder.setMessage("총 거리를 직접 입력하시겠습니까?")
+
+                String short_start = startPlace;
+                String short_end = endPlace;
+
+                if(startPlace.length() > 8) {
+                    short_start = startPlace.substring(0,8) + "..";
+                }
+                if(endPlace.length() > 8) {
+                    short_end = endPlace.substring(0, 8) + "..";
+                }
+                userdistanceBuilder.setTitle(short_start + "→" + short_end);
+                userdistanceBuilder.setMessage(kilometer + "km")
                         .setCancelable(false)
-                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("직접입력", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_SHORT).show();
-
                                 EditDialog editDialog = new EditDialog(CarJoinActivity.this);
                                 editDialog.setDialogListener(new MyDialogListener() {
                                     @Override
@@ -830,19 +838,18 @@ public class CarJoinActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onNegativeClicked() {
-
-                                    }
+                                    public void onNegativeClicked() { }
                                 });
                                 editDialog.show();
                             }
                         })
-                        .setNegativeButton("아니오", new DialogInterface.OnClickListener(){
+                        .setNegativeButton("확인", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 distanceText.setText(kilometer);
                             }
                         });
+
                 AlertDialog userdistance = userdistanceBuilder.create();
                 userdistance.show();
             }

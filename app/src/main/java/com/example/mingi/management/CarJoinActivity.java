@@ -19,6 +19,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -639,7 +640,170 @@ public class CarJoinActivity extends AppCompatActivity {
         if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
+        int id = item.getItemId();
+        if( id == R.id.newPost ){
+
+            final String ids = "2109812";
+            String carNum = txtCar.getText().toString();
+            String startday = txtDate.getText().toString();
+            String endday = txtDate2.getText().toString();
+            String startTime = txtTime.getText().toString();
+            String endTime = txtTime2.getText().toString();
+
+
+            if (startLat.equals(destLat) && startLon.equals(destLon)) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                builder.setMessage(" 출발지와 목적지가 동일합니다.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (carNum.equals("차량을 선택해주세요")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                builder.setMessage(" 차량을 선택해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (startPlace.equals("출발지 입력") || endPlace.equals("도착지 입력")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                builder.setMessage(" 경로를 설정해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (startday.equals("출발 날짜를 선택해주세요") || startTime.equals("출발 시간을 선택해주세요")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                builder.setMessage(" 출발 일자를 설정해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+            } else if (endday.equals("도착 날짜를 선택해주세요") || endTime.equals("도착 시간을 선택해주세요")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                builder.setMessage(" 도착 일자를 설정해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else {
+                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            // 제이슨 생성
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {  // 성공
+
+
+                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+
+
+                                        try {
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+
+
+                                            if (success) {
+
+
+                                                startPlace = "출발지 입력";
+                                                endPlace = "도착지 입력";
+                                                startText.setText(startPlace);
+                                                destText.setText(endPlace);
+                                                distanceText.setText("");
+                                                txtCar.setText("차량을 선택해주세요");
+                                                txtTime.setText("출발 시간을 선택해주세요");
+                                                txtTime2.setText("도착 시간을 선택해주세요");
+                                                txtDate.setText("출발 날짜를 선택해주세요");
+                                                txtDate2.setText("도착 날짜을 선택해주세요");
+
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+
+
+                                                builder.setMessage("성공적으로 등록 되었습니다")
+                                                        .setPositiveButton("확인", null)
+                                                        .create()
+                                                        .show();
+
+                                            } else {
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                                                builder.setMessage("등록에 실패 했습니다.")
+                                                        .setNegativeButton("다시시도", null).create().show();
+                                                Intent intent = new Intent(CarJoinActivity.this, CarJoinActivity.class);
+                                                CarJoinActivity.this.startActivity(intent);
+
+                                            }
+
+                                        } catch (JSONException e) {
+
+                                            e.printStackTrace();
+                                        }
+
+
+                                    }
+
+
+                                };
+                                String no_s = jsonResponse.getString("no");
+
+                                int no_i = Integer.parseInt(no_s);
+                                no_i++;
+
+                               int no = no_i;
+
+                                // 화면전환 넣기 //
+                                String id = "2109812";
+                                String carNum = txtCar.getText().toString();
+                                String startday = txtDate.getText().toString();
+                                String endday = txtDate2.getText().toString();
+                                String startTime = txtTime.getText().toString();
+                                String endTime = txtTime2.getText().toString();
+
+                                CarJoinRequest carJoinRequest = new CarJoinRequest(ids, carNum, startPlace, endPlace, kilometer, startday, endday, startTime, endTime, no, startLat, startLon, destLat, destLon, responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(CarJoinActivity.this);
+
+                                queue.add(carJoinRequest);
+
+                            } else {
+                                Log.d(" 카운팅 실패 : ", "1");
+
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+                CarCountRequest carcountrequest = new CarCountRequest(responseListener2);
+                RequestQueue queue2 = Volley.newRequestQueue(CarJoinActivity.this);
+                queue2.add(carcountrequest);
+            }
+            return true;
+
+
+
+
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.list_menu, menu);
+
+        return true;
     }
 
 

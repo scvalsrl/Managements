@@ -66,6 +66,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_car_manegement);
         BottomNavigationView bottomnav = findViewById(R.id.bottom_navigation);
+        bottomnav.setSelectedItemId(R.id.nav_favorites);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 
@@ -218,14 +219,15 @@ public class CarManegementActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                Log.d("YearMonthPickerTest", "1111 들어옴!!:! ");
-                URL url = new URL(target);
-                parameters = new HashMap<>();
 
-                parameters.put("year", year_s);
-                parameters.put("month", month_s);
+                Log.d("YearMonthPickerTest", "1111 들어옴!!:! ");
+
+                URL url = new URL(target);
+
                 Log.d("YearMonthPickerTest", "22 들어옴: " + year_s);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setRequestProperty("year","2018/5/1");
+                httpURLConnection.setRequestProperty("month","2018/5/30");
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;

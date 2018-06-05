@@ -77,6 +77,7 @@ public class BCEditActivity extends AppCompatActivity {
     Uri photoUri;
     String uploadFileName = ""; //전송하고자하는 파일 이름
     String temp = "";
+    String check = "";
 
     int serverResponseCode = 0;
     ProgressDialog dialog = null;
@@ -207,7 +208,7 @@ public class BCEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String check = "";
+
                 dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
 
                 if (!uploadFileName.equals(temp)) {
@@ -292,7 +293,7 @@ public class BCEditActivity extends AppCompatActivity {
                                 update_no++;
 
                                 BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
-                                        bclon_str, uploadFileName, update_no ,Integer.parseInt(no),temp, responseListener);
+                                        bclon_str, uploadFileName, update_no ,Integer.parseInt(no),check, responseListener);
                                 RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
                                 queue.add(bcUpdateRequest);
 

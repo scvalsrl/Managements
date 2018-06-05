@@ -4,45 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.example.mingi.management.LoginActivity">
 
 
 
 
     <LinearLayout
+        android:background="@drawable/loginview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         >
 
+        <TextView
+            android:layout_marginBottom="160dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BNK 운행일지"
+            android:textSize="25dp"
+            android:textColor="#ffffff"
+            />
+
 
         <EditText
+            android:drawableLeft="@drawable/id"
             android:id="@+id/idText"
-
-            android:layout_width="282dp"
+            android:layout_width="260dp"
             android:layout_height="41dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="80dp"
-            android:ems="10"
+            android:layout_marginBottom="3dp"
             android:hint="행번"
             android:inputType="textPersonName" />
 
         <EditText
+            android:drawableLeft="@drawable/pw"
             android:id="@+id/passwordText"
-            android:layout_width="276dp"
-            android:layout_height="39dp"
-            android:layout_marginBottom="60dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
+            android:layout_width="260dp"
+            android:layout_height="41dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="30dp"
             android:hint="비밀번호"
             android:inputType="textPassword" />
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,15 +58,15 @@
                 android:layout_marginTop="5.5dp"
                 android:id="@+id/loginButton"
                 android:textSize="16dp"
-                android:layout_width="120dp"
-                android:layout_height="43dp"
+                android:layout_width="260dp"
+                android:layout_height="55dp"
                 android:textStyle="bold"
-                android:background="@drawable/rounded_search_btn"
+                android:background="#ea4472"
                 android:shadowColor="@color/listeditbox"
                 android:shadowDx="4"
                 android:shadowDy="4"
                 android:text="로그인"
-                android:textColor="#ed3e7b" />
+                android:textColor="#ffffff" />
         </LinearLayout>
 
 
@@ -72,10 +74,8 @@
             android:id="@+id/registerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginBottom="70dp"
+            android:layout_marginTop="10dp"
             android:text="회원가입"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
        />

@@ -34,7 +34,12 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar2">
+
+        </activity>
+
+
         <activity android:name=".MainActivity" />
         <activity android:name=".CarJoinActivity" />
         <activity android:name=".RegisterActivity" />
@@ -45,7 +50,7 @@
         <activity
             android:name=".Splashscreen"
             android:theme="@style/AppTheme.NoActionBar">
-            -
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

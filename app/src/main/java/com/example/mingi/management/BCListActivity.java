@@ -59,6 +59,7 @@ public class BCListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_bclist);
         BottomNavigationView bottomnav = findViewById(R.id.bottom_navigation);
+        bottomnav.setSelectedItemId(R.id.nav_search);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 

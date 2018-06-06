@@ -644,115 +644,166 @@ public class BCEditActivity extends AppCompatActivity {
             return true;
         }
 
-        if( id == R.id.vbcupdate2){
-            dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
-
-            if (!uploadFileName.equals(temp)) {
-                check = temp;
-                new Thread(new Runnable() {
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-
-                            }
-                        });
-                        uploadFile(uploadFilePath + "" + uploadFileName);
-
-                    }
-                }).start();
-            }
+        if( id == R.id.vbcupdate2) {
 
 
-            bcname_str = bcname.getText().toString();
-            bclevel_str = bclevel.getText().toString();
-            bccom_str = bccom.getText().toString();
-            bcphone_str = bcphone.getText().toString();
-            bcemail_str = bcemail.getText().toString();
-            bcadd_str = bcadd.getText().toString();
+            if (bcname.getText().toString().equals("")) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                builder.setMessage(" 이름을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (bclevel.getText().toString().equals("")) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                builder.setMessage(" 직급을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (bccom.getText().toString().equals("")) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                builder.setMessage(" 회사명을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (bcphone.getText().toString().equals("")) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                builder.setMessage(" 휴대폰을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (uploadFileName.equals("") || uploadFileName.equals(null)) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                builder.setMessage(" 사진을 등록해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else {
 
 
-            Response.Listener<String> responseListener2 = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+                dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
 
-                    try {
-                        // 제이슨 생성
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
+                if (!uploadFileName.equals(temp)) {
+                    check = temp;
+                    new Thread(new Runnable() {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
 
-                        if (success) {  // 성공
-
-                            Response.Listener<String> responseListener = new Response.Listener<String>() {
-
-                                @Override
-                                public void onResponse(String response) {
-
-                                    try {
-
-                                        JSONObject jsonResponse = new JSONObject(response);
-                                        boolean success = jsonResponse.getBoolean("success");
-                                        if (success) {
-
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
-
-                                            builder.setMessage("성공적으로 수정 되었습니다")
-                                                    .setCancelable(false)
-                                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                        public void onClick(
-                                                                DialogInterface dialog, int id) {
-                                                            // 프로그램을 종료한다
-                                                            new BCEditActivity.BackgroundTask2().execute();
-
-                                                        }
-                                                    }).
-                                                    create()
-                                                    .show();
-
-                                        } else {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
-                                            builder.setMessage("등록에 실패 했습니다.")
-                                                    .setNegativeButton("다시시도", null).create().show();
-                                            Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
-                                            BCEditActivity.this.startActivity(intent);
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
                                 }
-                            };
-
-
-
-
-                            int update_no = Integer.parseInt(jsonResponse.getString("no"));
-                            update_no++;
-
-                            BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
-                                    bclon_str, uploadFileName, update_no ,Integer.parseInt(no),check, responseListener);
-                            RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
-                            queue.add(bcUpdateRequest);
-
+                            });
+                            uploadFile(uploadFilePath + "" + uploadFileName);
 
                         }
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    }).start();
                 }
 
-            };
 
-            BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
-            RequestQueue queue2 = Volley.newRequestQueue(BCEditActivity.this);
-            queue2.add(bcCountRequest);
+                bcname_str = bcname.getText().toString();
+                bclevel_str = bclevel.getText().toString();
+                bccom_str = bccom.getText().toString();
+                bcphone_str = bcphone.getText().toString();
+                bcemail_str = bcemail.getText().toString();
+                bcadd_str = bcadd.getText().toString();
 
-            return true;
+                if(bcemail_str.equals("") || bcemail_str.equals(null)){
+                    bcemail_str = "";
+                }
+                if(bcadd_str.equals("") || bcadd_str.equals(null)){
+                    bcadd_str = "";
+                    bclat_str = "0";
+                    bclon_str = "0";
+                }
 
+                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            // 제이슨 생성
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {  // 성공
+
+                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                                    @Override
+                                    public void onResponse(String response) {
+
+                                        try {
+
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+                                            if (success) {
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+
+                                                builder.setMessage("성공적으로 수정 되었습니다")
+                                                        .setCancelable(false)
+                                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                            public void onClick(
+                                                                    DialogInterface dialog, int id) {
+                                                                // 프로그램을 종료한다
+                                                                new BCEditActivity.BackgroundTask2().execute();
+
+                                                            }
+                                                        }).
+                                                        create()
+                                                        .show();
+
+                                            } else {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                                                builder.setMessage("등록에 실패 했습니다.")
+                                                        .setNegativeButton("다시시도", null).create().show();
+                                                Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
+                                                BCEditActivity.this.startActivity(intent);
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                };
+
+
+                                int update_no = Integer.parseInt(jsonResponse.getString("no"));
+                                update_no++;
+
+                                BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
+                                        bclon_str, uploadFileName, update_no, Integer.parseInt(no), check, responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
+                                queue.add(bcUpdateRequest);
+
+
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                };
+
+                BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
+                RequestQueue queue2 = Volley.newRequestQueue(BCEditActivity.this);
+                queue2.add(bcCountRequest);
+
+                return true;
+
+            }
         }
-
 
         return super.onOptionsItemSelected(item);
     }

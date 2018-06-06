@@ -5,19 +5,16 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -28,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -53,13 +51,12 @@ public class CarUpdateActivity extends AppCompatActivity {
     Calendar currentTime;
     int hour, minute;
     String format;
-    String gps, userIDS;
-    String id, no;
+    String gps;
+    String userID, no;
 
     int y, m, d;
 
     private DrawerLayout mDrawerLayout = null;
-    private ActionBarDrawerToggle mToggle;
 
     /*yoonju*/
     TextView startText, destText, distanceText;
@@ -82,24 +79,18 @@ public class CarUpdateActivity extends AppCompatActivity {
 
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
 
 
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("수정 화면");
 
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-
-
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
 
 
         Intent fromSplash = getIntent();
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
-        id = fromSplash.getExtras().getString("id");
+        userID = fromSplash.getExtras().getString("id");
         String carNum_ = fromSplash.getExtras().getString("carNum");
         startPlace = fromSplash.getExtras().getString("startPlace");
         endPlace = fromSplash.getExtras().getString("endPlace");
@@ -141,56 +132,6 @@ public class CarUpdateActivity extends AppCompatActivity {
             calculateDistance(isStart, isDest);
         }
 
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-
-                int id = item.getItemId();
-                Intent drawer_intent;
-
-                switch (id) {
-                    case R.id.navigation_item_carjoin:
-                        drawer_intent = new Intent(getApplicationContext(), CarJoinActivity.class);
-                        startActivity(drawer_intent);
-                        overridePendingTransition(0, 0);
-
-                        finish();
-
-                        break;
-                    case R.id.navigation_item_carlist:
-
-
-                        break;
-                    case R.id.navigation_item_peoplelist:
-
-                        Intent intent = getIntent();
-                        String userID = intent.getExtras().getString("userID");
-                        userIDS = userID;
-                        String userPassword = intent.getExtras().getString("userID");
-
-                        drawer_intent = new Intent(getApplicationContext(), CarlistActivity.class);
-
-
-                        drawer_intent.putExtra("userID", userID);
-                        drawer_intent.putExtra("userPassword", userPassword);
-
-                        startActivity(drawer_intent);
-                        overridePendingTransition(0, 0);
-
-                        finish();
-
-                        break;
-                    case R.id.navigation_item_logout:
-
-                        break;
-                }
-
-                return true;
-            }
-        });
 
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -471,7 +412,7 @@ public class CarUpdateActivity extends AppCompatActivity {
 
 
                     Log.d("김민기 업데이트 생성 ", " ");
-                    CarUpdateRequest carUpdateRequest = new CarUpdateRequest(id, carNum, startPlace, CarUpdateActivity.this.endPlace, kilometer, startday, endday, startTime, endTime, Integer.parseInt(no), startLat, startLon, destLat, destLon, responseListener);
+                    CarUpdateRequest carUpdateRequest = new CarUpdateRequest(userID, carNum, startPlace, CarUpdateActivity.this.endPlace, kilometer, startday, endday, startTime, endTime, Integer.parseInt(no), startLat, startLon, destLat, destLon, responseListener);
                     RequestQueue queue = Volley.newRequestQueue(CarUpdateActivity.this);
 
                     queue.add(carUpdateRequest);
@@ -589,15 +530,151 @@ public class CarUpdateActivity extends AppCompatActivity {
 
     }
 
+    @Override
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.carupdate_menu, menu);
+
+        return true;
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mToggle.onOptionsItemSelected(item)) {
+
+        int id = item.getItemId();
+
+        if( id == android.R.id.home){
+
+            finish();
             return true;
+
         }
+
+        if( id == R.id.carupdate ){
+
+            startPlace = startText.getText().toString();
+            CarUpdateActivity.this.endPlace = destText.getText().toString();
+            kilometer = distanceText.getText().toString();
+            String carNum = txtCar.getText().toString();
+            String startday = txtDate.getText().toString();
+            String endday = txtDate2.getText().toString();
+            String startTime = txtTime.getText().toString();
+            String endTime = txtTime2.getText().toString();
+
+            if (startLat.equals(destLat) && startLon.equals(destLon)) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+                builder.setMessage(" 출발지와 목적지가 동일합니다.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (carNum.equals("차량을 선택해주세요")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+                builder.setMessage(" 차량을 선택해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (startPlace.equals("출발지 입력") || CarUpdateActivity.this.endPlace.equals("도착지 입력")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+                builder.setMessage(" 경로를 설정해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (startday.equals("출발 날짜를 선택해주세요") || startTime.equals("출발 시간을 선택해주세요")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+                builder.setMessage(" 출발 일자를 설정해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            } else if (endday.equals("도착 날짜를 선택해주세요") || endTime.equals("도착 시간을 선택해주세요")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+                builder.setMessage(" 도착 일자를 설정해주세요.")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+
+            } else {
+
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        try {
+
+
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+
+                            if (success) {
+
+                                Log.d("업데이트 ", "onResponse: 성공");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+
+                                builder.setMessage("성공적으로 수정 되었습니다")
+                                        .setCancelable(false)
+                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog, int id) {
+                                                // 프로그램을 종료한다
+                                                new BackgroundTask().execute();
+                                                overridePendingTransition(0, 0);
+                                                finish();
+
+                                            }
+                                        }).
+                                        create()
+                                        .show();
+
+
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
+                                builder.setMessage("등록에 실패 했습니다.")
+                                        .setNegativeButton("다시시도", null).create().show();
+                                Intent intent = new Intent(CarUpdateActivity.this, CarUpdateActivity.class);
+                                CarUpdateActivity.this.startActivity(intent);
+
+                            }
+
+                        } catch (JSONException e) {
+
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+
+                };
+
+
+                Log.d("김민기 업데이트 생성 ", " ");
+                CarUpdateRequest carUpdateRequest = new CarUpdateRequest(userID, carNum, startPlace, CarUpdateActivity.this.endPlace, kilometer, startday, endday, startTime, endTime, Integer.parseInt(no), startLat, startLon, destLat, destLon, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(CarUpdateActivity.this);
+
+                queue.add(carUpdateRequest);
+
+
+            }
+            return true;
+
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
 
     class BackgroundTask extends AsyncTask<Void, Void, String> {
@@ -651,7 +728,7 @@ public class CarUpdateActivity extends AppCompatActivity {
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userIDS);
+            intent.putExtra("userID", userID);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             CarUpdateActivity.this.startActivity(intent);
             overridePendingTransition(0, 0);

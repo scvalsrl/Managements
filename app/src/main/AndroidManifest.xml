@@ -59,7 +59,9 @@
         </activity>
         <activity android:name=".DestListActivity" />
         <activity android:name=".ListMapActivity" />
-        <activity android:name=".CarUpdateActivity" />
+        <activity android:name=".CarUpdateActivity">
+        </activity>
+
         <activity android:name=".TempActivity" />
         <activity android:name=".BusinessCardMain" />
         <activity android:name=".BCListActivity" />

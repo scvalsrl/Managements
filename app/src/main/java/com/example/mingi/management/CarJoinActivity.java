@@ -1,9 +1,11 @@
 package com.example.mingi.management;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,7 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -478,6 +481,21 @@ public class CarJoinActivity extends AppCompatActivity {
         }
 
         int id = item.getItemId();
+
+        if( id == R.id.logout ){
+
+            Intent intent = new Intent(CarJoinActivity.this, LoginActivity.class);
+            startActivity(intent);
+            SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = auto.edit();
+            //editor.clear()는 auto에 들어있는 모든 정보를 기기에서 지웁니다.
+            editor.clear();
+            editor.commit();
+            Toast.makeText(CarJoinActivity.this, "로그아웃 하였습니다", Toast.LENGTH_SHORT).show();
+            finish();
+
+            return true;
+        }
         if( id == R.id.newPost ){
 
             final String ids = "2109812";

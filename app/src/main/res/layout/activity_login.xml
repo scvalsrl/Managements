@@ -20,6 +20,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="BNK 운행일지"
+            android:textSize="40dp"
+            android:textColor="#ea4472"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="행번과 비밀번호를 입력해주세요"
             android:textSize="18dp"
             android:textColor="#a5a5a5"
@@ -107,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:textStyle="bold"
-            android:background="#ea4472"
+            android:background="@drawable/bt_corner"
             android:shadowColor="@color/listeditbox"
             android:shadowDx="4"
             android:shadowDy="4"

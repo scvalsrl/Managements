@@ -905,44 +905,43 @@ public class CarJoinActivity extends AppCompatActivity {
     }
 
     void setTotalBox() {
-        boolean isStart = startPlace.equals("출발지 입력");
-        boolean isDest = endPlace.equals("도착지 입력");
-        if(isStart) {
-            Log.d("CarJoin", "출발지 입력 플리즈");
-            AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
-            builder.setMessage(" 출발지를 입력해주세요 ")
-                    .setNegativeButton("확인", null)
-                    .create()
-                    .show();
-
-            return;
-        }
-        if(isDest) {
-            Log.d("CarJoin", "도착지 입력 플리즈");
-            AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
-            builder.setMessage(" 도착지를 입력해주세요 ")
-                    .setNegativeButton("확인", null)
-                    .create()
-                    .show();
-
-            return;
-        }
-
-        if(startLat == destLat && startLon == destLon) {
-            Log.d("CarJoin", "출발지==도착지");
-            distanceText.setText(" 0 km");
-            AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
-            builder.setMessage(" 출발지와 목적지가 같습니다 ")
-                    .setNegativeButton("확인", null)
-                    .create()
-                    .show();
-
-            return;
-        }
-
         totalBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean isStart = startPlace.equals("출발지 입력");
+                boolean isDest = endPlace.equals("도착지 입력");
+                if(isStart) {
+                    Log.d("CarJoin", "출발지 입력 플리즈");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                    builder.setMessage(" 출발지를 입력해주세요 ")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
+
+                    return;
+                }
+                if(isDest) {
+                    Log.d("CarJoin", "도착지 입력 플리즈");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                    builder.setMessage(" 도착지를 입력해주세요 ")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
+
+                    return;
+                }
+
+                if(startLat == destLat && startLon == destLon) {
+                    Log.d("CarJoin", "출발지==도착지");
+                    distanceText.setText(" 0 km");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                    builder.setMessage(" 출발지와 목적지가 같습니다 ")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
+
+                    return;
+                }
 
                 EditDialog editDialog = new EditDialog(CarJoinActivity.this);
                 editDialog.setDialogListener(new MyDialogListener() {

@@ -612,103 +612,166 @@ public class BusinessCardMain extends AppCompatActivity {
 
         }
 
-        if( id == R.id.vbcjoin ){
+        if( id == R.id.vbcjoin ) {
 
-            dialog = ProgressDialog.show(BusinessCardMain.this, "", "등록 중입니다", true);
 
-            new Thread(new Runnable() {
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        public void run() {   }
-                    });
-                    uploadFile(uploadFilePath + "" + uploadFileName);
-                }
-            }).start();
+            Log.d("김민기기기", "onOptionsItemSelected: " + bcname.getText().toString());
+            if (bcname.getText().toString().equals("")) {
 
-            Response.Listener<String> responseListener2 = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        // 제이슨 생성
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
+                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                builder.setMessage(" 이름을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
 
-                        if (success) {  // 성공
-                            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    try {
-                                        JSONObject jsonResponse = new JSONObject(response);
-                                        boolean success = jsonResponse.getBoolean("success");
+            }
+            else  if (bclevel.getText().toString().equals("")) {
 
-                                        if (success) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                builder.setMessage(" 직급을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
 
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+            }
+            else  if (bccom.getText().toString().equals("")) {
 
-                                            builder.setMessage("성공적으로 등록 되었습니다")
-                                                    .setPositiveButton("확인", null)
-                                                    .create()
-                                                    .show();
-                                            new BackgroundTask2().execute();
-                                        } else {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
-                                            builder.setMessage("등록에 실패 했습니다.")
-                                                    .setNegativeButton("다시시도", null).create().show();
-                                            Intent intent = new Intent(BusinessCardMain.this, BusinessCardMain.class);
-                                            BusinessCardMain.this.startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                builder.setMessage(" 회사명을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            }
+            else  if (bcphone.getText().toString().equals("")) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                builder.setMessage(" 휴대폰을 입력해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            }
+            else  if (uploadFileName.equals("")  || uploadFileName.equals(null)  ) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                builder.setMessage(" 사진을 등록해주세요 ")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+
+            }
+
+            else {
+
+
+                dialog = ProgressDialog.show(BusinessCardMain.this, "", "등록 중입니다", true);
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                            }
+                        });
+                        uploadFile(uploadFilePath + "" + uploadFileName);
+                    }
+                }).start();
+
+                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            // 제이슨 생성
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            if (success) {  // 성공
+                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject jsonResponse = new JSONObject(response);
+                                            boolean success = jsonResponse.getBoolean("success");
+
+                                            if (success) {
+
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+
+                                                builder.setMessage("성공적으로 등록 되었습니다")
+                                                        .setPositiveButton("확인", null)
+                                                        .create()
+                                                        .show();
+                                                new BackgroundTask2().execute();
+                                            } else {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                                                builder.setMessage("등록에 실패 했습니다.")
+                                                        .setNegativeButton("다시시도", null).create().show();
+                                                Intent intent = new Intent(BusinessCardMain.this, BusinessCardMain.class);
+                                                BusinessCardMain.this.startActivity(intent);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+
                                     }
 
+
+                                };
+                                String no_s = jsonResponse.getString("no");
+
+                                int no_i = Integer.parseInt(no_s);
+                                no_i++;
+
+                                String id = "2109812";
+                                String bc_name = bcname.getText().toString();
+                                String bc_level = bclevel.getText().toString();
+                                String bc_com = bccom.getText().toString();
+                                String bc_phone = bcphone.getText().toString();
+                                String bc_mail = bcemail.getText().toString();
+                                String bc_add = bcadd.getText().toString();
+
+                                if(bc_mail.equals("") || bc_mail.equals(null)){
+                                    bc_mail = "";
+                                }
+                                if(bc_add.equals("") || bc_mail.equals(null)){
+                                    bc_add = "";
+                                    bclat = "0";
+                                    bclon = "0";
                                 }
 
+                                BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bclat, bclon, uploadFileName, no_i, responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(BusinessCardMain.this);
 
-                            };
-                            String no_s = jsonResponse.getString("no");
-
-                            int no_i = Integer.parseInt(no_s);
-                            no_i++;
-
-                            String id = "2109812";
-                            String bc_name = bcname.getText().toString();
-                            String bc_level = bclevel.getText().toString();
-                            String bc_com = bccom.getText().toString();
-                            String bc_phone = bcphone.getText().toString();
-                            String bc_mail = bcemail.getText().toString();
-                            String bc_add = bcadd.getText().toString();
-
-                            BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bclat, bclon, uploadFileName, no_i, responseListener);
-                            RequestQueue queue = Volley.newRequestQueue(BusinessCardMain.this);
-
-                            queue.add(bcJoinRequest);
+                                queue.add(bcJoinRequest);
 
 
-                        } else {
+                            } else {
 
 
+                            }
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
 
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
 
-                }
-
-            };
+                };
 
 
-            BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
-            RequestQueue queue2 = Volley.newRequestQueue(BusinessCardMain.this);
-            queue2.add(bcCountRequest);
+                BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
+                RequestQueue queue2 = Volley.newRequestQueue(BusinessCardMain.this);
+                queue2.add(bcCountRequest);
 
 
+                return true;
+            }
 
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
+
+
     }
 
 

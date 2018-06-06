@@ -370,6 +370,7 @@
                     android:layout_marginTop="17dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
+                    android:layout_marginBottom="30dp"
                     android:elevation="3dp"
                     >
 
@@ -439,36 +440,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginBottom="17dp">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="5dp"
-                    android:padding="1dp" >
-                    <Button
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="7dp"
-                        android:layout_marginRight="2dp"
-                        android:layout_marginTop="5.5dp"
-                        android:id="@+id/join"
-                        android:textSize="16dp"
-                        android:layout_width="120dp"
-                        android:layout_height="43dp"
-                        android:textStyle="bold"
-                        android:background="@drawable/rounded_search_btn"
-                        android:shadowColor="@color/listeditbox"
-                        android:shadowDx="4"
-                        android:shadowDy="4"
-                        android:text="등록"
-                        android:textColor="#ed3e7b" />
-                </LinearLayout>
-
-                </LinearLayout>
 
 
             </LinearLayout>

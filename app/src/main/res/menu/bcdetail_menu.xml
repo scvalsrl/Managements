@@ -4,11 +4,14 @@
 
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
+    <item
+    android:id="@+id/vbcdelete"
+    android:title=" 삭제 "
+    app:showAsAction="always" />
 
     <item
-        android:title=" 등록완료 "
-        android:id="@+id/newPost"
+        android:id="@+id/vbcupdate"
+        android:title=" 수정 "
         app:showAsAction="always" />
 
 </menu>

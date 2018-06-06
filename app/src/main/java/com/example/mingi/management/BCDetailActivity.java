@@ -2,7 +2,6 @@ package com.example.mingi.management;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,8 +11,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,7 +36,6 @@ import java.net.URL;
 public class BCDetailActivity extends AppCompatActivity {
     ImageView imgView, emailBtn, callBtn, msgBtn, bcfullmap;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
-    Button bcedit, bcdelete;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName, userID;
@@ -45,6 +46,10 @@ public class BCDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcdetail);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("디테일화면");
 
         Intent intent = getIntent();
 
@@ -103,9 +108,6 @@ public class BCDetailActivity extends AppCompatActivity {
         bcadd = (TextView) findViewById(R.id.bcadd);
         bcno = (TextView) findViewById(R.id.bcno);
 
-        bcedit = (Button) findViewById(R.id.bcedit);
-        bcdelete = (Button) findViewById(R.id.bcdelete);
-
 
         new BCDetailActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
                 .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
@@ -129,95 +131,6 @@ public class BCDetailActivity extends AppCompatActivity {
 
 
     void btnClick() {
-        bcedit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent goEdit = new Intent(getApplicationContext(), BCEditActivity.class);
-
-                goEdit.putExtra("bcname", bcname_str);
-                goEdit.putExtra("bclevel", bclevel_str);
-                goEdit.putExtra("bccom", bccom_str);
-                goEdit.putExtra("bcphone", bcphone_str);
-                goEdit.putExtra("bcemail", bcemail_str);
-                goEdit.putExtra("bcadd", bcadd_str);
-                goEdit.putExtra("bclat", bclat_str);
-                goEdit.putExtra("bclon", bclon_str);
-                goEdit.putExtra("bcphoto", bcphoto_str);
-                goEdit.putExtra("no", no);
-
-                goEdit.putExtra("userID", userID);
-                goEdit.putExtra("nowLat", nowLat);
-                goEdit.putExtra("nowLon", nowLon);
-                goEdit.putExtra("isGPSEnable", isGPSEnable);
-                goEdit.putExtra("nowName", nowName);
-
-                startActivity(goEdit);
-
-            }
-        });
-
-
-        bcdelete.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(BCDetailActivity.this);
-
-                builder
-                        .setMessage("명함을 삭제 합니다")
-                        .setCancelable(false)
-                        .setPositiveButton("확인",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(
-                                            DialogInterface dialog, int id) {
-
-                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
-
-
-                                            @Override
-                                            public void onResponse(String response) {
-                                                try {
-
-                                                    JSONObject jsonResponse = new JSONObject(response);
-                                                    boolean success = jsonResponse.getBoolean("success");
-                                                    if (success) {
-                                                        new BackgroundTask2().execute();
-                                                    } else {
-                                                        Log.d("  삭제실패 : ", "1");
-                                                    }
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-
-                                            }
-
-                                        };
-
-
-                                        int No_i = Integer.parseInt(no);
-
-                                        DeleteRequest2 deleteRequest = new DeleteRequest2(bcphoto_str,No_i, responseListener);
-                                        RequestQueue queue = Volley.newRequestQueue(BCDetailActivity.this);
-                                        queue.add(deleteRequest);
-
-
-                                    }
-                                })
-                        .setNegativeButton("취소",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(
-                                            DialogInterface dialog, int id) {
-                                        // 다이얼로그를 취소한다
-                                        dialog.cancel();
-                                    }
-                                }).create()
-                        .show();
-
-
-            }
-        });
 
 
         callBtn.setOnClickListener(new View.OnClickListener() {
@@ -357,4 +270,114 @@ public class BCDetailActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         }
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.bcdetail_menu, menu);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        int id = item.getItemId();
+
+        if( id == android.R.id.home){
+            finish();
+
+            return true;
+
+        }
+
+        if( id == R.id.vbcdelete){
+            AlertDialog.Builder builder = new AlertDialog.Builder(BCDetailActivity.this);
+
+            builder
+                    .setMessage("명함을 삭제 합니다")
+                    .setCancelable(false)
+                    .setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog, int id) {
+
+                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            try {
+
+                                                JSONObject jsonResponse = new JSONObject(response);
+                                                boolean success = jsonResponse.getBoolean("success");
+                                                if (success) {
+                                                    new BackgroundTask2().execute();
+                                                } else {
+                                                    Log.d("  삭제실패 : ", "1");
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+
+                                    };
+
+
+                                    int No_i = Integer.parseInt(no);
+
+                                    DeleteRequest2 deleteRequest = new DeleteRequest2(bcphoto_str,No_i, responseListener);
+                                    RequestQueue queue = Volley.newRequestQueue(BCDetailActivity.this);
+                                    queue.add(deleteRequest);
+
+
+                                }
+                            })
+                    .setNegativeButton("취소",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog, int id) {
+                                    // 다이얼로그를 취소한다
+                                    dialog.cancel();
+                                }
+                            }).create()
+                    .show();
+
+            return true;
+
+        }
+
+        if( id == R.id.vbcupdate ){
+
+            Intent goEdit = new Intent(getApplicationContext(), BCEditActivity.class);
+
+            goEdit.putExtra("bcname", bcname_str);
+            goEdit.putExtra("bclevel", bclevel_str);
+            goEdit.putExtra("bccom", bccom_str);
+            goEdit.putExtra("bcphone", bcphone_str);
+            goEdit.putExtra("bcemail", bcemail_str);
+            goEdit.putExtra("bcadd", bcadd_str);
+            goEdit.putExtra("bclat", bclat_str);
+            goEdit.putExtra("bclon", bclon_str);
+            goEdit.putExtra("bcphoto", bcphoto_str);
+            goEdit.putExtra("no", no);
+
+            goEdit.putExtra("userID", userID);
+            goEdit.putExtra("nowLat", nowLat);
+            goEdit.putExtra("nowLon", nowLon);
+            goEdit.putExtra("isGPSEnable", isGPSEnable);
+            goEdit.putExtra("nowName", nowName);
+
+            startActivity(goEdit);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

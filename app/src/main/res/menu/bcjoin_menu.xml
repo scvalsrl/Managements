@@ -8,7 +8,7 @@
 
     <item
         android:title=" 등록완료 "
-        android:id="@+id/newPost"
+        android:id="@+id/vbcjoin"
         app:showAsAction="always" />
 
 </menu>

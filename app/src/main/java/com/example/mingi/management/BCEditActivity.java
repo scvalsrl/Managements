@@ -19,10 +19,13 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,7 +61,7 @@ public class BCEditActivity extends AppCompatActivity {
     ImageView imageView;
     EditText bcname, bclevel, bccom, bcphone, bcemail;
     TextView bcadd;
-    Button bccamera, bcupload, bcjoin, bccancel;
+    Button bccamera, bcupload;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
     String bclat, bclon, userID, no, bcphoto_str, bclat_str, bclon_str;
@@ -89,6 +92,11 @@ public class BCEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcedit);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("수정화면");
+
         getDataFromDetail();
         initView();
         checkPermissions();
@@ -109,8 +117,7 @@ public class BCEditActivity extends AppCompatActivity {
 
         bcupload = (Button) findViewById(R.id.uploadBtn);
         bccamera = (Button) findViewById(R.id.cameraBtn);
-        bcjoin = (Button) findViewById(R.id.bcjoin);
-        bccancel = (Button) findViewById(R.id.bccancel);
+
         imageView = (ImageView) findViewById(R.id.imgView);
     }
 
@@ -201,125 +208,6 @@ public class BCEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pickFromAlbum();
-            }
-        });
-
-        bcjoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
-
-                if (!uploadFileName.equals(temp)) {
-                    check = temp;
-                    new Thread(new Runnable() {
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-
-                                }
-                            });
-                            uploadFile(uploadFilePath + "" + uploadFileName);
-
-                        }
-                    }).start();
-                }
-
-
-                bcname_str = bcname.getText().toString();
-                bclevel_str = bclevel.getText().toString();
-                bccom_str = bccom.getText().toString();
-                bcphone_str = bcphone.getText().toString();
-                bcemail_str = bcemail.getText().toString();
-                bcadd_str = bcadd.getText().toString();
-
-
-                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        try {
-                            // 제이슨 생성
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {  // 성공
-
-                                Response.Listener<String> responseListener = new Response.Listener<String>() {
-
-                                    @Override
-                                    public void onResponse(String response) {
-
-                                        try {
-
-                                            JSONObject jsonResponse = new JSONObject(response);
-                                            boolean success = jsonResponse.getBoolean("success");
-                                            if (success) {
-
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
-
-                                                builder.setMessage("성공적으로 수정 되었습니다")
-                                                        .setCancelable(false)
-                                                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                            public void onClick(
-                                                                    DialogInterface dialog, int id) {
-                                                                // 프로그램을 종료한다
-                                                                new BCEditActivity.BackgroundTask2().execute();
-
-                                                            }
-                                                        }).
-                                                        create()
-                                                        .show();
-
-                                            } else {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
-                                                builder.setMessage("등록에 실패 했습니다.")
-                                                        .setNegativeButton("다시시도", null).create().show();
-                                                Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
-                                                BCEditActivity.this.startActivity(intent);
-                                            }
-
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                };
-
-
-
-
-                                int update_no = Integer.parseInt(jsonResponse.getString("no"));
-                                update_no++;
-
-                                BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
-                                        bclon_str, uploadFileName, update_no ,Integer.parseInt(no),check, responseListener);
-                                RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
-                                queue.add(bcUpdateRequest);
-
-
-                            }
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                };
-
-                BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
-                RequestQueue queue2 = Volley.newRequestQueue(BCEditActivity.this);
-                queue2.add(bcCountRequest);
-
-            }
-        });
-
-        bccancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
             }
         });
 
@@ -734,6 +622,139 @@ public class BCEditActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.bcupdate_menu, menu);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        int id = item.getItemId();
+
+        if( id == android.R.id.home){
+            finish();
+            return true;
+        }
+
+        if( id == R.id.vbcupdate2){
+            dialog = ProgressDialog.show(BCEditActivity.this, "", "등록 중입니다", true);
+
+            if (!uploadFileName.equals(temp)) {
+                check = temp;
+                new Thread(new Runnable() {
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+
+                            }
+                        });
+                        uploadFile(uploadFilePath + "" + uploadFileName);
+
+                    }
+                }).start();
+            }
+
+
+            bcname_str = bcname.getText().toString();
+            bclevel_str = bclevel.getText().toString();
+            bccom_str = bccom.getText().toString();
+            bcphone_str = bcphone.getText().toString();
+            bcemail_str = bcemail.getText().toString();
+            bcadd_str = bcadd.getText().toString();
+
+
+            Response.Listener<String> responseListener2 = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        // 제이슨 생성
+                        JSONObject jsonResponse = new JSONObject(response);
+                        boolean success = jsonResponse.getBoolean("success");
+
+                        if (success) {  // 성공
+
+                            Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                                @Override
+                                public void onResponse(String response) {
+
+                                    try {
+
+                                        JSONObject jsonResponse = new JSONObject(response);
+                                        boolean success = jsonResponse.getBoolean("success");
+                                        if (success) {
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+
+                                            builder.setMessage("성공적으로 수정 되었습니다")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                        public void onClick(
+                                                                DialogInterface dialog, int id) {
+                                                            // 프로그램을 종료한다
+                                                            new BCEditActivity.BackgroundTask2().execute();
+
+                                                        }
+                                                    }).
+                                                    create()
+                                                    .show();
+
+                                        } else {
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(BCEditActivity.this);
+                                            builder.setMessage("등록에 실패 했습니다.")
+                                                    .setNegativeButton("다시시도", null).create().show();
+                                            Intent intent = new Intent(BCEditActivity.this, BCEditActivity.class);
+                                            BCEditActivity.this.startActivity(intent);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+
+
+
+
+                            int update_no = Integer.parseInt(jsonResponse.getString("no"));
+                            update_no++;
+
+                            BCUpdateRequest bcUpdateRequest = new BCUpdateRequest(userID, bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str,
+                                    bclon_str, uploadFileName, update_no ,Integer.parseInt(no),check, responseListener);
+                            RequestQueue queue = Volley.newRequestQueue(BCEditActivity.this);
+                            queue.add(bcUpdateRequest);
+
+
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            };
+
+            BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
+            RequestQueue queue2 = Volley.newRequestQueue(BCEditActivity.this);
+            queue2.add(bcCountRequest);
+
+            return true;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

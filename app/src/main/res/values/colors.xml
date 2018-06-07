@@ -8,6 +8,8 @@
     <color name="BNKred">#C7050E</color>
     <color name="transparency">#00ff0000</color>
     <color name="silver">#C0C0C0</color>
+    <color name="bcbackground">#E7E8E9</color>
+    <color name="bcbackground_outline">#C8C9CB</color>
     <color name="darkGrey">#A9A9A9</color>
     <color name="darkgray">#6c6c6c</color>
     <color name="listeditbox">#a6a8aa</color>

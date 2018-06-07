@@ -3,4 +3,7 @@
     <item type="dimen" name="dialog_min_width_minor">90%</item>
 
     <item type="dimen" name="dialog_text_size">500dp</item>
+    <item type="dimen" name="bcedit_icon_margin_right">18dp</item>
+    <item type="dimen" name="bcedit_icon_size">40dp</item>
+    <item type="dimen" name="bcedit_iccam_size">33dp</item>
 </resources>

@@ -2,8 +2,6 @@
     <string name="app_name">My Application</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-
-
     <string name="nav_item_carjoin">운행등록</string>
 
     <string name="nav_item_carlist">운행리스트</string>

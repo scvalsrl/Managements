@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -23,10 +24,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -60,14 +63,14 @@ import java.util.List;
 public class BCEditActivity extends AppCompatActivity {
 
 
-    ImageView imageView;
-    EditText bcname, bclevel, bccom, bcphone, bcemail;
-    TextView bcadd;
-    Button bccamera, bcupload;
+    ImageView imageView, bccamera, bcupload;
+    EditText bcname, bclevel, bccom, bcphone, bcemail, bcadd;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
     String bclat, bclon, userID, no, bcphoto_str, bclat_str, bclon_str;
     String isGPSEnable, nowLat, nowLon, nowName;
+
+    InputMethodManager imm;
 
     //for camera
     private static final int PICK_FROM_CAMERA = 0;
@@ -115,12 +118,21 @@ public class BCEditActivity extends AppCompatActivity {
         bccom = (EditText) findViewById(R.id.bccom);
         bcphone = (EditText) findViewById(R.id.bcphone);
         bcemail = (EditText) findViewById(R.id.bcemail);
-        bcadd = (TextView) findViewById(R.id.bcadd);
+        bcadd = (EditText) findViewById(R.id.bcadd);
 
-        bcupload = (Button) findViewById(R.id.uploadBtn);
-        bccamera = (Button) findViewById(R.id.cameraBtn);
+        bcupload = (ImageView) findViewById(R.id.uploadBtn);
+        bccamera = (ImageView) findViewById(R.id.cameraBtn);
 
         imageView = (ImageView) findViewById(R.id.imgView);
+
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        bcadd.setClickable(false);
+        bcadd.setFocusable(false);
+    }
+
+    private void hideKeyboard(EditText editText) {
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     @Override
@@ -198,7 +210,6 @@ public class BCEditActivity extends AppCompatActivity {
 
         new BCEditActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
                 .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
-
     }
 
     void setClickBtn() {
@@ -223,6 +234,7 @@ public class BCEditActivity extends AppCompatActivity {
                 bcadd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        hideKeyboard(bcadd);
                         Intent goSearch = new Intent(BCEditActivity.this, SearchAddrActivity.class);
                         goSearch.putExtra("nowLat", nowLat);
                         goSearch.putExtra("nowLon", nowLon);

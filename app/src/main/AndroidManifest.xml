@@ -35,17 +35,16 @@
         </provider>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar2"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".CarJoinActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".CarlistActivity" />
-        <activity android:name=".CarManegementActivity" />
-        <activity android:name=".ListActivity" />
+        <activity android:name=".DrivingJoin.CarJoinActivity" />
+        <activity android:name=".login.RegisterActivity" />
+        <activity android:name=".DrivingJoin.CarlistActivity" />
+        <activity android:name=".DrivingJoin.CarManegementActivity" />
+        <activity android:name=".DrivingJoin.ListActivity" />
         -
         <activity
-            android:name=".Splashscreen"
+            android:name=".login.Splashscreen"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,18 +52,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DestListActivity" />
-        <activity android:name=".ListMapActivity" />
-        <activity android:name=".CarUpdateActivity"></activity>
-        <activity android:name=".TempActivity" />
-        <activity android:name=".BCJoinActivity" />
-        <activity android:name=".BCListActivity" />
-        <activity android:name=".uploadActivity" />
-        <activity android:name=".SearchAddrActivity" />
-        <activity android:name=".BCDetailActivity" />
-        <activity android:name=".BCEditActivity" />
-        <activity android:name=".BCFullMapActivity" />
-        <activity android:name=".BCDetailNoAddActivity"></activity>
+        <activity android:name=".DrivingJoin.DestListActivity" />
+        <activity android:name=".DrivingJoin.ListMapActivity" />
+        <activity android:name=".DrivingJoin.CarUpdateActivity"></activity>
+        <activity android:name=".BusinessCard.BCJoinActivity" />
+        <activity android:name=".BusinessCard.BCListActivity" />
+        <activity android:name=".BusinessCard.uploadActivity" />
+        <activity android:name=".DrivingJoin.SearchAddrActivity" />
+        <activity android:name=".BusinessCard.BCDetailActivity" />
+        <activity android:name=".BusinessCard.BCEditActivity" />
+        <activity android:name=".BusinessCard.BCFullMapActivity" />
+        <activity android:name=".BusinessCard.BCDetailNoAddActivity"></activity>
     </application>
 
 </manifest>

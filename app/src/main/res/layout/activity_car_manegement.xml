@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    tools:context="com.example.mingi.management.CarManegementActivity">
+    tools:context="com.example.mingi.management.DrivingJoin.CarManegementActivity">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

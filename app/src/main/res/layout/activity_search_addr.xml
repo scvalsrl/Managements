@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchAddrActivity">
+    tools:context=".DrivingJoin.SearchAddrActivity">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

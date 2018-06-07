@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
@@ -78,6 +80,12 @@ public class CarJoinActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_join);
+
+
+
+
+
+
         findcontrol();
         setActionBar();
 
@@ -117,8 +125,17 @@ public class CarJoinActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("운행일지 등록");
+        final ActionBar abar = getSupportActionBar();;//line under the action bar
+        View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        textviewTitle.setText("BNK운행일지");
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
     }
 
     private void setCar() {
@@ -901,4 +918,6 @@ public class CarJoinActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

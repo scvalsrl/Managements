@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,10 +64,8 @@ public class BCJoinActivity extends AppCompatActivity {
 
     Uri photoUri;
 
-    Button uploadBtn, camBtn;
-    ImageView imageView;
-    TextView bcadd;
-    EditText bcname, bclevel, bccom, bcphone, bcemail;
+    ImageView imageView, uploadBtn, camBtn;
+    EditText bcname, bclevel, bccom, bcphone, bcemail, bcadd;
     String bcadd_str, bclat, bclon;
 
     String isGPSEnable;
@@ -91,6 +90,7 @@ public class BCJoinActivity extends AppCompatActivity {
     final String uploadFilePath = "storage/emulated/0/test/";//경로를 모르겠으면, 갤러리 어플리케이션 가서 메뉴->상세 정보
     String uploadFileName = ""; //전송하고자하는 파일 이름
 
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +119,7 @@ public class BCJoinActivity extends AppCompatActivity {
         bcadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideKeyboard(bcadd);
                 Intent goSearch = new Intent(BCJoinActivity.this, SearchAddrActivity.class);
                 goSearch.putExtra("nowLat", nowLat);
                 goSearch.putExtra("nowLon", nowLon);
@@ -361,17 +362,22 @@ public class BCJoinActivity extends AppCompatActivity {
 
 
     public void initView() {
-        uploadBtn = (Button) findViewById(R.id.uploadBtn);
-        camBtn = (Button) findViewById(R.id.cameraBtn);
+        uploadBtn = (ImageView) findViewById(R.id.uploadBtn);
+        camBtn = (ImageView) findViewById(R.id.cameraBtn);
         imageView = (ImageView) findViewById(R.id.imgView);
         bcname = (EditText) findViewById(R.id.bcname);
         bclevel = (EditText) findViewById(R.id.bclevel);
         bccom = (EditText) findViewById(R.id.bccom);
         bcphone = (EditText) findViewById(R.id.bcphone);
         bcemail = (EditText) findViewById(R.id.bcemail);
-        bcadd = (TextView) findViewById(R.id.bcadd);
+        bcadd = (EditText) findViewById(R.id.bcadd);
         bcphone = (EditText) findViewById(R.id.bcphone);
         bcphone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        bcadd.setClickable(false);
+        bcadd.setFocusable(false);
     }
 
     private void checkPermissions() {
@@ -418,6 +424,10 @@ public class BCJoinActivity extends AppCompatActivity {
     private void showNoPermissionToastAndFinish() {
         Toast.makeText(this, "권한 요청에 동의해주셔야 이용가능합니다. 설정에서 권한 허용 하시기 바랍니다.", Toast.LENGTH_SHORT).show();
         finish();
+    }
+
+    private void hideKeyboard(EditText editText) {
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     private void pickFromAlbum() {

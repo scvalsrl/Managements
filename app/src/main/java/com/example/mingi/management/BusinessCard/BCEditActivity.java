@@ -24,6 +24,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -126,7 +127,7 @@ public class BCEditActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imgView);
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-
+        bcphone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         bcadd.setClickable(false);
         bcadd.setFocusable(false);
     }

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -52,11 +51,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BusinessCardMain extends AppCompatActivity {
+public class BCJoinActivity extends AppCompatActivity {
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_CAMERA = 2;
@@ -95,7 +93,7 @@ public class BusinessCardMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_business_card_main);
+        setContentView(R.layout.activity_bcjoin);
         checkPermissions();
         initView();
 
@@ -119,7 +117,7 @@ public class BusinessCardMain extends AppCompatActivity {
         bcadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent goSearch = new Intent(BusinessCardMain.this, SearchAddrActivity.class);
+                Intent goSearch = new Intent(BCJoinActivity.this, SearchAddrActivity.class);
                 goSearch.putExtra("nowLat", nowLat);
                 goSearch.putExtra("nowLon", nowLon);
                 startActivityForResult(goSearch, 3);
@@ -193,14 +191,14 @@ public class BusinessCardMain extends AppCompatActivity {
 
         public void onPostExecute(String result) {
 
-            Intent intent = new Intent(BusinessCardMain.this, BCListActivity.class);
+            Intent intent = new Intent(BCJoinActivity.this, BCListActivity.class);
             intent.putExtra("userList", result);
             intent.putExtra("nowLat", nowLat);
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
-            BusinessCardMain.this.startActivity(intent);
+            BCJoinActivity.this.startActivity(intent);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             finish();
             overridePendingTransition(0, 0);
@@ -308,7 +306,7 @@ public class BusinessCardMain extends AppCompatActivity {
                             String msg = "File Upload Completed.\n\n See uploaded file here : \n\n"
                                     + uploadFileName;
 
-                            Toast.makeText(BusinessCardMain.this, "File Upload Complete.",
+                            Toast.makeText(BCJoinActivity.this, "File Upload Complete.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -328,7 +326,7 @@ public class BusinessCardMain extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
 
                     public void run() {
-                        Toast.makeText(BusinessCardMain.this, "MalformedURLException",
+                        Toast.makeText(BCJoinActivity.this, "MalformedURLException",
                                 Toast.LENGTH_SHORT).show();
                     }
 
@@ -344,7 +342,7 @@ public class BusinessCardMain extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
 
                     public void run() {
-                        Toast.makeText(BusinessCardMain.this, "Got Exception : see logcat ",
+                        Toast.makeText(BCJoinActivity.this, "Got Exception : see logcat ",
                                 Toast.LENGTH_SHORT).show();
                     }
 
@@ -618,7 +616,7 @@ public class BusinessCardMain extends AppCompatActivity {
             Log.d("김민기기기", "onOptionsItemSelected: " + bcname.getText().toString());
             if (bcname.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 이름을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -627,7 +625,7 @@ public class BusinessCardMain extends AppCompatActivity {
             }
             else  if (bclevel.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 직급을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -636,7 +634,7 @@ public class BusinessCardMain extends AppCompatActivity {
             }
             else  if (bccom.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 회사명을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -645,7 +643,7 @@ public class BusinessCardMain extends AppCompatActivity {
             }
             else  if (bcphone.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 휴대폰을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -654,7 +652,7 @@ public class BusinessCardMain extends AppCompatActivity {
             }
             else  if (uploadFileName.equals("")  || uploadFileName.equals(null)  ) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 사진을 등록해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -665,7 +663,7 @@ public class BusinessCardMain extends AppCompatActivity {
             else {
 
 
-                dialog = ProgressDialog.show(BusinessCardMain.this, "", "등록 중입니다", true);
+                dialog = ProgressDialog.show(BCJoinActivity.this, "", "등록 중입니다", true);
 
                 new Thread(new Runnable() {
                     public void run() {
@@ -695,7 +693,7 @@ public class BusinessCardMain extends AppCompatActivity {
 
                                             if (success) {
 
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
 
                                                 builder.setMessage("성공적으로 등록 되었습니다")
                                                         .setPositiveButton("확인", null)
@@ -703,11 +701,11 @@ public class BusinessCardMain extends AppCompatActivity {
                                                         .show();
                                                 new BackgroundTask2().execute();
                                             } else {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                                                 builder.setMessage("등록에 실패 했습니다.")
                                                         .setNegativeButton("다시시도", null).create().show();
-                                                Intent intent = new Intent(BusinessCardMain.this, BusinessCardMain.class);
-                                                BusinessCardMain.this.startActivity(intent);
+                                                Intent intent = new Intent(BCJoinActivity.this, BCJoinActivity.class);
+                                                BCJoinActivity.this.startActivity(intent);
                                             }
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -741,7 +739,7 @@ public class BusinessCardMain extends AppCompatActivity {
                                 }
 
                                 BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bclat, bclon, uploadFileName, no_i, responseListener);
-                                RequestQueue queue = Volley.newRequestQueue(BusinessCardMain.this);
+                                RequestQueue queue = Volley.newRequestQueue(BCJoinActivity.this);
 
                                 queue.add(bcJoinRequest);
 
@@ -762,7 +760,7 @@ public class BusinessCardMain extends AppCompatActivity {
 
 
                 BCCountRequest bcCountRequest = new BCCountRequest(responseListener2);
-                RequestQueue queue2 = Volley.newRequestQueue(BusinessCardMain.this);
+                RequestQueue queue2 = Volley.newRequestQueue(BCJoinActivity.this);
                 queue2.add(bcCountRequest);
 
 

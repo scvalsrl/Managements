@@ -1,6 +1,5 @@
 package com.example.mingi.management;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -13,11 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,10 +28,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class BCListActivity extends AppCompatActivity {
 
@@ -126,7 +118,7 @@ public class BCListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent bcList = new Intent(getApplicationContext(), BusinessCardMain.class);
+                Intent bcList = new Intent(getApplicationContext(), BCJoinActivity.class);
                 bcList.putExtra("userID", userID);
                 bcList.putExtra("nowLat", nowLat);
                 bcList.putExtra("nowLon", nowLon);

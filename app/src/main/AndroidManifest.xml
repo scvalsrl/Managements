@@ -57,7 +57,7 @@
         <activity android:name=".ListMapActivity" />
         <activity android:name=".CarUpdateActivity"></activity>
         <activity android:name=".TempActivity" />
-        <activity android:name=".BusinessCardMain" />
+        <activity android:name=".BCJoinActivity" />
         <activity android:name=".BCListActivity" />
         <activity android:name=".uploadActivity" />
         <activity android:name=".SearchAddrActivity" />

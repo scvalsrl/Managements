@@ -911,7 +911,6 @@ public class CarJoinActivity extends AppCompatActivity {
                 boolean isStart = startPlace.equals("출발지 입력");
                 boolean isDest = endPlace.equals("도착지 입력");
                 if(isStart) {
-                    Log.d("CarJoin", "출발지 입력 플리즈");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
                     builder.setMessage(" 출발지를 입력해주세요 ")
                             .setNegativeButton("확인", null)
@@ -921,7 +920,6 @@ public class CarJoinActivity extends AppCompatActivity {
                     return;
                 }
                 if(isDest) {
-                    Log.d("CarJoin", "도착지 입력 플리즈");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
                     builder.setMessage(" 도착지를 입력해주세요 ")
                             .setNegativeButton("확인", null)
@@ -939,7 +937,6 @@ public class CarJoinActivity extends AppCompatActivity {
                             .setNegativeButton("확인", null)
                             .create()
                             .show();
-
                     return;
                 }
 

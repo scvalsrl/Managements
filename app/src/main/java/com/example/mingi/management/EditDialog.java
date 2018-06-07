@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -53,11 +55,18 @@ public class EditDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.okbtn:
+                if(TextUtils.isEmpty(kmEt.getText())) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(" 총 거리를 입력해주세요 ")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
+                }
+
                 String km = kmEt.getText().toString();
                 dialogListener.onPositiveClicked(km);
                 boolean isKm = Pattern.matches(kmPattern, km);
                 if(isKm == true) {
-                    Log.d("EditDialog", "숫자입력 바로됨");
                     dismiss();
                     break;
                 }

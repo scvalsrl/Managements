@@ -37,6 +37,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.mingi.management.BusinessCard.BCListActivity;
 import com.example.mingi.management.login.LoginActivity;
 import com.example.mingi.management.R;
+import com.example.mingi.management.login.Splashscreen;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +53,6 @@ import java.util.concurrent.ExecutionException;
 public class CarJoinActivity extends AppCompatActivity {
 
     TextView txtDate, txtTime, txtDate2, txtTime2, txtCar;
-    NavigationView navigationView;
     Calendar currentTime;
     int hour, minute;
     String format, userID;
@@ -61,8 +61,6 @@ public class CarJoinActivity extends AppCompatActivity {
 
     int y, m, d;
 
-    private DrawerLayout mDrawerLayout = null;
-    private ActionBarDrawerToggle mToggle;
 
     /*yoonju*/
     TextView startText, destText, distanceText;
@@ -82,13 +80,8 @@ public class CarJoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_join);
         findcontrol();
         setActionBar();
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
 
         getFromIntent();
-
-        SetNavigation();
         startDateTime();
         setTotalBox();
         DestDateTime();
@@ -125,8 +118,6 @@ public class CarJoinActivity extends AppCompatActivity {
 
     private void setActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("운행일지 등록");
     }
 
@@ -390,56 +381,6 @@ public class CarJoinActivity extends AppCompatActivity {
         });
     }
 
-    private void SetNavigation() {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-
-                int id = item.getItemId();
-                Intent drawer_intent;
-
-                switch (id) {
-                    case R.id.navigation_item_carjoin:
-                        drawer_intent = new Intent(getApplicationContext(), CarJoinActivity.class);
-                        startActivity(drawer_intent);
-                        overridePendingTransition(0, 0);
-
-                        finish();
-
-                        break;
-                    case R.id.navigation_item_carlist:
-
-
-                        break;
-                    case R.id.navigation_item_peoplelist:
-
-                        Intent intent = getIntent();
-                        userID = intent.getExtras().getString("userID");
-
-                        String userPassword = intent.getExtras().getString("userID");
-
-                        drawer_intent = new Intent(getApplicationContext(), CarlistActivity.class);
-
-
-                        drawer_intent.putExtra("userID", userID);
-                        drawer_intent.putExtra("userPassword", userPassword);
-
-                        startActivity(drawer_intent);
-                        overridePendingTransition(0, 0);
-
-                        finish();
-
-                        break;
-                    case R.id.navigation_item_logout:
-
-                        break;
-                }
-
-                return true;
-            }
-        });
-    }
 
     public void seletedTimeFormat(int hour) {
         if (hour == 0) {
@@ -468,8 +409,6 @@ public class CarJoinActivity extends AppCompatActivity {
         distanceText = findViewById(R.id.distancetext);
         changeBtn = findViewById(R.id.changeBtn);
         txtCar = (TextView) findViewById(R.id.txtCar);
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         bottomnav = findViewById(R.id.bottom_navigation);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
         totalBox = (LinearLayout) findViewById(R.id.totalBox);
@@ -479,15 +418,20 @@ public class CarJoinActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
 
         int id = item.getItemId();
 
         if( id == R.id.logout ){
 
+
+
             Intent intent = new Intent(CarJoinActivity.this, LoginActivity.class);
+
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("isGPSEnable", gps);
+
             startActivity(intent);
             SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = auto.edit();

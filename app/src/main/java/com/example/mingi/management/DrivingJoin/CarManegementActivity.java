@@ -1,25 +1,35 @@
 package com.example.mingi.management.DrivingJoin;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.example.mingi.management.BusinessCard.BCListActivity;
 import com.example.mingi.management.R;
+import com.example.mingi.management.login.LoginActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -77,8 +87,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
         actionBar.setTitle("운행기록 관리");
 
 
@@ -467,5 +476,40 @@ public class CarManegementActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.carlist_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        int id = item.getItemId();
+
+        if( id == R.id.logout ){
+
+            Intent intent = new Intent(CarManegementActivity.this, LoginActivity.class);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            startActivity(intent);
+            SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = auto.edit();
+            //editor.clear()는 auto에 들어있는 모든 정보를 기기에서 지웁니다.
+            editor.clear();
+            editor.commit();
+            Toast.makeText(CarManegementActivity.this, "로그아웃 하였습니다", Toast.LENGTH_SHORT).show();
+            finish();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

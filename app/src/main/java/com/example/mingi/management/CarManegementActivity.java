@@ -220,10 +220,7 @@ public class CarManegementActivity extends AppCompatActivity {
         protected String doInBackground(Void... voids) {
             try {
 
-                Log.d("YearMonthPickerTest", "1111 들어옴!!:! ");
-
                 URL url = new URL(target);
-
                 Log.d("YearMonthPickerTest", "22 들어옴: " + year_s);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestProperty("year","2018/5/1");

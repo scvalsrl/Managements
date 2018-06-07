@@ -101,7 +101,6 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {  // 성공
                                 Log.d("  로그인 상공 : ", "");
-
                                 String userID = jsonResponse.getString("userID");
                                 String userPassword = jsonResponse.getString("userPassword");
 

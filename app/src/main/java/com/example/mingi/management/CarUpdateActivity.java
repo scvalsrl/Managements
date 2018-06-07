@@ -45,7 +45,6 @@ import java.util.concurrent.ExecutionException;
 public class CarUpdateActivity extends AppCompatActivity {
     /*mingi*/
     int count = 0;
-    Button join;
     TextView txtDate, txtTime, txtDate2, txtTime2, txtCar;
 
     Calendar currentTime;
@@ -60,7 +59,7 @@ public class CarUpdateActivity extends AppCompatActivity {
 
     /*yoonju*/
     TextView startText, destText, distanceText;
-    Button changeBtn, cancel;
+    Button changeBtn;
     String startPlace = "출발지 입력";
     String endPlace = "도착지 입력";
     String startLat, startLon, destLat, destLon, nowName, kilometer;
@@ -302,135 +301,6 @@ public class CarUpdateActivity extends AppCompatActivity {
         });
 
 
-        join.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-
-                startPlace = startText.getText().toString();
-                CarUpdateActivity.this.endPlace = destText.getText().toString();
-                kilometer = distanceText.getText().toString();
-                String carNum = txtCar.getText().toString();
-                String startday = txtDate.getText().toString();
-                String endday = txtDate2.getText().toString();
-                String startTime = txtTime.getText().toString();
-                String endTime = txtTime2.getText().toString();
-
-                if (startLat.equals(destLat) && startLon.equals(destLon)) {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-                    builder.setMessage(" 출발지와 목적지가 동일합니다.")
-                            .setNegativeButton("확인", null)
-                            .create()
-                            .show();
-
-                } else if (carNum.equals("차량을 선택해주세요")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-                    builder.setMessage(" 차량을 선택해주세요.")
-                            .setNegativeButton("확인", null)
-                            .create()
-                            .show();
-
-                } else if (startPlace.equals("출발지 입력") || CarUpdateActivity.this.endPlace.equals("도착지 입력")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-                    builder.setMessage(" 경로를 설정해주세요.")
-                            .setNegativeButton("확인", null)
-                            .create()
-                            .show();
-
-                } else if (startday.equals("출발 날짜를 선택해주세요") || startTime.equals("출발 시간을 선택해주세요")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-                    builder.setMessage(" 출발 일자를 설정해주세요.")
-                            .setNegativeButton("확인", null)
-                            .create()
-                            .show();
-
-                } else if (endday.equals("도착 날짜를 선택해주세요") || endTime.equals("도착 시간을 선택해주세요")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-                    builder.setMessage(" 도착 일자를 설정해주세요.")
-                            .setNegativeButton("확인", null)
-                            .create()
-                            .show();
-
-
-                } else {
-
-
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-
-
-                            try {
-
-
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-
-
-                                if (success) {
-
-                                    Log.d("업데이트 ", "onResponse: 성공");
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-
-                                    builder.setMessage("성공적으로 수정 되었습니다")
-                                            .setCancelable(false)
-                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                public void onClick(
-                                                        DialogInterface dialog, int id) {
-                                                    // 프로그램을 종료한다
-                                                    new BackgroundTask().execute();
-                                                    overridePendingTransition(0, 0);
-                                                    finish();
-
-                                                }
-                                            }).
-                                            create()
-                                            .show();
-
-
-                                } else {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(CarUpdateActivity.this);
-                                    builder.setMessage("등록에 실패 했습니다.")
-                                            .setNegativeButton("다시시도", null).create().show();
-                                    Intent intent = new Intent(CarUpdateActivity.this, CarUpdateActivity.class);
-                                    CarUpdateActivity.this.startActivity(intent);
-
-                                }
-
-                            } catch (JSONException e) {
-
-                                e.printStackTrace();
-                            }
-
-
-                        }
-
-
-                    };
-
-
-                    Log.d("김민기 업데이트 생성 ", " ");
-                    CarUpdateRequest carUpdateRequest = new CarUpdateRequest(userID, carNum, startPlace, CarUpdateActivity.this.endPlace, kilometer, startday, endday, startTime, endTime, Integer.parseInt(no), startLat, startLon, destLat, destLon, responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(CarUpdateActivity.this);
-
-                    queue.add(carUpdateRequest);
-
-
-                }
-            }
-        });
-
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                finish();
-            }
-        });
-
 
         txtCar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -517,14 +387,11 @@ public class CarUpdateActivity extends AppCompatActivity {
         txtDate2 = (TextView) findViewById(R.id.txtDate2);
         txtTime2 = (TextView) findViewById(R.id.txtTime2);
 
-        join = (Button) findViewById(R.id.join);
-
         startText = findViewById(R.id.startText);
         destText = findViewById(R.id.endText);
         distanceText = findViewById(R.id.distancetext);
         changeBtn = findViewById(R.id.changeBtn);
 
-        cancel = findViewById(R.id.cancel);
         txtCar = (TextView) findViewById(R.id.txtCar);
 
 

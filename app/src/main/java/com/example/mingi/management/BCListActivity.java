@@ -163,33 +163,65 @@ public class BCListActivity extends AppCompatActivity {
                             BC_photo = jsonResponse.getString("BC_photo");
                             no = jsonResponse.getString("no");
 
+
                             if (success) {
 
-                                // 인텐드에 넣기
-                                Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
+                                // 주소가 없다면
+                                if (BC_lat.equals("0") || BC_lat.equals("0") || BC_add.equals("")) {
 
-                                intent.putExtra("BC_name", BC_name);
-                                intent.putExtra("BC_level", BC_level);
-                                intent.putExtra("BC_com", BC_com);
-                                intent.putExtra("BC_phone", BC_phone);
-                                intent.putExtra("BC_mail", BC_mail);
-                                intent.putExtra("BC_add", BC_add);
-                                intent.putExtra("BC_lat", BC_lat);
-                                intent.putExtra("BC_lon", BC_lon);
-                                intent.putExtra("BC_photo", BC_photo);
-                                intent.putExtra("no", no);
+                                    // 인텐드에 넣기
+                                    Intent intent = new Intent(BCListActivity.this, BCDetailNoAddActivity.class);
 
-
-                                intent.putExtra("userID", userID);
-                                intent.putExtra("isGPSEnable", isGPSEnable);
-                                intent.putExtra("nowLat", nowLat);
-                                intent.putExtra("nowLon", nowLon);
-                                intent.putExtra("nowName", nowName);
+                                    intent.putExtra("BC_name", BC_name);
+                                    intent.putExtra("BC_level", BC_level);
+                                    intent.putExtra("BC_com", BC_com);
+                                    intent.putExtra("BC_phone", BC_phone);
+                                    intent.putExtra("BC_mail", BC_mail);
+                                    intent.putExtra("BC_add", BC_add);
+                                    intent.putExtra("BC_lat", BC_lat);
+                                    intent.putExtra("BC_lon", BC_lon);
+                                    intent.putExtra("BC_photo", BC_photo);
+                                    intent.putExtra("no", no);
 
 
-                                BCListActivity.this.startActivity(intent);
-                                // 화면전환 넣기 //
+                                    intent.putExtra("userID", userID);
+                                    intent.putExtra("isGPSEnable", isGPSEnable);
+                                    intent.putExtra("nowLat", nowLat);
+                                    intent.putExtra("nowLon", nowLon);
+                                    intent.putExtra("nowName", nowName);
 
+
+                                    BCListActivity.this.startActivity(intent);
+                                    // 화면전환 넣기 //
+
+                                } else{
+
+                                    // 인텐드에 넣기
+                                    Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
+
+                                    intent.putExtra("BC_name", BC_name);
+                                    intent.putExtra("BC_level", BC_level);
+                                    intent.putExtra("BC_com", BC_com);
+                                    intent.putExtra("BC_phone", BC_phone);
+                                    intent.putExtra("BC_mail", BC_mail);
+                                    intent.putExtra("BC_add", BC_add);
+                                    intent.putExtra("BC_lat", BC_lat);
+                                    intent.putExtra("BC_lon", BC_lon);
+                                    intent.putExtra("BC_photo", BC_photo);
+                                    intent.putExtra("no", no);
+
+
+                                    intent.putExtra("userID", userID);
+                                    intent.putExtra("isGPSEnable", isGPSEnable);
+                                    intent.putExtra("nowLat", nowLat);
+                                    intent.putExtra("nowLon", nowLon);
+                                    intent.putExtra("nowName", nowName);
+
+
+                                    BCListActivity.this.startActivity(intent);
+                                    // 화면전환 넣기 //
+
+                                }
 
                             } else {
 

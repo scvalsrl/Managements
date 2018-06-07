@@ -662,14 +662,6 @@ public class BusinessCardMain extends AppCompatActivity {
 
             }
 
-            else if(bcadd.getText().toString().equals("")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(BusinessCardMain.this);
-                builder.setMessage(" 주소를 입력해주세요 ")
-                        .setNegativeButton("확인", null)
-                        .create()
-                        .show();
-            }
-
             else {
 
 
@@ -740,6 +732,12 @@ public class BusinessCardMain extends AppCompatActivity {
 
                                 if(bc_mail.equals("") || bc_mail.equals(null)){
                                     bc_mail = "";
+                                }
+
+                                if(bc_add.equals("") || bc_mail.equals(null)){
+                                    bc_add = "";
+                                    bclat = "0";
+                                    bclon = "0";
                                 }
 
                                 BCJoinRequest bcJoinRequest = new BCJoinRequest(id, bc_name, bc_level, bc_com, bc_phone, bc_mail, bc_add, bclat, bclon, uploadFileName, no_i, responseListener);

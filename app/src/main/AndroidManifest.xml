@@ -34,12 +34,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar2">
-
-        </activity>
-
-
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar2"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".CarJoinActivity" />
         <activity android:name=".RegisterActivity" />
@@ -50,7 +47,6 @@
         <activity
             android:name=".Splashscreen"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,9 +55,7 @@
         </activity>
         <activity android:name=".DestListActivity" />
         <activity android:name=".ListMapActivity" />
-        <activity android:name=".CarUpdateActivity">
-        </activity>
-
+        <activity android:name=".CarUpdateActivity"></activity>
         <activity android:name=".TempActivity" />
         <activity android:name=".BusinessCardMain" />
         <activity android:name=".BCListActivity" />
@@ -69,7 +63,8 @@
         <activity android:name=".SearchAddrActivity" />
         <activity android:name=".BCDetailActivity" />
         <activity android:name=".BCEditActivity" />
-        <activity android:name=".BCFullMapActivity"></activity>
+        <activity android:name=".BCFullMapActivity" />
+        <activity android:name=".BCDetailNoAddActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package com.example.mingi.management.BusinessCard;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,10 +11,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.mingi.management.DrivingJoin.CarJoinActivity;
 import com.example.mingi.management.DrivingJoin.CarManegementActivity;
 import com.example.mingi.management.R;
+import com.example.mingi.management.login.LoginActivity;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -68,8 +73,6 @@ public class BCListActivity extends AppCompatActivity {
         Log.d("김민기", "userID: " + userID);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("명함 관리");
 
 
@@ -335,6 +338,39 @@ public class BCListActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.carlist_menu, menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        int id = item.getItemId();
+
+        if( id == R.id.logout ){
+
+            Intent intent = new Intent(BCListActivity.this, LoginActivity.class);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            startActivity(intent);
+            SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = auto.edit();
+            //editor.clear()는 auto에 들어있는 모든 정보를 기기에서 지웁니다.
+            editor.clear();
+            editor.commit();
+            Toast.makeText(BCListActivity.this, "로그아웃 하였습니다", Toast.LENGTH_SHORT).show();
+            finish();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

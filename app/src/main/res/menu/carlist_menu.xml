@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <item
+        android:title="설정"
+        android:id="@+id/setting"
+        app:showAsAction="never" />
+    <item
+        android:title="로그아웃"
+        android:id="@+id/logout"
+        app:showAsAction="never" />
+
+
+</menu>
+

@@ -80,8 +80,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         bclon_str = intent.getStringExtra("BC_lon");
         bcphoto_str = intent.getStringExtra("BC_photo");
         no = intent.getStringExtra("no");
-        Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
-        Log.d("BCDetailActivity", "fromIntent-lat: "+ bclat_str + ",lon: " + bclon_str);
+        Log.d("김민기 no add ", " : " + bclat_str);
     }
 
     void initView() {

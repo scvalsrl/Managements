@@ -162,8 +162,11 @@ public class BCListActivity extends AppCompatActivity {
                             if (success) {
 
                                 // 주소가 없다면
-                                if (BC_lat.equals("0") || BC_lat.equals("0") || BC_add.equals("")) {
-
+                                if (BC_lat.equals("0") || BC_lon.equals("0") || BC_add.equals("")) {
+                                    Log.d("BCListActivity-check","lat: " + BC_lat + ", lon: " + BC_lon);
+                                    BC_lat = "0";
+                                    BC_lon = "0";
+                                    BC_add = "";
                                     // 인텐드에 넣기
                                     Intent intent = new Intent(BCListActivity.this, BCDetailNoAddActivity.class);
 

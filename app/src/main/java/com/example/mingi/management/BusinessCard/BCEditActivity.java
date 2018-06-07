@@ -190,7 +190,11 @@ public class BCEditActivity extends AppCompatActivity {
         bccom.setText(bccom_str);
         bcphone.setText(bcphone_str);
         bcemail.setText(bcemail_str);
-        bcadd.setText(bcadd_str);
+        Log.d("BCEditActivity-bclat","bclat:" + bclat_str + "bclon: " + bclon_str);
+        if(!(bclat_str.equals("0") && bclon_str.equals("0"))) {
+            bcadd.setText(bcadd_str);
+        }
+
 
         new BCEditActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
                 .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);

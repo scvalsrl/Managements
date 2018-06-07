@@ -36,7 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class BCDetailActivity extends AppCompatActivity {
-    ImageView imgView, emailBtn, callBtn, msgBtn, bcfullmap;
+    ImageView emailBtn, callBtn, msgBtn, bcfullmap;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
@@ -48,31 +48,10 @@ public class BCDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcdetail);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setTitle("디테일화면");
+        setActionBar();
 
-        Intent intent = getIntent();
+        fromIntent();
 
-        isGPSEnable = intent.getStringExtra("isGPSEnable");
-        nowLat = intent.getStringExtra("nowLat");
-        nowLon = intent.getStringExtra("nowLon");
-        nowName = intent.getStringExtra("nowName");
-        userID = intent.getStringExtra("userID");
-
-        bcname_str = intent.getStringExtra("BC_name");
-        bclevel_str = intent.getStringExtra("BC_level");
-        bccom_str = intent.getStringExtra("BC_com");
-        bcphone_str = intent.getStringExtra("BC_phone");
-        bcemail_str = intent.getStringExtra("BC_mail");
-        bcadd_str = intent.getStringExtra("BC_add");
-        bclat_str = intent.getStringExtra("BC_lat");
-        bclon_str = intent.getStringExtra("BC_lon");
-        bcphoto_str = intent.getStringExtra("BC_photo");
-        no = intent.getStringExtra("no");
-        Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
-        Log.d("BCDetailActivity", "fromIntent-lat: "+ bclat_str + ",lon: " + bclon_str);
         if (savedInstanceState == null) {
             MainFragment mainFragment = new MainFragment();
             Bundle bundle = new Bundle(2); // # of datas
@@ -99,6 +78,36 @@ public class BCDetailActivity extends AppCompatActivity {
 
         btnClick();
         setTextView();
+    }
+
+    private void setActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("디테일화면");
+    }
+
+    private void fromIntent() {
+        Intent intent = getIntent();
+
+        isGPSEnable = intent.getStringExtra("isGPSEnable");
+        nowLat = intent.getStringExtra("nowLat");
+        nowLon = intent.getStringExtra("nowLon");
+        nowName = intent.getStringExtra("nowName");
+        userID = intent.getStringExtra("userID");
+
+        bcname_str = intent.getStringExtra("BC_name");
+        bclevel_str = intent.getStringExtra("BC_level");
+        bccom_str = intent.getStringExtra("BC_com");
+        bcphone_str = intent.getStringExtra("BC_phone");
+        bcemail_str = intent.getStringExtra("BC_mail");
+        bcadd_str = intent.getStringExtra("BC_add");
+        bclat_str = intent.getStringExtra("BC_lat");
+        bclon_str = intent.getStringExtra("BC_lon");
+        bcphoto_str = intent.getStringExtra("BC_photo");
+        no = intent.getStringExtra("no");
+        Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
+        Log.d("BCDetailActivity", "fromIntent-lat: "+ bclat_str + ",lon: " + bclon_str);
     }
 
     void initView() {
@@ -193,7 +202,7 @@ public class BCDetailActivity extends AppCompatActivity {
         });
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {

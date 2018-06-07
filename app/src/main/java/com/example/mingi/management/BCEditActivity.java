@@ -211,7 +211,20 @@ public class BCEditActivity extends AppCompatActivity {
             }
         });
 
-
+        bcadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bcadd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent goSearch = new Intent(BCEditActivity.this, SearchAddrActivity.class);
+                        goSearch.putExtra("nowLat", nowLat);
+                        goSearch.putExtra("nowLon", nowLon);
+                        startActivityForResult(goSearch, 3);
+                    }
+                });
+            }
+        });
     }
 
     private void checkPermissions() {
@@ -235,7 +248,7 @@ public class BCEditActivity extends AppCompatActivity {
 
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "이미지 처리에서 오류가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -281,13 +294,6 @@ public class BCEditActivity extends AppCompatActivity {
             }
 
             if (resultCode == Activity.RESULT_OK) {
-                /*
-                try {
-                    Bitmap image_bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                    imageView.setImageBitmap(image_bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
                 photoUri = data.getData();
                 cropImage();
             }
@@ -529,7 +535,7 @@ public class BCEditActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
 
                     public void run() {
-                        Toast.makeText(BCEditActivity.this, "MalformedURLException",
+                       Toast.makeText(BCEditActivity.this, "MalformedURLException",
                                 Toast.LENGTH_SHORT).show();
                     }
 

@@ -66,7 +66,7 @@ public class BCEditActivity extends AppCompatActivity {
     Button bccamera, bcupload;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
-    String bclat, bclon, userID, no, bcphoto_str, bclat_str, bclon_str;
+    String userID, no, bcphoto_str, bclat_str, bclon_str;
     String isGPSEnable, nowLat, nowLon, nowName;
 
     //for camera
@@ -341,8 +341,8 @@ public class BCEditActivity extends AppCompatActivity {
             if (requestCode == 3) {
                 if (requestCode == 3 && data != null) {
                     bcadd_str = data.getStringExtra("destname");
-                    bclat = data.getStringExtra("destlat");
-                    bclon = data.getStringExtra("destlon");
+                    bclat_str = data.getStringExtra("destlat");
+                    bclon_str = data.getStringExtra("destlon");
                     bcadd.setText(bcadd_str);
                 }
             }

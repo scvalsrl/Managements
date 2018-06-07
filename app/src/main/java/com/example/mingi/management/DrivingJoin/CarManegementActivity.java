@@ -333,7 +333,6 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
             CarManegementActivity.this.startActivity(intent);
-
             finish();
             overridePendingTransition(0, 0);
 

@@ -28,6 +28,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -667,39 +670,15 @@ public class BCEditActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.bcupdate_menu, menu);
-/*
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.bcupdate_menu, menu);
-        getLayoutInflater().setFactory2(new LayoutInflater.Factory2() {
 
-            @Override
-            public View onCreateView(View view, String s, Context context, AttributeSet attributeSet) {
-                return null;
-            }
+        MenuItem item = menu.getItem(0);
 
-            @Override
-            public View onCreateView(String s, Context context, AttributeSet attributeSet) {
-                if (s.equalsIgnoreCase("com.android.internal.view.menu.IconMenuItemView")) {
-                    try {
-                        LayoutInflater li = LayoutInflater.from(context);
-                        final View view = li.createView(s, null, attributeSet);
-                        new Handler().post(new Runnable() {
+        SpannableString spanString = new SpannableString(menu.getItem(0).getTitle().toString());
 
-                            @Override
-                            public void run() {
-                                ((TextView) view).setTextSize(20);
-                            }
-                        });
-                        return view;
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-        });
+        int end = spanString.length();
+        spanString.setSpan(new AbsoluteSizeSpan(40), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        return super.onCreateOptionsMenu(menu);*/
+        item.setTitle(spanString);
         return true;
     }
 

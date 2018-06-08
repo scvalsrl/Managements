@@ -7,7 +7,7 @@
 
 
     <item
-        android:title=" 등록 "
+        android:title="등록"
         android:id="@+id/newPost"
         app:showAsAction="always"
         />

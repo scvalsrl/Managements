@@ -11,6 +11,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -409,6 +412,15 @@ public class CarUpdateActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.carupdate_menu, menu);
+
+        MenuItem item = menu.getItem(0);
+
+        SpannableString spanString = new SpannableString(menu.getItem(0).getTitle().toString());
+
+        int end = spanString.length();
+        spanString.setSpan(new AbsoluteSizeSpan(40), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        item.setTitle(spanString);
 
         return true;
 

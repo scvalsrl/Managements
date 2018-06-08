@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/carupdate"
-        android:title=" 수정완료 "
+        android:title=" 수정완료"
         app:showAsAction="always" />
 
 </menu>

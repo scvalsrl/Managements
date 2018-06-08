@@ -17,6 +17,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPresenter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -37,6 +40,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -51,10 +55,13 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class CarJoinActivity extends AppCompatActivity {
@@ -86,14 +93,8 @@ public class CarJoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_join);
 
-
-
-
-
-
         findcontrol();
         setActionBar();
-
         getFromIntent();
         startDateTime();
         setTotalBox();
@@ -102,7 +103,6 @@ public class CarJoinActivity extends AppCompatActivity {
         ChangeStartDest();
         setCar();
     }
-
     private void getFromIntent() {
         Intent fromSplash = getIntent();
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
@@ -626,18 +626,14 @@ public class CarJoinActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.carjoin_menu, menu);
-        for(int i = 0; i < menu.size(); i++) {
-            Log.d("CarjoinActivity-menu", String.valueOf(menu.size()));
-            MenuItem item = menu.getItem(i);
-            SpannableString spanString = new SpannableString(menu.getItem(i).getTitle().toString());
-            if(i == 0) {
+        MenuItem item = menu.getItem(0);
 
-            }
-            int end = spanString.length();
-            spanString.setSpan(new AbsoluteSizeSpan(37), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString spanString = new SpannableString(menu.getItem(0).getTitle().toString());
 
-            item.setTitle(spanString);
-        }
+        int end = spanString.length();
+        spanString.setSpan(new AbsoluteSizeSpan(40), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        item.setTitle(spanString);
         return true;
     }
 

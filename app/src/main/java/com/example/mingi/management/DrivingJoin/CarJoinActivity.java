@@ -624,13 +624,15 @@ public class CarJoinActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.carjoin_menu, menu);
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.carjoin_menu, menu);
         for(int i = 0; i < menu.size(); i++) {
             Log.d("CarjoinActivity-menu", String.valueOf(menu.size()));
             MenuItem item = menu.getItem(i);
             SpannableString spanString = new SpannableString(menu.getItem(i).getTitle().toString());
+            if(i == 0) {
+
+            }
             int end = spanString.length();
             spanString.setSpan(new AbsoluteSizeSpan(37), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 

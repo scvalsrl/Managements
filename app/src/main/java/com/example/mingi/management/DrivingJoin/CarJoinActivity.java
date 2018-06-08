@@ -17,9 +17,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPresenter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
@@ -40,7 +37,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
@@ -55,13 +51,13 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class CarJoinActivity extends AppCompatActivity {
@@ -93,8 +89,14 @@ public class CarJoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_join);
 
+
+
+
+
+
         findcontrol();
         setActionBar();
+
         getFromIntent();
         startDateTime();
         setTotalBox();
@@ -103,6 +105,7 @@ public class CarJoinActivity extends AppCompatActivity {
         ChangeStartDest();
         setCar();
     }
+
     private void getFromIntent() {
         Intent fromSplash = getIntent();
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
@@ -580,7 +583,7 @@ public class CarJoinActivity extends AppCompatActivity {
                                 int no_i = Integer.parseInt(no_s);
                                 no_i++;
 
-                               int no = no_i;
+                                int no = no_i;
 
                                 // 화면전환 넣기 //
                                 String id = "2109812";
@@ -626,25 +629,60 @@ public class CarJoinActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.carjoin_menu, menu);
-        MenuItem item = menu.getItem(0);
+        for(int i = 0; i < menu.size(); i++) {
+            Log.d("CarjoinActivity-menu", String.valueOf(menu.size()));
+            MenuItem item = menu.getItem(i);
+            SpannableString spanString = new SpannableString(menu.getItem(i).getTitle().toString());
+            if(i == 0) {
 
-        SpannableString spanString = new SpannableString(menu.getItem(0).getTitle().toString());
+            }
+            int end = spanString.length();
+            spanString.setSpan(new AbsoluteSizeSpan(37), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        int end = spanString.length();
-        spanString.setSpan(new AbsoluteSizeSpan(40), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        item.setTitle(spanString);
+            item.setTitle(spanString);
+        }
         return true;
     }
 
 
     class BackgroundTask extends AsyncTask<Void, Void, String> {
 
+        String day;
         String target;
+        SimpleDateFormat yy = new SimpleDateFormat("yyyy", Locale.KOREA);
+        String str_yy = yy.format(new Date());
+        int year_i = Integer.parseInt(str_yy);
+        SimpleDateFormat mm = new SimpleDateFormat("MM", Locale.KOREA);
+        String str_mm = mm.format(new Date());
+        int month_i = Integer.parseInt(str_mm);
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList.php";
+
+            if ((year_i % 400 == 0) || (year_i % 4 == 0 && year_i % 100 != 0)) { // 윤년
+
+                if (month_i == 2) {
+                    day = "29";
+                }
+
+            } else { // 평년
+
+                if (month_i == 2) {
+                    day = "28";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            }
+
+
+            String start = str_yy + "/"+str_mm+"/1";
+            String end = str_yy + "/"+str_mm+"/d";
+
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
+            Log.d("김민기 : ",target);
         }
 
         @Override
@@ -693,6 +731,8 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("str_yy", str_yy);
+            intent.putExtra("str_mm", str_mm);
             CarJoinActivity.this.startActivity(intent);
 
             finish();

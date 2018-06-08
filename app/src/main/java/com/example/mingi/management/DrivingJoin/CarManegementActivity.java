@@ -39,8 +39,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class CarManegementActivity extends AppCompatActivity {
@@ -51,13 +54,9 @@ public class CarManegementActivity extends AppCompatActivity {
     private List<Car> userList;
 
 
-    String isGPSEnable;
-    String nowLat;
-    String nowLon;
-    String nowName;
-    String userID;
-    String year_s;
-    String month_s;
+    String isGPSEnable, nowLat, nowLon, nowName, userID;
+    String year_s, month_s;
+    int year_i, month_i;
 
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -85,10 +84,14 @@ public class CarManegementActivity extends AppCompatActivity {
 
         Button Jlist = (Button) findViewById(R.id.Jlist);
         Button Dlist = (Button) findViewById(R.id.Dlist);
-        Button btnYearMonthPicker = findViewById(R.id.btn_year_month_picker);
+        Button left_btn = (Button) findViewById(R.id.left_btn);
+        Button right_btn = (Button) findViewById(R.id.right_btn);
+
+        TextView btnYearMonthPicker = (TextView) findViewById(R.id.btn_year_month_picker);
 
 
-        final ActionBar abar = getSupportActionBar();;//line under the action bar
+        final ActionBar abar = getSupportActionBar();
+        ;//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
                 ActionBar.LayoutParams.WRAP_CONTENT,
@@ -108,7 +111,13 @@ public class CarManegementActivity extends AppCompatActivity {
         final String nowLon_ = intent.getStringExtra("nowLon");
         final String nowName_ = intent.getStringExtra("nowName");
         final String userID_ = intent.getStringExtra("userID");
+        year_s = intent.getStringExtra("str_yy");
+        month_s = intent.getStringExtra("str_mm");
 
+        btnYearMonthPicker.setText(year_s + "년" + month_s + "월");
+
+        year_i = Integer.parseInt(year_s);
+        month_i = Integer.parseInt(month_s);
 
         isGPSEnable = isGPSEnable_;
         nowLat = nowLat_;
@@ -189,6 +198,36 @@ public class CarManegementActivity extends AppCompatActivity {
         });
 
 
+        left_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (month_i == 1) {
+                    year_i--;
+                    month_i = 12;
+                } else {
+                    month_i--;
+                }
+                new BackgroundTask2().execute();
+            }
+        });
+
+
+        right_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (month_i == 12) {
+                    year_i++;
+                    month_i = 1;
+                } else {
+                    month_i++;
+                }
+                new BackgroundTask2().execute();
+            }
+        });
+
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -215,29 +254,56 @@ public class CarManegementActivity extends AppCompatActivity {
                         case R.id.nav_search:
 
                             new BackgroundTask3().execute();
-
                             break;
 
                     }
 
-
                     return true;
+
                 }
             };
 
 
     class BackgroundTask2 extends AsyncTask<Void, Void, String> {
 
+
         String target;
+        String day;
         private Map<String, String> parameters;
 
         @Override
         protected void onPreExecute() {
 
-            String start = year_s + "/"+month_s+"/1";
-            String end = year_s + "/"+month_s+"/31";
-            target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
 
+            if ((year_i % 400 == 0) || (year_i % 4 == 0 && year_i % 100 != 0)) { // 윤년
+
+                if (month_i == 2) {
+                    day = "29";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            } else { // 평년
+
+                if (month_i == 2) {
+                    day = "28";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            }
+
+
+            year_s = String.valueOf(year_i);
+            month_s = String.valueOf(month_i);
+            String start = year_s + "/" + month_s + "/1";
+            String end = year_s + "/" + month_s + "/" + day;
+
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end;
         }
 
         @Override
@@ -286,6 +352,8 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("str_yy", year_s);
+            intent.putExtra("str_mm", month_s);
             CarManegementActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
@@ -502,11 +570,11 @@ public class CarManegementActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if( id == R.id.logout ){
+        if (id == R.id.logout) {
 
             Intent intent = new Intent(CarManegementActivity.this, LoginActivity.class);
             intent.putExtra("nowLat", nowLat);
-            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowLon", nowLon);
             intent.putExtra("nowName", nowName);
             intent.putExtra("isGPSEnable", isGPSEnable);
             startActivity(intent);

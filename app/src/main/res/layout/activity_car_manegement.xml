@@ -43,40 +43,40 @@
             android:layout_marginBottom="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="#ffffff">
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:padding="1dp" >
+
                 <Button
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="5.5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/left_btn"
+                    android:background="@drawable/ic_navigate_before_black_24dp"/>
+                <TextView
                     android:id="@+id/btn_year_month_picker"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="16dp"
-                    android:background="@drawable/rounded_search_btn"
-                    android:shadowColor="@color/listeditbox"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:text="날짜선택"
-                    android:textColor="#445a64"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-
+                    android:text=""
+                    android:textColor="#000"
                     />
+
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/right_btn"
+                    android:background="@drawable/ic_navigate_next_black_24dp"/>
             </LinearLayout>
+
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:padding="1dp" >
@@ -98,7 +98,7 @@
                     android:textColor="#445a64" />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:elevation="5dp"
                 android:padding="1dp" >
@@ -121,7 +121,13 @@
             </LinearLayout>
 
 
+
+
         </LinearLayout>
+
+
+
+
 
             </LinearLayout>
 

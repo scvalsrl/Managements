@@ -13,12 +13,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -86,9 +88,17 @@ public class CarManegementActivity extends AppCompatActivity {
         Button btnYearMonthPicker = findViewById(R.id.btn_year_month_picker);
 
 
-        ActionBar actionBar = getSupportActionBar();
-
-        actionBar.setTitle("운행기록 관리");
+        final ActionBar abar = getSupportActionBar();;//line under the action bar
+        View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        textviewTitle.setText("운행기록");
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
 
 
         Intent intent = getIntent();

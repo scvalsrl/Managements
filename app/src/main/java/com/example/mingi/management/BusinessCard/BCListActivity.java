@@ -11,11 +11,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -72,8 +74,17 @@ public class BCListActivity extends AppCompatActivity {
         userID = intent.getStringExtra("userID");
         Log.d("김민기", "userID: " + userID);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("명함 관리");
+        final ActionBar abar = getSupportActionBar();;//line under the action bar
+        View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        textviewTitle.setText("명함첩");
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
 
 
         listView = (ListView) findViewById(R.id.listVView);

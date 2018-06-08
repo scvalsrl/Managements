@@ -137,7 +137,7 @@ public class CarJoinActivity extends AppCompatActivity {
                 ActionBar.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
         TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
-        textviewTitle.setText("BNK운행일지");
+        textviewTitle.setText("운행등록");
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
         abar.setDisplayShowTitleEnabled(false);

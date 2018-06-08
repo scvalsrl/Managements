@@ -223,7 +223,11 @@ public class CarManegementActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList2.php";
+
+            String start = year_s + "/"+month_s+"/1";
+            String end = year_s + "/"+month_s+"/31";
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
+
         }
 
         @Override
@@ -231,10 +235,7 @@ public class CarManegementActivity extends AppCompatActivity {
             try {
 
                 URL url = new URL(target);
-                Log.d("YearMonthPickerTest", "22 들어옴: " + year_s);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestProperty("year","2018/5/1");
-                httpURLConnection.setRequestProperty("month","2018/5/30");
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String temp;

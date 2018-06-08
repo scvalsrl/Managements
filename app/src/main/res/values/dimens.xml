@@ -6,4 +6,8 @@
     <item type="dimen" name="bcedit_icon_margin_right">18dp</item>
     <item type="dimen" name="bcedit_icon_size">40dp</item>
     <item type="dimen" name="bcedit_iccam_size">33dp</item>
+
+    <item type="dimen" name="bcdetail_icon_size">45dp</item>
+    <item type="dimen" name="bcdetail_icon_margin_right">18dp</item>
+    <item type="dimen" name="bcdetail_icon_margin_left">10dp</item>
 </resources>

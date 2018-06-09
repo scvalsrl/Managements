@@ -664,6 +664,11 @@ public class CarJoinActivity extends AppCompatActivity {
                 if (month_i == 2) {
                     day = "29";
                 }
+                else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
 
             } else { // 평년
 
@@ -679,10 +684,10 @@ public class CarJoinActivity extends AppCompatActivity {
 
 
             String start = str_yy + "/"+str_mm+"/1";
-            String end = str_yy + "/"+str_mm+"/d";
+            String end = str_yy + "/"+str_mm+"/"+day;
 
             target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
-            Log.d("김민기 : ",target);
+
         }
 
         @Override

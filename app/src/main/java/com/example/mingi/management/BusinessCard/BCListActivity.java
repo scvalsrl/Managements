@@ -37,8 +37,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class BCListActivity extends AppCompatActivity {
 
@@ -289,11 +292,40 @@ public class BCListActivity extends AppCompatActivity {
 
     class BackgroundTask extends AsyncTask<Void, Void, String> {
 
+        String day;
         String target;
+        SimpleDateFormat yy = new SimpleDateFormat("yyyy", Locale.KOREA);
+        String str_yy = yy.format(new Date());
+        int year_i = Integer.parseInt(str_yy);
+        SimpleDateFormat mm = new SimpleDateFormat("MM", Locale.KOREA);
+        String str_mm = mm.format(new Date());
+        int month_i = Integer.parseInt(str_mm);
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList.php";
+
+            if ((year_i % 400 == 0) || (year_i % 4 == 0 && year_i % 100 != 0)) { // 윤년
+                if (month_i == 2) {
+                    day = "29";
+                }
+                else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+            } else { // 평년
+                if (month_i == 2) {
+                    day = "28";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+            }
+
+            String start = str_yy + "/"+str_mm+"/1";
+            String end = str_yy + "/"+str_mm+"/"+day;
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
         }
 
         @Override
@@ -306,11 +338,8 @@ public class BCListActivity extends AppCompatActivity {
                 String temp;
                 StringBuilder stringBuilder = new StringBuilder();
                 while ((temp = bufferedReader.readLine()) != null) {
-
                     stringBuilder.append(temp + "\n");
-
                 }
-
                 bufferedReader.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
@@ -318,13 +347,11 @@ public class BCListActivity extends AppCompatActivity {
                 return stringBuilder.toString().trim();
 
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
 
-
             return null;
+
         }
 
         @Override
@@ -342,7 +369,10 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("str_yy", str_yy);
+            intent.putExtra("str_mm", str_mm);
             BCListActivity.this.startActivity(intent);
+
             finish();
             overridePendingTransition(0, 0);
 
@@ -358,7 +388,6 @@ public class BCListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
 
         int id = item.getItemId();
 

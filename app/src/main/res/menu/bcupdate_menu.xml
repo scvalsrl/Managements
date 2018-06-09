@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/vbcupdate2"
-        android:title=" 완료"
+        android:title=" 저장"
         app:itemTextAppearance="@style/menu_text_style"
         app:showAsAction="always" />
 

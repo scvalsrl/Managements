@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ffffff"
+    android:orientation="vertical"
     tools:context="com.example.mingi.management.DrivingJoin.CarManegementActivity">
 
 
@@ -16,150 +16,99 @@
         android:layout_height="match_parent">
 
 
-
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"
-        android:background="?android:attr/windowBackground">
-
-
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_above="@+id/bottom_navigation"
+            android:background="?android:attr/windowBackground">
 
-          >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+               >
 
-                android:background="#bbbcbf">
-        <LinearLayout
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="1dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#bbbcbf">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:background="#ffffff">
+
+                        <Button
+                            android:layout_marginLeft="45dp"
+                            android:id="@+id/left_btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_navigate_before_black_24dp" />
+
+                        <TextView
+                            android:id="@+id/txt_year_month_picker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="60dp"
+                            android:layout_marginRight="60dp"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/right_btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_navigate_next_black_24dp" />
+
+
+                            <TextView
+                                android:layout_marginLeft="20dp"
+                                android:id="@+id/txtlist"
+                                android:gravity="right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="123"/>
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/listVView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#ffffff"
+                    android:divider="#d1d1d1"
+                    android:dividerHeight="0dp"></ListView>
+
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff">
-
-
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:padding="1dp" >
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/left_btn"
-                    android:background="@drawable/ic_navigate_before_black_24dp"/>
-                <TextView
-                    android:id="@+id/btn_year_month_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:text=""
-                    android:textColor="#000"
-                    />
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/right_btn"
-                    android:background="@drawable/ic_navigate_next_black_24dp"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:padding="1dp" >
-                <Button
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="5.5dp"
-                    android:id="@+id/Jlist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:background="@drawable/rounded_search_btn"
-                    android:shadowColor="@color/listeditbox"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:text="등록순"
-                    android:textColor="#445a64" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                android:padding="1dp" >
-                <Button
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="7dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="5.5dp"
-                    android:id="@+id/Dlist"
-                    android:textSize="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:textStyle="bold"
-                    android:background="@drawable/rounded_search_btn"
-                    android:shadowColor="@color/listeditbox"
-                    android:shadowDx="4"
-                    android:shadowDy="4"
-                    android:text="날짜순"
-                    android:textColor="#445a64" />
-            </LinearLayout>
-
-
-
-
-        </LinearLayout>
-
-
-
-
-
-            </LinearLayout>
-
-            <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listVView"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            android:dividerHeight="0dp"
-            android:divider="#d1d1d1"
-                android:background="#ffffff"
-            ></ListView>
-
-
-        </LinearLayout>
-    </FrameLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation"
-        android:background="?android:attr/windowBackground"/>
+            android:layout_alignParentBottom="true"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/bottom_navigation" />
 
 
     </RelativeLayout>
-
-
 
 
 </LinearLayout>

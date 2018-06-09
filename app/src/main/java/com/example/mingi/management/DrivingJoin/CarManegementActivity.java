@@ -15,11 +15,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,15 +59,18 @@ public class CarManegementActivity extends AppCompatActivity {
     String isGPSEnable, nowLat, nowLon, nowName, userID;
     String year_s, month_s;
     int year_i, month_i;
+    int check = 0 ;
 
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
+            year_i = year;
+            month_i = monthOfYear;
             year_s = Integer.toString(year);
             month_s = Integer.toString(monthOfYear);
             Log.d("YearMonthPickerTest zz ", year_s + " " + month_s);
-
+            check =1;
             new BackgroundTask2().execute();
 
         }
@@ -82,12 +87,45 @@ public class CarManegementActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 
-        Button Jlist = (Button) findViewById(R.id.Jlist);
-        Button Dlist = (Button) findViewById(R.id.Dlist);
+      //  Button Jlist = (Button) findViewById(R.id.Jlist);
+      //  Button Dlist = (Button) findViewById(R.id.Dlist);
         Button left_btn = (Button) findViewById(R.id.left_btn);
         Button right_btn = (Button) findViewById(R.id.right_btn);
+        TextView txtlist = (TextView)findViewById(R.id.txtlist);
 
-        TextView btnYearMonthPicker = (TextView) findViewById(R.id.btn_year_month_picker);
+        txtlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
+                MenuInflater inflater = popupMenu.getMenuInflater();
+                Menu menu = popupMenu.getMenu();
+
+                inflater.inflate(R.menu.carlist_option_menu, menu);
+
+                popupMenu.setOnMenuItemClickListener
+                        (new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+
+                                switch (item.getItemId()) {
+                                    case R.id.joinlist:
+
+                                        return true;
+
+                                    case R.id.daylist:
+
+                                        return true;
+
+                                }
+                                return false;
+                            }
+                        });
+                popupMenu.show();
+            }
+        });
+
+
+        TextView txtYearMonthPicker = (TextView) findViewById(R.id.txt_year_month_picker);
 
 
         final ActionBar abar = getSupportActionBar();
@@ -114,7 +152,11 @@ public class CarManegementActivity extends AppCompatActivity {
         year_s = intent.getStringExtra("str_yy");
         month_s = intent.getStringExtra("str_mm");
 
-        btnYearMonthPicker.setText(year_s + "년" + month_s + "월");
+        if(month_s.length() == 1 ){
+            month_s= "0"+month_s;
+        }
+
+        txtYearMonthPicker.setText(year_s + "년 " + month_s + "월");
 
         year_i = Integer.parseInt(year_s);
         month_i = Integer.parseInt(month_s);
@@ -138,6 +180,7 @@ public class CarManegementActivity extends AppCompatActivity {
             String startPlace, endPlace, startTime, endTime, startDay, endDay, kilometer, carNum;
             int no;
 
+            Log.d("김민기", " 길이 : " + jsonArray.length());
             while (count < jsonArray.length()) {
 
                 JSONObject object = jsonArray.getJSONObject(count);
@@ -166,7 +209,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
         }
 
-
+/*
         Jlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,9 +228,9 @@ public class CarManegementActivity extends AppCompatActivity {
 
             }
         });
+*/
 
-
-        btnYearMonthPicker.setOnClickListener(new View.OnClickListener() {
+        txtYearMonthPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MyYearMonthPickerDialog pd = new MyYearMonthPickerDialog();
@@ -269,7 +312,6 @@ public class CarManegementActivity extends AppCompatActivity {
 
         String target;
         String day;
-        private Map<String, String> parameters;
 
         @Override
         protected void onPreExecute() {
@@ -297,9 +339,10 @@ public class CarManegementActivity extends AppCompatActivity {
 
             }
 
-
-            year_s = String.valueOf(year_i);
-            month_s = String.valueOf(month_i);
+            if(check == 0) {
+                year_s = String.valueOf(year_i);
+                month_s = String.valueOf(month_i);
+            }
             String start = year_s + "/" + month_s + "/1";
             String end = year_s + "/" + month_s + "/" + day;
 

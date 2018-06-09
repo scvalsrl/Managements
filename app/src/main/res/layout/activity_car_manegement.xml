@@ -68,13 +68,13 @@
                             android:background="@drawable/ic_navigate_next_black_24dp" />
 
 
-                            <TextView
+                            <ImageView
                                 android:layout_marginLeft="20dp"
+                                android:background="@drawable/ic_arrow_drop_down_black_24dp"
                                 android:id="@+id/txtlist"
                                 android:gravity="right"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="123"/>
+                                android:layout_height="wrap_content" />
 
 
                     </LinearLayout>

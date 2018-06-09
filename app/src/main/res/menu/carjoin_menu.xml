@@ -14,10 +14,12 @@
     <item
         android:title="설정"
         android:id="@+id/setting"
+        android:icon="@drawable/ic_settings_black_24dp"
         app:showAsAction="never" />
     <item
         android:title="로그아웃"
         android:id="@+id/logout"
+        android:icon="@drawable/ic_exit_to_app_black_24dp2"
         app:showAsAction="never" />
 
 

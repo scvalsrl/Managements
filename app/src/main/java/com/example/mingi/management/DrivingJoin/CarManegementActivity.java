@@ -12,6 +12,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -39,6 +42,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -87,11 +92,13 @@ public class CarManegementActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
 
-      //  Button Jlist = (Button) findViewById(R.id.Jlist);
-      //  Button Dlist = (Button) findViewById(R.id.Dlist);
         Button left_btn = (Button) findViewById(R.id.left_btn);
         Button right_btn = (Button) findViewById(R.id.right_btn);
-        TextView txtlist = (TextView)findViewById(R.id.txtlist);
+        ImageView txtlist = (ImageView)findViewById(R.id.txtlist);
+
+
+
+
 
         txtlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +106,7 @@ public class CarManegementActivity extends AppCompatActivity {
                 PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
                 MenuInflater inflater = popupMenu.getMenuInflater();
                 Menu menu = popupMenu.getMenu();
-
+                setForceShowIcon(popupMenu);
                 inflater.inflate(R.menu.carlist_option_menu, menu);
 
                 popupMenu.setOnMenuItemClickListener
@@ -109,11 +116,11 @@ public class CarManegementActivity extends AppCompatActivity {
 
                                 switch (item.getItemId()) {
                                     case R.id.joinlist:
-
+                                              new BackgroundTask().execute();
                                         return true;
 
                                     case R.id.daylist:
-
+                                              new BackgroundTask2().execute();
                                         return true;
 
                                 }
@@ -121,6 +128,10 @@ public class CarManegementActivity extends AppCompatActivity {
                             }
                         });
                 popupMenu.show();
+
+
+
+
             }
         });
 
@@ -209,26 +220,6 @@ public class CarManegementActivity extends AppCompatActivity {
 
         }
 
-/*
-        Jlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new BackgroundTask().execute();
-
-            }
-        });
-
-
-        Dlist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new BackgroundTask1().execute();
-
-            }
-        });
-*/
 
         txtYearMonthPicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,6 +264,25 @@ public class CarManegementActivity extends AppCompatActivity {
 
     }
 
+    public static void setForceShowIcon(PopupMenu popupMenu) {
+        try {
+            Field[] fields = popupMenu.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if ("mPopup".equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object menuPopupHelper = field.get(popupMenu);
+                    Class<?> classPopupHelper = Class.forName(menuPopupHelper
+                            .getClass().getName());
+                    Method setForceIcons = classPopupHelper.getMethod(
+                            "setForceShowIcon", boolean.class);
+                    setForceIcons.invoke(menuPopupHelper, true);
+                    break;
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -306,6 +316,104 @@ public class CarManegementActivity extends AppCompatActivity {
                 }
             };
 
+
+    class BackgroundTask extends AsyncTask<Void, Void, String> {
+
+        String target;
+        String day;
+
+        @Override
+        protected void onPreExecute() {
+
+
+            if ((year_i % 400 == 0) || (year_i % 4 == 0 && year_i % 100 != 0)) { // 윤년
+
+                if (month_i == 2) {
+                    day = "29";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            } else { // 평년
+
+                if (month_i == 2) {
+                    day = "28";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            }
+
+            if(check == 0) {
+                year_s = String.valueOf(year_i);
+                month_s = String.valueOf(month_i);
+            }
+            String start = year_s + "/" + month_s + "/1";
+            String end = year_s + "/" + month_s + "/" + day;
+
+            target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+
+                    stringBuilder.append(temp + "\n");
+
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+            return null;
+
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        public void onPostExecute(String result) {
+
+            Intent intent = new Intent(CarManegementActivity.this, CarManegementActivity.class);
+            intent.putExtra("userList", result);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon", nowLon);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("userID", userID);
+            intent.putExtra("str_yy", year_s);
+            intent.putExtra("str_mm", month_s);
+            CarManegementActivity.this.startActivity(intent);
+            finish();
+            overridePendingTransition(0, 0);
+
+        }
+
+
+    }
 
     class BackgroundTask2 extends AsyncTask<Void, Void, String> {
 
@@ -403,137 +511,6 @@ public class CarManegementActivity extends AppCompatActivity {
 
         }
 
-
-    }
-
-
-    class BackgroundTask1 extends AsyncTask<Void, Void, String> {
-
-        String target;
-        private Map<String, String> parameters;
-
-        @Override
-        protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList1.php";
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((temp = bufferedReader.readLine()) != null) {
-
-                    stringBuilder.append(temp + "\n");
-
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return stringBuilder.toString().trim();
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-            }
-
-
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-
-        }
-
-        public void onPostExecute(String result) {
-
-            Intent intent = new Intent(CarManegementActivity.this, CarManegementActivity.class);
-            intent.putExtra("userList", result);
-            intent.putExtra("nowLat", nowLat);
-            intent.putExtra("nowLon", nowLon);
-            intent.putExtra("isGPSEnable", isGPSEnable);
-            intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userID);
-            CarManegementActivity.this.startActivity(intent);
-            finish();
-            overridePendingTransition(0, 0);
-
-        }
-
-
-    }
-
-
-    class BackgroundTask extends AsyncTask<Void, Void, String> {
-
-        String target;
-
-        @Override
-        protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList.php";
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((temp = bufferedReader.readLine()) != null) {
-
-                    stringBuilder.append(temp + "\n");
-
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return stringBuilder.toString().trim();
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-            }
-
-
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-
-        }
-
-        public void onPostExecute(String result) {
-
-            Intent intent = new Intent(CarManegementActivity.this, CarManegementActivity.class);
-            intent.putExtra("userList", result);
-            intent.putExtra("nowLat", nowLat);
-            intent.putExtra("nowLon", nowLon);
-            intent.putExtra("isGPSEnable", isGPSEnable);
-            intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userID);
-            CarManegementActivity.this.startActivity(intent);
-
-            finish();
-            overridePendingTransition(0, 0);
-
-        }
 
     }
 

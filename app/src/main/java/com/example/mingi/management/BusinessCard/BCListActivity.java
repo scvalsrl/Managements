@@ -1,8 +1,12 @@
 package com.example.mingi.management.BusinessCard;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -23,8 +27,13 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.mingi.management.DrivingJoin.CarJoinActivity;
 import com.example.mingi.management.DrivingJoin.CarManegementActivity;
+import com.example.mingi.management.DrivingJoin.DeleteRequest2;
 import com.example.mingi.management.R;
 import com.example.mingi.management.login.LoginActivity;
 import com.melnykov.fab.FloatingActionButton;
@@ -45,7 +54,9 @@ import java.util.Locale;
 
 public class BCListActivity extends AppCompatActivity {
 
-    private ListView listView;
+
+
+    private SwipeMenuListView listview;
     private BCListAdapter adapter;
     private List<BC> userList;
     private FloatingActionButton fab;
@@ -88,14 +99,121 @@ public class BCListActivity extends AppCompatActivity {
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
         abar.setDisplayShowTitleEnabled(false);
+        listview = (SwipeMenuListView) findViewById(R.id.listVView);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(200);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete_black_24dp);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
 
 
-        listView = (ListView) findViewById(R.id.listVView);
+
+
+
+
+
         userList = new ArrayList<BC>();
         adapter = new BCListAdapter(getApplicationContext(), userList, this, isGPSEnable, nowLat, nowLon, nowName);
-        listView.setAdapter(adapter);
+        listview.setAdapter(adapter);
+
+        // 리스트뷰 스와이프
+        listview.setMenuCreator(creator);
+        listview.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+
+            @Override
+            public void onSwipeStart(int position) {
+                // swipe start
+                listview.smoothOpenMenu(position);
+            }
+
+            @Override
+            public void onSwipeEnd(int position) {
+                // swipe end
+                listview.smoothOpenMenu(position);
+            }
+        });
+        listview.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BCListActivity.this);
+
+                        builder
+                                .setMessage("명함을 삭제 합니다")
+                                .setCancelable(false)
+                                .setPositiveButton("확인",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog, int id) {
+
+                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
 
 
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        try {
+
+                                                            JSONObject jsonResponse = new JSONObject(response);
+                                                            boolean success = jsonResponse.getBoolean("success");
+                                                            if (success) {
+                                                                new BackgroundTask2().execute();
+                                                            } else {
+                                                                Log.d("  삭제실패 : ", "1");
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
+
+                                                };
+
+
+
+
+                                                DeleteRequest2 deleteRequest = new DeleteRequest2(userList.get(position).getBC_photo(),userList.get(position).getNo(), responseListener);
+                                                RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
+                                                queue.add(deleteRequest);
+
+
+                                            }
+                                        })
+                                .setNegativeButton("취소",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog, int id) {
+                                                // 다이얼로그를 취소한다
+                                                dialog.cancel();
+                                            }
+                                        }).create()
+                                .show();
+
+                       break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
+
+
+
+        // 리스트뷰에 DB 값 받아오기
         try {
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("userList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -149,7 +267,7 @@ public class BCListActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -411,6 +529,59 @@ public class BCListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    class BackgroundTask2 extends AsyncTask<Void, Void, String> {
+
+        String target;
+
+        @Override
+        protected void onPreExecute() {
+            target = "http://scvalsrl.cafe24.com/BCList.php";
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try {
+                URL url = new URL(target);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String temp;
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((temp = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(temp + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return stringBuilder.toString().trim();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        public void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        public void onPostExecute(String result) {
+            Intent intent = new Intent(BCListActivity.this, BCListActivity.class);
+            intent.putExtra("userList", result);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon", nowLon);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("nowName", nowName);
+            intent.putExtra("userID", userID);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            BCListActivity.this.startActivity(intent);
+            finish();
+            overridePendingTransition(0, 0);
+        }
     }
 
 }

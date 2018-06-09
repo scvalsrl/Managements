@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -57,30 +59,12 @@ public class CarManegementActivity extends AppCompatActivity {
 
     private ListView listView;
     private CarListAdapter adapter;
-
     private List<Car> userList;
-
 
     String isGPSEnable, nowLat, nowLon, nowName, userID;
     String year_s, month_s;
     int year_i, month_i;
     int check = 0 ;
-
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-            year_i = year;
-            month_i = monthOfYear;
-            year_s = Integer.toString(year);
-            month_s = Integer.toString(monthOfYear);
-            Log.d("YearMonthPickerTest zz ", year_s + " " + month_s);
-            check =1;
-            new BackgroundTask2().execute();
-
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +79,6 @@ public class CarManegementActivity extends AppCompatActivity {
         Button left_btn = (Button) findViewById(R.id.left_btn);
         Button right_btn = (Button) findViewById(R.id.right_btn);
         ImageView txtlist = (ImageView)findViewById(R.id.txtlist);
-
-
-
 
 
         txtlist.setOnClickListener(new View.OnClickListener() {
@@ -178,10 +159,7 @@ public class CarManegementActivity extends AppCompatActivity {
         nowName = nowName_;
         userID = userID_;
 
-        listView = (ListView) findViewById(R.id.listVView);
-        userList = new ArrayList<Car>();
-        adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_);
-        listView.setAdapter(adapter);
+
 
 
         try {
@@ -191,7 +169,20 @@ public class CarManegementActivity extends AppCompatActivity {
             String startPlace, endPlace, startTime, endTime, startDay, endDay, kilometer, carNum;
             int no;
 
-            Log.d("김민기", " 길이 : " + jsonArray.length());
+
+
+            if(jsonArray.length()==0) {
+                 Drawable drawable = getResources().getDrawable(R.drawable.gnbcar);
+                ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+                imageView.setImageDrawable(drawable);
+            }else{
+                listView = (ListView) findViewById(R.id.listVView);
+                userList = new ArrayList<Car>();
+                adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_);
+                listView.setAdapter(adapter);
+            }
+
+
             while (count < jsonArray.length()) {
 
                 JSONObject object = jsonArray.getJSONObject(count);
@@ -611,4 +602,19 @@ public class CarManegementActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            year_i = year;
+            month_i = monthOfYear;
+            year_s = Integer.toString(year);
+            month_s = Integer.toString(monthOfYear);
+            Log.d("YearMonthPickerTest zz ", year_s + " " + month_s);
+            check =1;
+            new BackgroundTask2().execute();
+
+        }
+    };
 }

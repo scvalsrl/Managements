@@ -126,7 +126,9 @@
 
                 </LinearLayout>
 
-                <ListView
+
+                <com.baoyz.swipemenulistview.SwipeMenuListView
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/listVView"
@@ -137,7 +139,7 @@
                     android:dividerHeight="1dp"
                     android:divider="#d1d1d1"
                     android:background="#ffffff"
-                    ></ListView>
+                    ></com.baoyz.swipemenulistview.SwipeMenuListView>
 
 
             </LinearLayout>

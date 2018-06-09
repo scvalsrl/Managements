@@ -39,7 +39,6 @@
             android:theme="@style/AppTheme.NoActionBar2"></activity>
         <activity android:name=".DrivingJoin.CarJoinActivity" />
         <activity android:name=".login.RegisterActivity" />
-        <activity android:name=".DrivingJoin.CarlistActivity" />
         <activity android:name=".DrivingJoin.CarManegementActivity" />
         <activity android:name=".DrivingJoin.ListActivity" />
         -

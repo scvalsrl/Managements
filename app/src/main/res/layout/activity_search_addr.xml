@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".DrivingJoin.SearchAddrActivity">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="13dp"
-        android:text="주소 검색"
-        android:textColor="@color/listpink"
-        android:textSize="17dp" />
 
     <LinearLayout
         android:id="@+id/frame"
@@ -79,7 +70,7 @@
                 android:shadowColor="@color/listeditbox"
                 android:shadowDx="4"
                 android:shadowDy="4"
-                android:text="검  색"
+                android:text="검색"
                 android:textColor="@color/listpink" />
         </LinearLayout>
     </LinearLayout>
@@ -98,7 +89,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:textSize="14dp"
-            android:text="장소결과"/>
+            android:text="검색결과"/>
     </LinearLayout>
     <ListView
         android:id="@+id/search_list"

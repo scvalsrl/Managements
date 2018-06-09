@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -101,6 +103,27 @@ public class DestListActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        search_text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String userStr = search_text.getText().toString();
+                String urlStr = defaultUrl + userStr + "&centerLat=" + finalCurLat + "&centerLon=" + finalCurLong;
+                ConnectThread thread = new ConnectThread(urlStr);
+                thread.start();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         search_btn.setOnClickListener(new View.OnClickListener() {
 

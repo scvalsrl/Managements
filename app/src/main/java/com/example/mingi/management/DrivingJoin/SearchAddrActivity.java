@@ -6,14 +6,19 @@ import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mingi.management.DrivingJoin.LocationAdapter;
@@ -52,8 +57,20 @@ public class SearchAddrActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_addr    );
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("도착지 검색");
+        final ActionBar abar = getSupportActionBar();;//line under the action bar
+        View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+        textviewTitle.setText("주소 검색");
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeButtonEnabled(true);
+
         search_text = (EditText) findViewById(R.id.search_text);
         search_btn = (Button) findViewById(R.id.search_btn);
         nowLoc_btn = (ImageView) findViewById(R.id.nowLoc_btn);
@@ -77,6 +94,27 @@ public class SearchAddrActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        search_text.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String userStr = search_text.getText().toString();
+                String urlStr = defaultUrl + userStr + "&centerLat=" + finalCurLat + "&centerLon=" + finalCurLong;
+                ConnectThread thread = new ConnectThread(urlStr);
+                thread.start();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         search_btn.setOnClickListener(new View.OnClickListener() {
 
@@ -241,5 +279,22 @@ public class SearchAddrActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        int id = item.getItemId();
+
+        if( id == android.R.id.home){
+            finish();
+
+            return true;
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

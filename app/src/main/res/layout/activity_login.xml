@@ -1,127 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mingi.management.login.LoginActivity">
+    android:fillViewport="true">
 
-
-
-
-    <LinearLayout
-        android:background="#ffffff"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="BNK 운행일지"
-            android:textSize="40dp"
-            android:textColor="#ea4472"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="행번과 비밀번호를 입력해주세요"
-            android:textSize="18dp"
-            android:textColor="#a5a5a5"
-
-            />
-
-
-        <EditText
-            android:layout_marginTop="50dp"
-            android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
-            android:id="@+id/idText"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="41dp"
-
-            android:hint="행번"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
-            android:id="@+id/passwordText"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="20dp"
-            android:hint="비밀번호"
-            android:inputType="textPassword" />
-
-
-<LinearLayout
-
-    android:layout_marginTop="50dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
-
-        <CheckBox
-            android:layout_marginRight="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="자동로그인"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:id="@+id/auto"/>
-
-        <TextView
-
-            android:id="@+id/registerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-       />
-
-</LinearLayout>
-
-
-
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:elevation="5dp"
-        android:background="#fafafa"
-        android:orientation="vertical"
-        android:padding="1dp" >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dedede"/>
-        <Button
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:id="@+id/loginButton"
-            android:textSize="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:textStyle="bold"
-            android:background="@drawable/bt_corner"
-            android:shadowColor="@color/listeditbox"
-            android:shadowDx="4"
-            android:shadowDy="4"
-            android:text="로그인하기 >"
-            android:textColor="#ffffff" />
-    </LinearLayout>
+        >
 
-</RelativeLayout>
+        <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/mainLayout"
+            android:layout_alignParentTop="true"
+            android:gravity="left|bottom"
+            android:id="@+id/headerLayout">
+
+
+
+                <ImageView
+                    android:layout_marginLeft="25dp"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
+                    android:id="@+id/splash"
+                    android:background="@drawable/splash_img" />
+
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="40dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/mainLayout"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_marginBottom="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="행번과 비밀번호를 입력해주세요"
+                android:textSize="18dp"
+                android:textColor="#a5a5a5"
+                />
+
+            <EditText
+                android:id="@+id/idText"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:drawableLeft="@drawable/ic_perm_identity_black_24dp"
+                android:hint=" 행번"
+                android:inputType="textPersonName" >
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="20dp"
+                android:drawableLeft="@drawable/ic_lock_outline_black_24dp"
+                android:hint=" 비밀번호"
+                android:inputType="textPassword" />
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="자동로그인"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+                <TextView
+
+                    android:id="@+id/registerButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/mainLayout"
+            android:id="@+id/footerLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/loginButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/bt_corner"
+                        android:shadowColor="@color/listeditbox"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:text="로그인"
+                        android:textColor="#ffffff"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</ScrollView>

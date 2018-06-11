@@ -75,6 +75,7 @@ public class BCEditActivity extends AppCompatActivity {
 
     ImageView imageView, bccamera, bcupload;
     EditText bcname, bclevel, bccom, bcphone, bcemail, bcadd;
+    TextView camTxt, uploadTxt;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
     String userID, no, bcphoto_str, bclat_str, bclon_str;
@@ -260,6 +261,22 @@ public class BCEditActivity extends AppCompatActivity {
                         startActivityForResult(goSearch, 3);
                     }
                 });
+            }
+        });
+
+        camTxt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                takePhoto();
+            }
+        });
+
+        uploadTxt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                pickFromAlbum();
             }
         });
     }

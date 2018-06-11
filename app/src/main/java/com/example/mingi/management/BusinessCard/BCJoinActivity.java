@@ -67,6 +67,7 @@ public class BCJoinActivity extends AppCompatActivity {
 
     ImageView imageView, uploadBtn, camBtn;
     EditText bcname, bclevel, bccom, bcphone, bcemail, bcadd;
+    TextView camTxt, uploadTxt;
     String bcadd_str, bclat, bclon;
 
     String isGPSEnable;
@@ -128,6 +129,12 @@ public class BCJoinActivity extends AppCompatActivity {
 
         upLoadServerUri = "http://scvalsrl.cafe24.com/UploadToServer.php";//서버컴퓨터의 ip주소
 
+        setClick();
+
+
+    }
+
+    private void setClick() {
         bcadd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,7 +161,21 @@ public class BCJoinActivity extends AppCompatActivity {
             }
         });
 
+        camTxt.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View view) {
+                takePhoto();
+            }
+        });
+
+        uploadTxt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                pickFromAlbum();
+            }
+        });
     }
 
 
@@ -386,6 +407,9 @@ public class BCJoinActivity extends AppCompatActivity {
         bcphone = (EditText) findViewById(R.id.bcphone);
         bcphone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
+        uploadTxt = (TextView) findViewById(R.id.uploadTxt);
+        camTxt = (TextView) findViewById(R.id.cameraTxt);
+
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         bcadd.setClickable(false);
@@ -495,8 +519,6 @@ public class BCJoinActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(getBaseContext(), "resultCode: " + resultCode, Toast.LENGTH_SHORT).show();
-
         if (requestCode == PICK_FROM_ALBUM) {
             if (data == null) {
                 Log.d("onActivityResult", "PICK_FROM_ALBUM but data is NULL");
@@ -746,6 +768,7 @@ public class BCJoinActivity extends AppCompatActivity {
 
                                 String id = "2109812";
                                 String bc_name = bcname.getText().toString();
+
                                 String bc_level = bclevel.getText().toString();
                                 String bc_com = bccom.getText().toString();
                                 String bc_phone = bcphone.getText().toString();

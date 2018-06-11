@@ -54,6 +54,7 @@
                         android:layout_height="@dimen/bcedit_iccam_size"
                         android:src="@drawable/ic_camera"/>
                     <TextView
+                        android:id="@+id/cameraTxt"
                         android:layout_marginLeft="6dp"
                         android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
@@ -73,6 +74,7 @@
                         android:src="@drawable/ic_album"
                         android:layout_marginRight="6dp"/>
                     <TextView
+                        android:id="@+id/uploadTxt"
                         android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

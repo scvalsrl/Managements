@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#ffffff"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="1dp"
                     android:orientation="vertical"
                     android:elevation="3dp">
                     <LinearLayout
@@ -42,22 +42,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="18dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="16dp"
                         android:background="#ffffff"
                         android:orientation="vertical">
                         <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="4dp">
+                            android:layout_height="wrap_content">
                             <ImageView
-                                android:layout_width="320dp"
-                                android:layout_height="95dp"
+                                android:layout_width="350dp"
+                                android:layout_height="90dp"
+                                android:src="@drawable/rectangle_shadow"/>
+                            <ImageView
+                                android:layout_marginTop="2dp"
+                                android:layout_marginLeft="3dp"
+                                android:layout_width="345dp"
+                                android:layout_height="85dp"
                                 android:src="@drawable/rectangle"/>
 
                             <LinearLayout
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginLeft="13dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
@@ -89,7 +93,11 @@
                             </LinearLayout>
                         </RelativeLayout>
                     </LinearLayout>
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="18dp"
+                    android:orientation="vertical">
                     <!-- 휴대폰 시작-->
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -168,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <ImageView
-                                android:layout_width="35dp"
+                                android:layout_width="30dp"
                                 android:layout_height="@dimen/bcdetail_icon_size"
                                 android:src="@drawable/ic_mail"
                                 android:layout_marginLeft="@dimen/bcdetail_icon_margin_left"
@@ -224,45 +232,45 @@
                                     android:layout_centerInParent="true"
                                     android:background="#dfe0e0"/>
                             </LinearLayout>
-                    </LinearLayout>
                         </LinearLayout>
+                    </LinearLayout>
                     <!--이메일 끝-->
 
                     <!--지도 시작-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="@dimen/bcdetail_icon_size"
+                            android:layout_height="65dp"
+                            android:src="@drawable/ic_add"
+                            android:layout_marginLeft="@dimen/bcdetail_icon_margin_left"
+                            android:paddingRight="@dimen/bcdetail_icon_margin_right"/>
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="@dimen/bcdetail_icon_size"
-                                android:layout_height="65dp"
-                                android:src="@drawable/ic_add"
-                                android:layout_marginLeft="@dimen/bcdetail_icon_margin_left"
-                                android:paddingRight="@dimen/bcdetail_icon_margin_right"/>
-                            <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_marginTop="5dp">
+                            <TextView
+                                android:id="@+id/bcadd"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_marginTop="5dp">
-                                <TextView
-                                    android:id="@+id/bcadd"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="서울 강남구 테헤란호329 (BNK 저축은행
+                                android:text="서울 강남구 테헤란호329 (BNK 저축은행
 서울 영업부)"
-                                    android:textSize="15dp"
-                                    android:paddingLeft="4dp"
-                                    android:textColor="@color/black"/>
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="1dp"
-                                    android:layout_marginLeft="2dp"
-                                    android:text="주소"
-                                    android:textColor="@color/BCdetailcategory"/>
-                            </LinearLayout>
-
+                                android:textSize="15dp"
+                                android:paddingLeft="4dp"
+                                android:textColor="@color/black"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp"
+                                android:layout_marginLeft="2dp"
+                                android:text="주소"
+                                android:textColor="@color/BCdetailcategory"/>
                         </LinearLayout>
+
+                    </LinearLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -270,20 +278,21 @@
                         <FrameLayout
                             android:id="@+id/mainFragment2"
                             android:layout_marginLeft="15dp"
-                            android:layout_width="330dp"
+                            android:layout_width="345dp"
                             android:layout_height="200dp"/>
                         <!--RATIO=3:1-->
                         <ImageView
                             android:layout_marginTop="5dp"
-                            android:layout_marginLeft="235dp"
+                            android:layout_marginLeft="220dp"
                             android:layout_width="210dp"
-                            android:layout_height="70dp"
+                            android:layout_height="30dp"
                             android:id="@+id/fullMap"
                             android:src="@drawable/ic_mapopen"/>
                     </RelativeLayout>
                     <!--지도 끝-->
 
-                    </LinearLayout>
+                </LinearLayout>
+                </LinearLayout>
                 </LinearLayout>
         </ScrollView>
     </LinearLayout>

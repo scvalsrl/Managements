@@ -1,5 +1,9 @@
 package com.example.mingi.management.DrivingJoin;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,23 +21,26 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by MINGI on 2018-05-14.
  */
-public class MainFragment extends Fragment implements OnMapReadyCallback{
+public class MainFragment extends Fragment implements OnMapReadyCallback {
     View rootView;
     MapView mapView;
     Double lat = 35.149586;
     Double lon = 129.060660;
     String name = "부산은행";
 
-    public MainFragment() {}
+    public MainFragment() {
+    }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater Inflater) { }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater Inflater) {
+    }
 
     @Override
     public void onPause() {
@@ -58,7 +65,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback{
         lat = Double.parseDouble(getArguments().getString("lat"));
         lon = Double.parseDouble(getArguments().getString("lon"));
         name = getArguments().getString("name");
-        Log.d("MainFragment", "bundle받음 lat: "+ lat + ", lon: " + lon + ",name: " + name);
+        Log.d("MainFragment", "bundle받음 lat: " + lat + ", lon: " + lon + ",name: " + name);
         rootView = inflater.inflate(R.layout.map_content, container, false);
         mapView = (MapView) rootView.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
@@ -92,8 +99,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback{
         // Updates the location and zoom of the MapView
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 18);
         googleMap.animateCamera(cameraUpdate);
+
+        BitmapDrawable d = (BitmapDrawable)getResources().getDrawable(R.drawable.mapmarker);
+        Bitmap b = d.getBitmap();
+        Bitmap bhalfsize = Bitmap.createScaledBitmap(b, 100, 120, false );
+
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
-                .title(name));
+                .title(name)
+                .icon(BitmapDescriptorFactory
+                        .fromBitmap(bhalfsize)));
     }
 }

@@ -36,8 +36,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class BCDetailNoAddActivity extends AppCompatActivity {
-    ImageView emailBtn, callBtn, msgBtn, bcfullmap;
-    TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
+    ImageView emailBtn, callBtn, msgBtn;
+    TextView bcname, bclevel, bccom, bcphone, bcemail, bcno;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
     String isGPSEnable, nowLat, nowLon, nowName, userID;
@@ -97,7 +97,6 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         bccom = (TextView) findViewById(R.id.bccom);
         bcphone = (TextView) findViewById(R.id.bcphone);
         bcemail = (TextView) findViewById(R.id.bcemail);
-        bcadd = (TextView) findViewById(R.id.bcadd);
         bcno = (TextView) findViewById(R.id.bcno);
 
 
@@ -107,7 +106,6 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         emailBtn = (ImageView) findViewById(R.id.emailbtn);
         callBtn = (ImageView) findViewById(R.id.callbtn);
         msgBtn = (ImageView) findViewById(R.id.msgbtn);
-        bcfullmap = (ImageView) findViewById(R.id.fullMap);
     }
 
     void setTextView() {
@@ -118,7 +116,6 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         bccom.setText(bccom_str);
         bcphone.setText(bcphone_str);
         bcemail.setText(bcemail_str);
-        bcadd.setText(bcadd_str);
     }
 
 

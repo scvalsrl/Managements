@@ -178,7 +178,7 @@ public class CarManegementActivity extends AppCompatActivity {
             }else{
                 listView = (ListView) findViewById(R.id.listVView);
                 userList = new ArrayList<Car>();
-                adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_);
+                adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_,month_s, year_s );
                 listView.setAdapter(adapter);
             }
 

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,8 +61,9 @@ public class BCListActivity extends AppCompatActivity {
     private BCListAdapter adapter;
     private List<BC> userList;
     private FloatingActionButton fab;
+    Button bc_joinlist, bc_namelist , bc_comlist;
 
-
+    int check=0;
     String isGPSEnable;
     String nowLat;
     String nowLon;
@@ -78,6 +80,9 @@ public class BCListActivity extends AppCompatActivity {
         bottomnav.setSelectedItemId(R.id.nav_search);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
+        bc_joinlist = (Button)findViewById(R.id.bc_joinlist);
+        bc_namelist = (Button)findViewById(R.id.bc_namelist);
+        bc_comlist = (Button)findViewById(R.id.bc_comlist);
 
         Intent intent = getIntent();
 
@@ -374,6 +379,30 @@ public class BCListActivity extends AppCompatActivity {
 
             }
         });
+
+
+        bc_joinlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new BackgroundTask2().execute();
+            }
+        });
+
+        bc_namelist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                check = 1;
+                new BackgroundTask2().execute();
+            }
+        });
+
+        bc_comlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                check = 2;
+                new BackgroundTask2().execute();
+            }
+        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -533,10 +562,24 @@ public class BCListActivity extends AppCompatActivity {
     class BackgroundTask2 extends AsyncTask<Void, Void, String> {
 
         String target;
-
+        String list;
+        String list2;
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/BCList.php";
+
+            if(check == 1){
+                list="BC_name";
+                list2="asc";
+            }else if(check == 2){
+                list="BC_com";
+                list2="asc";
+            }else{
+                list="no";
+                list2="DESC";
+            }
+
+            target = "http://scvalsrl.cafe24.com/BCList2.php?list="+list+"&list2="+list2;
+            Log.d("김민기", target);
         }
 
         @Override
@@ -583,5 +626,6 @@ public class BCListActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         }
     }
+
 
 }

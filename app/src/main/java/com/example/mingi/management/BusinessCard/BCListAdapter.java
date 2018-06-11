@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -42,41 +44,54 @@ public class BCListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+       // Log.d("김민기1", " getCount() : "+userList.size());
         return userList.size();
     }
 
     @Override
     public Object getItem(int i) {
+      //  Log.d("김민기2", " getItem() : "+userList.get(i));
         return userList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
+       // Log.d("김민기3", " getItemId() : "+i);
         return i;
     }
 
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View v, ViewGroup viewGroup) {
+
+        PersonViewHolder viewHolder;
+
+        if(v==null) {
+            v = View.inflate(context, R.layout.bc, null);
+            viewHolder = new PersonViewHolder();
+
+            viewHolder. bc_name = (TextView) v.findViewById(R.id.bc_name);
+            viewHolder. bc_level = (TextView) v.findViewById(R.id.bc_level);
+            viewHolder. bc_com = (TextView) v.findViewById(R.id.bc_com);
+            viewHolder. no = (TextView) v.findViewById(R.id.no2);
+
+            v.setTag(viewHolder);
+        }
+        else
+        {
+            viewHolder = (PersonViewHolder) v.getTag();
+        }
 
 
-        View v = View.inflate(context, R.layout.bc, null);
 
-        TextView bc_name = (TextView) v.findViewById(R.id.bc_name);
-        TextView bc_level = (TextView) v.findViewById(R.id.bc_level);
-        TextView bc_com = (TextView) v.findViewById(R.id.bc_com);
-        final TextView no = (TextView) v.findViewById(R.id.no2);
 
-        new DownloadImageTask((ImageView) v.findViewById(R.id.img))
-                .execute("http://scvalsrl.cafe24.com/uploads/" + userList.get(i).getBC_photo());
 
-        bc_name.setText(userList.get(i).getBC_name());
-        bc_level.setText(userList.get(i).getBC_level());
-        bc_com.setText(userList.get(i).getBC_com());
-        no.setText((String.valueOf(userList.get(i).getNo())));
-
-        v.setTag(userList.get(i).getNo());
-
+        new DownloadImageTask((ImageView) v.findViewById(R.id.img)).execute("http://scvalsrl.cafe24.com/uploads/" + userList.get(i).getBC_photo());
+        viewHolder.bc_name.setText(userList.get(i).getBC_name());
+        Log.d("김민기", " bc_name : "+  viewHolder.bc_name.getText());
+        viewHolder. bc_level.setText(userList.get(i).getBC_level());
+        viewHolder.bc_com.setText(userList.get(i).getBC_com());
+        viewHolder.no.setText((String.valueOf(userList.get(i).getNo())));
 
         return v;
 
@@ -108,5 +123,14 @@ public class BCListAdapter extends BaseAdapter {
         }
     }
 
+
+    public class PersonViewHolder
+    {
+        public TextView bc_name ;
+        public TextView bc_level ;
+        public TextView bc_com ;
+        public TextView no ;
+
+    }
 
 }

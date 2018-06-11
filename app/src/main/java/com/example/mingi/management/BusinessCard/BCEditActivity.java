@@ -139,7 +139,8 @@ public class BCEditActivity extends AppCompatActivity {
         bcphone = (EditText) findViewById(R.id.bcphone);
         bcemail = (EditText) findViewById(R.id.bcemail);
         bcadd = (EditText) findViewById(R.id.bcadd);
-
+        camTxt = (TextView) findViewById(R.id.cameraTxt);
+        uploadTxt = (TextView) findViewById(R.id.uploadTxt);
         bcupload = (ImageView) findViewById(R.id.uploadBtn);
         bccamera = (ImageView) findViewById(R.id.cameraBtn);
 
@@ -217,6 +218,8 @@ public class BCEditActivity extends AppCompatActivity {
     }
 
     void setInitView() {
+
+
         bcname.setText(bcname_str);
         bclevel.setText(bclevel_str);
         bccom.setText(bccom_str);
@@ -233,6 +236,7 @@ public class BCEditActivity extends AppCompatActivity {
     }
 
     void setClickBtn() {
+
         bccamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

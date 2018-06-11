@@ -33,8 +33,11 @@ public class CarListAdapter extends BaseAdapter {
     private String nowLon;
     private String nowName;
 
+    private String str_mm;
+    private String str_yy;
 
-    public CarListAdapter(Context context, List<Car> userList, Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName) {
+
+    public CarListAdapter(Context context, List<Car> userList, Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName, String str_mm, String str_yy) {
         this.context = context;
         this.userList = userList;
         this.parentActivity = parentActivity;
@@ -42,8 +45,9 @@ public class CarListAdapter extends BaseAdapter {
         this.nowLat = nowLat;
         this.nowLon = nowLon;
         this.nowName = nowName;
+        this.str_mm = str_mm;
+        this.str_yy = str_yy;
     }
-
 
     @Override
     public int getCount() {
@@ -62,34 +66,41 @@ public class CarListAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View v, ViewGroup viewGroup) {
+
+        final PersonViewHolder viewHolder;
+
+        if(v==null) {
+            v = View.inflate(context, R.layout.car, null);
+
+            viewHolder = new PersonViewHolder();
+            viewHolder. startPlace = (TextView) v.findViewById(R.id.startPlace);
+            viewHolder. endPlace = (TextView) v.findViewById(R.id.endPlace);
+            viewHolder. startTime = (TextView) v.findViewById(R.id.startTime);
+            viewHolder. endTime = (TextView) v.findViewById(R.id.endTime);
+            viewHolder. startDay = (TextView) v.findViewById(R.id.startDay);
+            viewHolder. endDay = (TextView) v.findViewById(R.id.endDay);
+            viewHolder. kilometer = (TextView) v.findViewById(R.id.kilometer);
+            viewHolder. carNum = (TextView) v.findViewById(R.id.carNum);
+            viewHolder. carNo = (TextView) v.findViewById(R.id.carNo);
+
+            v.setTag(viewHolder);
+
+        } else
+        {
+            viewHolder = (PersonViewHolder) v.getTag();
+        }
 
 
-        View v = View.inflate(context, R.layout.car, null);
-
-        TextView startPlace = (TextView) v.findViewById(R.id.startPlace);
-        TextView endPlace = (TextView) v.findViewById(R.id.endPlace);
-        TextView startTime = (TextView) v.findViewById(R.id.startTime);
-        TextView endTime = (TextView) v.findViewById(R.id.endTime);
-        TextView startDay = (TextView) v.findViewById(R.id.startDay);
-        TextView endDay = (TextView) v.findViewById(R.id.endDay);
-        TextView kilometer = (TextView) v.findViewById(R.id.kilometer);
-        TextView carNum = (TextView) v.findViewById(R.id.carNum);
-        final TextView carNo = (TextView) v.findViewById(R.id.carNo);
-
-
-        startPlace.setText(userList.get(i).getStartPlace());
-        endPlace.setText(userList.get(i).getEndPlace());
-        startTime.setText(userList.get(i).getStartTime());
-        endTime.setText(userList.get(i).getEndTime());
-        startDay.setText(userList.get(i).getStartDay());
-        endDay.setText(userList.get(i).getEndDay());
-        kilometer.setText(userList.get(i).getKilometer());
-        carNum.setText(userList.get(i).getCarNum());
-        carNo.setText(String.valueOf(userList.get(i).getNo()));
-
-
-        v.setTag(userList.get(i).getNo());
+        viewHolder.startPlace.setText(userList.get(i).getStartPlace());
+        viewHolder.endPlace.setText(userList.get(i).getEndPlace());
+        viewHolder.startTime.setText(userList.get(i).getStartTime());
+        viewHolder.endTime.setText(userList.get(i).getEndTime());
+        viewHolder.startDay.setText(userList.get(i).getStartDay());
+        viewHolder.endDay.setText(userList.get(i).getEndDay());
+        viewHolder.kilometer.setText(userList.get(i).getKilometer());
+        viewHolder.carNum.setText(userList.get(i).getCarNum());
+        viewHolder.carNo.setText(String.valueOf(userList.get(i).getNo()));
 
 
         Button deleteButton = (Button) v.findViewById(R.id.deleteButton);
@@ -153,11 +164,12 @@ public class CarListAdapter extends BaseAdapter {
                                 intent.putExtra("destLat", destLat);
                                 intent.putExtra("destLon", destLon);
 
-
                                 intent.putExtra("isGPSEnable", isGPSEnable);
                                 intent.putExtra("nowLat", nowLat);
                                 intent.putExtra("nowLon", nowLon);
                                 intent.putExtra("nowName", nowName);
+                                intent.putExtra("str_yy", str_yy);
+                                intent.putExtra("str_mm", str_mm);
 
 
                                 parentActivity.startActivity(intent);
@@ -176,7 +188,7 @@ public class CarListAdapter extends BaseAdapter {
                 };
 
 
-                String carNo_s = carNo.getText().toString();
+                String carNo_s = viewHolder.carNo.getText().toString();
                 int carNo_i = Integer.parseInt(carNo_s);
 
                 UpdateRequest updateRequest = new UpdateRequest(carNo_i, responseListener);
@@ -230,7 +242,7 @@ public class CarListAdapter extends BaseAdapter {
                                         };
 
 
-                                        String carNo_s = carNo.getText().toString();
+                                        String carNo_s = viewHolder.carNo.getText().toString();
                                         int carNo_i = Integer.parseInt(carNo_s);
 
                                         DeleteRequest deleteRequest = new DeleteRequest(carNo_i, responseListener);
@@ -259,4 +271,18 @@ public class CarListAdapter extends BaseAdapter {
 
         return v;
     }
+
+    public class PersonViewHolder
+    {
+        public TextView startPlace;
+        public TextView endPlace  ;
+        public TextView startTime ;
+        public TextView endTime ;
+        public TextView startDay;
+        public TextView endDay;
+        public TextView kilometer;
+        public TextView carNum;
+        public TextView carNo;
+    }
+
 }

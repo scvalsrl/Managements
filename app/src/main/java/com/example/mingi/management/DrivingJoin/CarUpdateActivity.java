@@ -51,7 +51,7 @@ public class CarUpdateActivity extends AppCompatActivity {
     Calendar currentTime;
     int hour, minute;
     String format;
-    String gps;
+    String gps, str_yy, str_mm;
     String userID, no;
 
     int y, m, d;
@@ -109,6 +109,9 @@ public class CarUpdateActivity extends AppCompatActivity {
         String endDay_ = fromSplash.getExtras().getString("endDay");
         no = fromSplash.getExtras().getString("no");
         String kilometer_ = fromSplash.getExtras().getString("kilometer");
+
+        str_yy = fromSplash.getExtras().getString("str_yy");
+        str_mm = fromSplash.getExtras().getString("str_mm");
 
         startLat = fromSplash.getExtras().getString("startLat");
         startLon = fromSplash.getExtras().getString("startLon");
@@ -566,11 +569,43 @@ public class CarUpdateActivity extends AppCompatActivity {
     class BackgroundTask extends AsyncTask<Void, Void, String> {
 
         String target;
+        String day;
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/CarList.php";
+
+
+            int year_i = Integer.parseInt(str_yy);
+            int month_i = Integer.parseInt(str_mm);
+            if ((year_i % 400 == 0) || (year_i % 4 == 0 && year_i % 100 != 0)) { // 윤년
+
+                if (month_i == 2) {
+                    day = "29";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            } else { // 평년
+
+                if (month_i == 2) {
+                    day = "28";
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                    day = "31";
+                } else {
+                    day = "30";
+                }
+
+            }
+
+
+            String start = str_yy + "/" + str_mm + "/1";
+            String end = str_yy + "/" + str_mm + "/" + day;
+
+            target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end;
         }
+
 
         @Override
         protected String doInBackground(Void... voids) {
@@ -615,6 +650,8 @@ public class CarUpdateActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("str_yy", str_yy);
+            intent.putExtra("str_mm", str_mm);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             CarUpdateActivity.this.startActivity(intent);
             overridePendingTransition(0, 0);

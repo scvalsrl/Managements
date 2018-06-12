@@ -24,108 +24,37 @@
             android:layout_height="fill_parent"
             android:layout_above="@+id/bottom_navigation"
             android:background="#ffffff">
-
-
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="#ffffff"
+                android:background="#ffffff">
 
-                >
-
+                <!--화살표 상단바 시작-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:background="#bbbcbf">
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginTop="1dp"
                         android:layout_marginBottom="1dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:background="#ffffff">
-
-
-                        <LinearLayout
+                        android:background="#f5f6f7">
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+                        <ImageView
+                            android:background="@drawable/ic_arrow_drop_down_black_24dp"
+                            android:id="@+id/txtlist"
+                            android:gravity="right"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:elevation="5dp"
-                            android:padding="1dp" >
-                            <Button
-                                android:layout_marginBottom="4dp"
-                                android:layout_marginLeft="7dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_marginTop="5.5dp"
-                                android:id="@+id/bc_joinlist"
-                                android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:textStyle="bold"
-                                android:textSize="16dp"
-                                android:background="@drawable/rounded_search_btn"
-                                android:shadowColor="@color/listeditbox"
-                                android:shadowDx="4"
-                                android:shadowDy="4"
-                                android:text="등록순"
-                                android:textColor="#445a64"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-
-                                />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="5dp"
-                            android:padding="1dp" >
-                            <Button
-                                android:layout_marginBottom="4dp"
-                                android:layout_marginLeft="7dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_marginTop="5.5dp"
-                                android:id="@+id/bc_namelist"
-                                android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:textStyle="bold"
-                                android:textSize="16dp"
-                                android:background="@drawable/rounded_search_btn"
-                                android:shadowColor="@color/listeditbox"
-                                android:shadowDx="4"
-                                android:shadowDy="4"
-                                android:text="이름순"
-                                android:textColor="#445a64" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:elevation="5dp"
-                            android:padding="1dp" >
-                            <Button
-                                android:layout_marginBottom="4dp"
-                                android:layout_marginLeft="7dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_marginTop="5.5dp"
-                                android:id="@+id/bc_comlist"
-                                android:textSize="16dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="35dp"
-                                android:textStyle="bold"
-                                android:background="@drawable/rounded_search_btn"
-                                android:shadowColor="@color/listeditbox"
-                                android:shadowDx="4"
-                                android:shadowDy="4"
-                                android:text="회사명순"
-                                android:textColor="#445a64" />
-                        </LinearLayout>
-
-
+                            android:layout_marginRight="6dp"/>
                     </LinearLayout>
-
                 </LinearLayout>
-
+                <!--화살표 상단바 끝-->
 
                 <com.baoyz.swipemenulistview.SwipeMenuListView
 
@@ -139,9 +68,7 @@
                     android:dividerHeight="1dp"
                     android:divider="#d1d1d1"
                     android:background="#ffffff"
-                    ></com.baoyz.swipemenulistview.SwipeMenuListView>
-
-
+                    />
             </LinearLayout>
 
             <com.melnykov.fab.FloatingActionButton
@@ -154,7 +81,6 @@
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_colorRipple="@color/BNKred" />
-
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView

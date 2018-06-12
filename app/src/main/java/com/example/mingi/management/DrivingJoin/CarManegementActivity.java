@@ -99,20 +99,14 @@ public class CarManegementActivity extends AppCompatActivity {
                                     case R.id.joinlist:
                                               new BackgroundTask().execute();
                                         return true;
-
                                     case R.id.daylist:
                                               new BackgroundTask2().execute();
                                         return true;
-
                                 }
                                 return false;
                             }
                         });
                 popupMenu.show();
-
-
-
-
             }
         });
 

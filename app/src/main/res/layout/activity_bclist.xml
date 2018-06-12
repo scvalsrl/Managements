@@ -45,13 +45,16 @@
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:layout_weight="1"/>
-                        <ImageView
-                            android:background="@drawable/ic_arrow_drop_down_black_24dp"
+                        <TextView
                             android:id="@+id/txtlist"
+                            android:text="123"
                             android:gravity="right"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="6dp"/>
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:layout_marginRight="20dp"/>
                     </LinearLayout>
                 </LinearLayout>
                 <!--화살표 상단바 끝-->
@@ -78,9 +81,9 @@
                 android:layout_gravity="bottom|right"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_mode_edit2_black_24dp"
-                fab:fab_colorNormal="@color/colorAccent"
-                fab:fab_colorPressed="@color/colorPrimaryDark"
-                fab:fab_colorRipple="@color/BNKred" />
+                fab:fab_colorNormal="@color/colorPrimaryDark"
+                fab:fab_colorPressed="@color/colorPrimary"
+                fab:fab_colorRipple="@color/colorPrimary" />
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView

@@ -71,8 +71,9 @@ public class BCListActivity extends AppCompatActivity {
     String nowLon;
     String nowName;
     String userID;
+    String listname;
 
-    ImageView txtlist;
+    TextView txtlist;
     TextView textviewTitle;
     BottomNavigationView bottomnav;
 
@@ -81,7 +82,7 @@ public class BCListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bclist);
-        initView();
+
 
         Intent intent = getIntent();
 
@@ -90,8 +91,10 @@ public class BCListActivity extends AppCompatActivity {
         nowLon = intent.getStringExtra("nowLon");
         nowName = intent.getStringExtra("nowName");
         userID = intent.getStringExtra("userID");
-        Log.d("김민기", "userID: " + userID);
+        listname = intent.getStringExtra("listname");
+        Log.d("김민기", "userID: " + listname);
 
+        initView();
         setActionBar();
         setSwipeMenu();
         setTextList();
@@ -538,7 +541,8 @@ public class BCListActivity extends AppCompatActivity {
     }
 
     void initView() {
-        txtlist = (ImageView) findViewById(R.id.txtlist);
+        txtlist = (TextView) findViewById(R.id.txtlist);
+        txtlist.setText(listname);
         bottomnav = findViewById(R.id.bottom_navigation);
         listview = (SwipeMenuListView) findViewById(R.id.listVView);
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -576,6 +580,8 @@ public class BCListActivity extends AppCompatActivity {
 
 
                     return true;
+
+
                 }
             };
 
@@ -660,6 +666,7 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("userID", userID);
             intent.putExtra("str_yy", str_yy);
             intent.putExtra("str_mm", str_mm);
+            intent.putExtra("listname", listname);
             BCListActivity.this.startActivity(intent);
             finish();
 
@@ -712,12 +719,15 @@ public class BCListActivity extends AppCompatActivity {
             if(check == 1){
                 list="BC_name";
                 list2="asc";
+                listname="이름순";
             }else if(check == 2){
                 list="BC_com";
                 list2="asc";
+                listname="회사명순";
             }else{
                 list="no";
                 list2="DESC";
+                listname="등록순";
             }
 
             target = "http://scvalsrl.cafe24.com/BCList2.php?list="+list+"&list2="+list2;
@@ -762,6 +772,7 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("listname", listname);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             BCListActivity.this.startActivity(intent);
             finish();

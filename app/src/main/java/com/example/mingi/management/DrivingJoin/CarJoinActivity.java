@@ -802,6 +802,7 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("listname", "등록순");
             CarJoinActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);

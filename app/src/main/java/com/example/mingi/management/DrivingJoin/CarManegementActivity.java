@@ -554,6 +554,7 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("listname", "등록순");
             CarManegementActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);

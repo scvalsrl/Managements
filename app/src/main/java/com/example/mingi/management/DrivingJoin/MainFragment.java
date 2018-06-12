@@ -1,12 +1,17 @@
 package com.example.mingi.management.DrivingJoin;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,9 +26,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Vector;
 
 /**
  * Created by MINGI on 2018-05-14.
@@ -97,17 +105,23 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         MapsInitializer.initialize(this.getActivity());
 
         // Updates the location and zoom of the MapView
+        Log.d("MainFragment-lat", lat + "lon:" + lon);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 18);
         googleMap.animateCamera(cameraUpdate);
-
-        BitmapDrawable d = (BitmapDrawable)getResources().getDrawable(R.drawable.mapmarker);
-        Bitmap b = d.getBitmap();
-        Bitmap bhalfsize = Bitmap.createScaledBitmap(b, 100, 120, false );
 
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
                 .title(name)
-                .icon(BitmapDescriptorFactory
-                        .fromBitmap(bhalfsize)));
+                .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_place_black3_24dp)));
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }

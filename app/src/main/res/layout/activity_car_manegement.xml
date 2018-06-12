@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_navigation"
-            android:background="?android:attr/windowBackground">
+
+            android:background="#ffffff">
 
 
             <LinearLayout
@@ -41,7 +42,7 @@
                         android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp"
                         android:gravity="center"
-                        android:background="#ffffff">
+                        android:background="#f5f6f7">
 
                         <Button
                             android:layout_marginLeft="45dp"

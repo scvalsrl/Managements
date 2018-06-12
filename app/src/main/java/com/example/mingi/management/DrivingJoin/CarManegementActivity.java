@@ -166,7 +166,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
 
             if(jsonArray.length()==0) {
-                 Drawable drawable = getResources().getDrawable(R.drawable.gnbcar);
+                 Drawable drawable = getResources().getDrawable(R.drawable.nocarlist);
                 ImageView imageView = (ImageView) findViewById(R.id.imageView1);
                 imageView.setImageDrawable(drawable);
             }else{

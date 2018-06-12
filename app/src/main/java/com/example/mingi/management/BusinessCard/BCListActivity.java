@@ -111,6 +111,8 @@ public class BCListActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+
+
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
@@ -328,16 +330,40 @@ public class BCListActivity extends AppCompatActivity {
 
             @Override
             public void create(SwipeMenu menu) {
+
+                SwipeMenuItem update = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                update.setBackground(new ColorDrawable(Color.rgb(167, 169,
+                        172)));
+                // set item width
+
+
+                update.setTitle("수정");
+                // set item title fontsize
+                update.setTitleSize(16);
+                // set item title font color
+                update.setTitleColor(Color.WHITE);
+
+                update.setWidth(200);
+                // add to menu
+                menu.addMenuItem(update);
+
+
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getApplicationContext());
                 // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
-                        0x3F, 0x25)));
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(255, 64, 129)));
                 // set item width
                 deleteItem.setWidth(200);
                 // set a icon
-                deleteItem.setIcon(R.drawable.ic_delete_black_24dp);
+                deleteItem.setTitle("삭제");
+
+                deleteItem.setTitleSize(16);
+                // set item title font color
+                deleteItem.setTitleColor(Color.WHITE);
+
                 // add to menu
                 menu.addMenuItem(deleteItem);
             }
@@ -369,6 +395,72 @@ public class BCListActivity extends AppCompatActivity {
             public boolean onMenuItemClick(final int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+
+                                    JSONObject jsonResponse = new JSONObject(response);
+                                    boolean success = jsonResponse.getBoolean("success");
+
+                                    String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo;
+                                    String no;
+                                    BC_name = jsonResponse.getString("BC_name");
+                                    BC_level = jsonResponse.getString("BC_level");
+                                    BC_com = jsonResponse.getString("BC_com");
+                                    BC_phone = jsonResponse.getString("BC_phone");
+                                    BC_mail = jsonResponse.getString("BC_mail");
+                                    BC_add = jsonResponse.getString("BC_add");
+                                    BC_lat = jsonResponse.getString("BC_lat");
+                                    BC_lon = jsonResponse.getString("BC_lon");
+                                    BC_photo = jsonResponse.getString("BC_photo");
+                                    no = jsonResponse.getString("no");
+
+
+                                    if (success) {
+
+                                        Intent goEdit = new Intent(getApplicationContext(), BCEditActivity.class);
+
+                                        goEdit.putExtra("bcname", BC_name);
+                                        goEdit.putExtra("bclevel", BC_level);
+                                        goEdit.putExtra("bccom", BC_com);
+                                        goEdit.putExtra("bcphone", BC_phone);
+                                        goEdit.putExtra("bcemail", BC_mail);
+                                        goEdit.putExtra("bcadd", BC_add);
+                                        goEdit.putExtra("bclat", BC_lat);
+                                        goEdit.putExtra("bclon", BC_lon);
+                                        goEdit.putExtra("bcphoto", BC_photo);
+                                        goEdit.putExtra("no", no);
+
+                                        goEdit.putExtra("userID", userID);
+                                        goEdit.putExtra("nowLat", nowLat);
+                                        goEdit.putExtra("nowLon", nowLon);
+                                        goEdit.putExtra("isGPSEnable", isGPSEnable);
+                                        goEdit.putExtra("nowName", nowName);
+
+                                        startActivity(goEdit);
+
+
+
+                                    } else {
+
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+
+                        };
+
+                        BCDetailRequest bcDetailRequest = new BCDetailRequest(userList.get(position).getNo(), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(BCListActivity.this);
+                        queue.add(bcDetailRequest);
+
+
+                       break;
+
+                    case 1:
                         AlertDialog.Builder builder = new AlertDialog.Builder(BCListActivity.this);
 
                         builder
@@ -421,7 +513,8 @@ public class BCListActivity extends AppCompatActivity {
                                         }).create()
                                 .show();
 
-                       break;
+                        break;
+
                 }
                 // false : close the menu; true : not close the menu
                 return false;
@@ -568,8 +661,8 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("str_yy", str_yy);
             intent.putExtra("str_mm", str_mm);
             BCListActivity.this.startActivity(intent);
-
             finish();
+
             overridePendingTransition(0, 0);
 
         }

@@ -23,8 +23,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="7dp">
+            android:paddingTop="9dp"
+            android:paddingBottom="10dp">
 
             <!--이름, 회사명, 직급 시작-->
             <LinearLayout

@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BusinessCard.BCDetailNoAddActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".BusinessCard.BCDetailNoAddActivity">
+
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/bcbackground">
+            android:background="#ffffff"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
+                android:layout_marginTop="11dp"
                 android:background="#ffffff"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/imgView"
                     android:layout_width="match_parent"
@@ -29,209 +33,225 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
                 android:layout_marginTop="1dp"
+                android:background="#ffffff"
                 android:orientation="vertical"
-                android:elevation="3dp">
-                <LinearLayout
+                android:padding="10dp">
+
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/bcbackground_outline"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="16dp"
-                    android:background="#ffffff"
-                    android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_width="350dp"
-                            android:layout_height="90dp"
-                            android:src="@drawable/rectangle_shadow"/>
-                        <ImageView
-                            android:layout_marginTop="2dp"
-                            android:layout_marginLeft="3dp"
-                            android:layout_width="345dp"
-                            android:layout_height="85dp"
-                            android:src="@drawable/rectangle"/>
+                    android:background="@drawable/detail"
+                    android:padding="10dp">
 
-                        <LinearLayout
-                            android:layout_marginTop="12dp"
-                            android:layout_marginLeft="13dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingLeft="4dp">
-                            <TextView
-                                android:id="@+id/bcname"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="20dp"
-                                android:textStyle="bold"
-                                android:text="정희은"
-                                android:textColor="@color/black"
-                                android:layout_marginBottom="5dp"/>
-                            <TextView
-                                android:id="@+id/bclevel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="13dp"
-                                android:text="핀턴"
-                                android:textColor="#58585a"
-                                android:layout_marginBottom="2dp"/>
-                            <TextView
-                                android:id="@+id/bccom"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textSize="13dp"
-                                android:textColor="#88898c"
-                                android:text="부산은행"/>
-                        </LinearLayout>
-                    </RelativeLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:orientation="vertical">
-                    <!-- 휴대폰 시작-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:id="@+id/bcname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="정희은"
+                            android:textColor="@color/black"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/bclevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="핀턴"
+                            android:textStyle="bold"
+                            android:textColor="#58585a"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/bccom"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="부산은행"
+                            android:textColor="#58585a"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+                </FrameLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp">
+                    <!-- 휴대폰 시작-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
                         <ImageView
-                            android:layout_width="@dimen/bcdetail_icon_size"
-                            android:layout_height="50dp"
-                            android:src="@drawable/ic_phonenum"
-                            android:layout_marginLeft="@dimen/bcdetail_icon_margin_left"
-                            android:paddingRight="@dimen/bcdetail_icon_margin_right"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_smartphone_black2_24dp" />
+
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:gravity="center_vertical">
+
                                 <LinearLayout
-                                    android:layout_width="200dp"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="60dp"
+                                    android:gravity="center_vertical"
                                     android:orientation="vertical"
-                                    android:layout_marginTop="5dp">
+                                    android:paddingLeft="20dp">
+
                                     <TextView
                                         android:id="@+id/bcphone"
                                         android:layout_width="wrap_content"
-                                        android:textColor="@color/black"
-                                        android:text="010 6787 9868"
                                         android:layout_height="wrap_content"
-                                        android:textSize="17dp"
-                                        android:paddingLeft="4dp"/>
+                                        android:text="010 6787 9868"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
                                     <TextView
-                                        android:layout_marginTop="1dp"
-                                        android:layout_marginLeft="2dp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="휴대폰"
-                                        android:textColor="@color/BCdetailcategory"/>
+                                        android:textColor="@color/BCdetailcategory" />
                                 </LinearLayout>
-                                <LinearLayout
+
+
+                                <RelativeLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp">
-                                    <ImageView
-                                        android:layout_width="@dimen/bcdetail_icon_size"
-                                        android:layout_height="30dp"
-                                        android:src="@drawable/ic_phone_black_24dp"
-                                        android:id="@+id/callbtn"/>
-                                    <ImageView
-                                        android:layout_marginLeft="3dp"
-                                        android:layout_width="@dimen/bcdetail_icon_size"
-                                        android:layout_height="30dp"
-                                        android:src="@drawable/ic_textsms_black_24dp"
-                                        android:id="@+id/msgbtn"/>
-                                </LinearLayout>
+                                    android:layout_height="wrap_content">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginRight="8dp">
+
+                                        <ImageView
+                                            android:id="@+id/callbtn"
+                                            android:layout_width="@dimen/bcdetail_icon_size"
+                                            android:layout_height="30dp"
+                                            android:src="@drawable/ic_phone_black_24dp" />
+
+                                        <ImageView
+                                            android:id="@+id/msgbtn"
+                                            android:layout_width="@dimen/bcdetail_icon_size"
+                                            android:layout_height="30dp"
+                                            android:src="@drawable/ic_textsms_black_24dp" />
+                                    </LinearLayout>
+                                </RelativeLayout>
                             </LinearLayout>
+
+
                             <View
-                                android:layout_marginBottom="8dp"
-                                android:layout_marginTop="8dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:layout_centerInParent="true"
-                                android:background="#dfe0e0"/>
+                                android:background="#dfe0e0" />
+
                         </LinearLayout>
                     </LinearLayout>
                     <!-- 휴대폰 끝-->
 
+                    <TextView
+                        android:id="@+id/bcno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="0dp" />
+
                     <!-- 이메일 시작-->
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_email_black2_24dp" />
+
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="@dimen/bcdetail_icon_size"
-                                android:src="@drawable/ic_mail"
-                                android:layout_marginLeft="@dimen/bcdetail_icon_margin_left"
-                                android:layout_marginRight="10dp"/>
+                            android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:gravity="center_vertical">
+
                                 <LinearLayout
                                     android:layout_width="wrap_content"
+                                    android:layout_height="60dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="20dp">
+
+                                    <TextView
+                                        android:id="@+id/bcemail"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="scvalsrl8@naver.com"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="이메일"
+                                        android:textColor="@color/BCdetailcategory" />
+                                </LinearLayout>
+
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
+
                                     <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:orientation="vertical"
-                                        android:layout_marginTop="5dp">
-                                        <TextView
-                                            android:id="@+id/bcemail"
-                                            android:layout_width="200dp"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/black"
-                                            android:textSize="17dp"
-                                            android:text="by9078@naver.com"/>
+                                        android:layout_alignParentRight="true">
 
-                                        <!--디버그-->
-                                        <TextView
-                                            android:id="@+id/bcno"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textSize="0dp" />
-                                        <!--디버그 끝-->
-                                        <TextView
-                                            android:layout_marginTop="1dp"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="이메일"
-                                            android:textColor="@color/BCdetailcategory"/>
+                                        <ImageView
+                                            android:id="@+id/emailbtn"
+                                            android:layout_width="30dp"
+                                            android:layout_height="30dp"
+                                            android:layout_marginRight="12dp"
+                                            android:src="@drawable/ic_sendmail" />
                                     </LinearLayout>
-                                    <ImageView
-                                        android:layout_marginTop="6dp"
-                                        android:layout_marginLeft="39dp"
-                                        android:layout_width="45dp"
-                                        android:layout_height="35dp"
-                                        android:src="@drawable/ic_sendmail"
-                                        android:id="@+id/emailbtn"/>
-                                </LinearLayout>
-
-                                <View
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="2dp"
-                                    android:layout_centerInParent="true"
-                                    android:background="#dfe0e0"/>
+                                </RelativeLayout>
                             </LinearLayout>
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_centerInParent="true"
+                                android:background="#dfe0e0" />
+
                         </LinearLayout>
                     </LinearLayout>
                     <!--이메일 끝-->

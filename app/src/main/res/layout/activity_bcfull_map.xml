@@ -7,16 +7,16 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <ImageView
-            android:layout_marginTop="5dp"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:id="@+id/minimize"
-            android:src="@drawable/ic_mapclose"/>
         <FrameLayout
             android:id="@+id/mainFragment3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </FrameLayout>
+        <ImageView
+            android:layout_marginTop="7dp"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:id="@+id/minimize"
+            android:src="@drawable/ic_mapclose"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

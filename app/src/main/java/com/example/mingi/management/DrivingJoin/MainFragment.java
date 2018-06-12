@@ -2,12 +2,8 @@ package com.example.mingi.management.DrivingJoin;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LevelListDrawable;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -105,7 +101,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
         MapsInitializer.initialize(this.getActivity());
 
         // Updates the location and zoom of the MapView
-        Log.d("MainFragment-lat", lat + "lon:" + lon);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lon), 18);
         googleMap.animateCamera(cameraUpdate);
 

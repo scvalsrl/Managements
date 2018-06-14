@@ -41,7 +41,7 @@
                         android:background="#f5f6f7">
 
                         <Button
-                            android:layout_marginLeft="45dp"
+                            android:layout_marginLeft="53dp"
                             android:layout_width="1dp"
                             android:layout_height="40dp"
                             android:background="@drawable/ic_navigate_before_black_24dp" />
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:layout_margin="16dp"
-                android:src="@drawable/ic_mode_edit2_black_24dp"
+                android:src="@drawable/ic_add_black_24dp"
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="#d85683"
                 fab:fab_colorRipple="#ff669a" />
@@ -125,11 +125,6 @@
             android:layout_alignParentBottom="true"
             app:menu="@menu/bottom_navigation"
             android:background="?android:attr/windowBackground"/>
-
-
     </RelativeLayout>
-
-
-
 
 </LinearLayout>

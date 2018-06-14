@@ -83,16 +83,12 @@ public class BCListAdapter extends BaseAdapter {
         }
 
 
-
-
-
         new DownloadImageTask((ImageView) v.findViewById(R.id.img)).execute("http://scvalsrl.cafe24.com/uploads/" + userList.get(i).getBC_photo());
         viewHolder.bc_name.setText(userList.get(i).getBC_name());
         Log.d("김민기", " bc_name : "+  viewHolder.bc_name.getText());
         viewHolder. bc_level.setText(userList.get(i).getBC_level());
         viewHolder.bc_com.setText(userList.get(i).getBC_com());
         viewHolder.no.setText((String.valueOf(userList.get(i).getNo())));
-
         return v;
 
 

@@ -73,7 +73,7 @@ public class BCListActivity extends AppCompatActivity {
     String userID;
     String listname;
 
-    TextView txtlist;
+    TextView txtlist, txtcount;
     TextView textviewTitle;
     BottomNavigationView bottomnav;
 
@@ -298,7 +298,6 @@ public class BCListActivity extends AppCompatActivity {
             int count = 0;
             String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo;
             int no;
-
             while (count < jsonArray.length()) {
 
                 JSONObject object = jsonArray.getJSONObject(count);
@@ -320,6 +319,8 @@ public class BCListActivity extends AppCompatActivity {
                 count++;
 
             }
+            Log.d("김민기", "FromDBtoList: " + count);
+            txtcount.setText(String.valueOf(count));
 
         } catch (Exception e) {
 
@@ -542,6 +543,7 @@ public class BCListActivity extends AppCompatActivity {
 
     void initView() {
         txtlist = (TextView) findViewById(R.id.txtlist);
+        txtcount = (TextView) findViewById(R.id.txtcount);
         bottomnav = findViewById(R.id.bottom_navigation);
         listview = (SwipeMenuListView) findViewById(R.id.listVView);
         fab = (FloatingActionButton) findViewById(R.id.fab);

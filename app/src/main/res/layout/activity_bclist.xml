@@ -15,9 +15,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-
-
-
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="fill_parent"
@@ -39,22 +36,50 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="1dp"
+                        android:gravity="center"
                         android:layout_marginBottom="1dp"
                         android:background="#f5f6f7">
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"/>
+
+                        <Button
+                            android:layout_marginLeft="45dp"
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/ic_navigate_before_black_24dp" />
+
                         <TextView
-                            android:id="@+id/txtlist"
-                            android:text="123"
-                            android:gravity="right"
+                        android:text="명함전체 ("
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtcount"
+                            android:text="4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:layout_marginRight="20dp"/>
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:text=") "
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/txtlist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:background="@drawable/ic_arrow_drop_down_black_24dp"
+                         />
                     </LinearLayout>
                 </LinearLayout>
                 <!--화살표 상단바 끝-->
@@ -81,9 +106,9 @@
                 android:layout_gravity="bottom|right"
                 android:layout_margin="16dp"
                 android:src="@drawable/ic_mode_edit2_black_24dp"
-                fab:fab_colorNormal="@color/colorPrimaryDark"
-                fab:fab_colorPressed="@color/colorPrimary"
-                fab:fab_colorRipple="@color/colorPrimary" />
+                fab:fab_colorNormal="@color/colorAccent"
+                fab:fab_colorPressed="#d85683"
+                fab:fab_colorRipple="#ff669a" />
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView

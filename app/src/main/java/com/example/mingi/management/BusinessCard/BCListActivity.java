@@ -542,7 +542,6 @@ public class BCListActivity extends AppCompatActivity {
 
     void initView() {
         txtlist = (TextView) findViewById(R.id.txtlist);
-        txtlist.setText(listname);
         bottomnav = findViewById(R.id.bottom_navigation);
         listview = (SwipeMenuListView) findViewById(R.id.listVView);
         fab = (FloatingActionButton) findViewById(R.id.fab);

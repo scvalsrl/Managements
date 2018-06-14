@@ -687,6 +687,7 @@ public class BCJoinActivity extends AppCompatActivity {
                         .show();
 
             }
+
             else  if (bcphone.getText().toString().equals("")) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
@@ -694,8 +695,8 @@ public class BCJoinActivity extends AppCompatActivity {
                         .setNegativeButton("확인", null)
                         .create()
                         .show();
-
             }
+
             else  if (uploadFileName.equals("")  || uploadFileName.equals(null)  ) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);

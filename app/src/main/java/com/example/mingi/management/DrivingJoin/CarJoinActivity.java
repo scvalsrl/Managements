@@ -54,6 +54,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,10 +67,12 @@ public class CarJoinActivity extends AppCompatActivity {
     Calendar currentTime;
     int hour, minute;
     String format, userID;
-    String gps;
+    String gps , start_day, end_day, start_time, end_time;
     BottomNavigationView bottomnav;
 
     int y, m, d;
+    long sec;
+    int compare;
 
 
     /*yoonju*/
@@ -88,10 +91,6 @@ public class CarJoinActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_join);
-
-
-
-
 
 
         findcontrol();
@@ -133,7 +132,8 @@ public class CarJoinActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        final ActionBar abar = getSupportActionBar();;//line under the action bar
+        final ActionBar abar = getSupportActionBar();
+        ;//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
                 ActionBar.LayoutParams.WRAP_CONTENT,
@@ -307,8 +307,8 @@ public class CarJoinActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
                         i1 += 1;
-                        String Day = i + "/" + i1 + "/" + i2;
-                        txtDate2.setText(Day);
+                        end_day = i + "/" + i1 + "/" + i2;
+                        txtDate2.setText(end_day);
 
                     }
                 }, y, m, d);
@@ -334,10 +334,9 @@ public class CarJoinActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
                         seletedTimeFormat(hourOfDay);
-
-                        String time = hourOfDay + ":" + minute + " " + format;
-                        txtTime2.setText(time);
-
+                        String t = hourOfDay + ":" + minute + " " + format;
+                        end_time = hourOfDay + ":" + minute ;
+                        txtTime2.setText(t);
 
                     }
                 }, hour, minute, true);
@@ -360,12 +359,13 @@ public class CarJoinActivity extends AppCompatActivity {
                 y = calendar.get(Calendar.YEAR);
 
                 DatePickerDialog pickerDialog = new DatePickerDialog(CarJoinActivity.this, new DatePickerDialog.OnDateSetListener() {
+
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
                         i1 += 1;
-                        String Day = i + "/" + i1 + "/" + i2;
-                        txtDate.setText(Day);
+                        start_day = i + "/" + i1 + "/" + i2;
+                        txtDate.setText(start_day);
 
 
                     }
@@ -392,8 +392,9 @@ public class CarJoinActivity extends AppCompatActivity {
 
                         seletedTimeFormat(hourOfDay);
 
-                        String time = hourOfDay + ":" + minute + " " + format;
-                        txtTime.setText(time);
+                        String t = hourOfDay + ":" + minute + " " + format;
+                        start_time = hourOfDay + ":" + minute;
+                        txtTime.setText(t);
 
 
                     }
@@ -446,14 +447,13 @@ public class CarJoinActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if( id == R.id.logout ){
-
+        if (id == R.id.logout) {
 
 
             Intent intent = new Intent(CarJoinActivity.this, LoginActivity.class);
 
             intent.putExtra("nowLat", nowLat);
-            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowLon", nowLon);
             intent.putExtra("nowName", nowName);
             intent.putExtra("isGPSEnable", gps);
 
@@ -468,7 +468,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
             return true;
         }
-        if( id == R.id.newPost ){
+        if (id == R.id.newPost) {
 
             final String ids = "2109812";
             String carNum = txtCar.getText().toString();
@@ -477,6 +477,37 @@ public class CarJoinActivity extends AppCompatActivity {
             String startTime = txtTime.getText().toString();
             String endTime = txtTime2.getText().toString();
 
+
+            if (!startday.equals("출발 날짜를 선택해주세요") && !endday.equals("도착 날짜를 선택해주세요")){
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+                Date day1 = null;
+                Date day2 = null;
+                try {
+                    day1 = format.parse(start_day);
+                    day2 = format.parse(end_day);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                compare = day1.compareTo(day2);
+            }
+
+
+            if (!startTime.equals("출발 시간을 선택해주세요") && !endTime.equals("도착 시간을 선택해주세요")) {
+                SimpleDateFormat f = new SimpleDateFormat("HH:mm", Locale.KOREA);
+                Date d1 = null;
+                Date d2 = null;
+                try {
+                    d1 = f.parse(start_time);
+                    d2 = f.parse(end_time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                long diff = d1.getTime() - d2.getTime();
+                sec = diff / 1000;
+            }
 
             if (startLat.equals(destLat) && startLon.equals(destLon)) {
 
@@ -513,7 +544,22 @@ public class CarJoinActivity extends AppCompatActivity {
                         .create()
                         .show();
 
-            } else {
+            } else if ( compare > 0 ) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                builder.setMessage("도착시각이 출발시각보다 빠릅니다")
+                        .setNegativeButton("확인", null)
+                        .create()
+                        .show();
+            }
+            else if(compare==0 && sec >0){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
+                    builder.setMessage("도착시각이 출발시각보다 빠릅니다")
+                            .setNegativeButton("확인", null)
+                            .create()
+                            .show();
+
+            }
+            else {
                 Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -600,7 +646,6 @@ public class CarJoinActivity extends AppCompatActivity {
 
                             } else {
                                 Log.d(" 카운팅 실패 : ", "1");
-
                             }
 
 
@@ -617,8 +662,6 @@ public class CarJoinActivity extends AppCompatActivity {
             return true;
 
 
-
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -629,16 +672,15 @@ public class CarJoinActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.carjoin_menu, menu);
-        for(int i = 0; i < menu.size(); i++) {
+        for (int i = 0; i < menu.size(); i++) {
             Log.d("CarjoinActivity-menu", String.valueOf(menu.size()));
             MenuItem item = menu.getItem(i);
             SpannableString spanString = new SpannableString(menu.getItem(i).getTitle().toString());
-            if(i == 0) {
+            if (i == 0) {
 
             }
             int end = spanString.length();
             spanString.setSpan(new AbsoluteSizeSpan(37), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             item.setTitle(spanString);
         }
         return true;
@@ -663,8 +705,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
                 if (month_i == 2) {
                     day = "29";
-                }
-                else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
+                } else if (month_i == 1 || month_i == 3 || month_i == 5 || month_i == 7 || month_i == 8 || month_i == 10 || month_i == 12) {
                     day = "31";
                 } else {
                     day = "30";
@@ -682,11 +723,9 @@ public class CarJoinActivity extends AppCompatActivity {
 
             }
 
-
-            String start = str_yy + "/"+str_mm+"/1";
-            String end = str_yy + "/"+str_mm+"/"+day;
-
-            target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
+            String start = str_yy + "/" + str_mm + "/1";
+            String end = str_yy + "/" + str_mm + "/" + day;
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end;
 
         }
 
@@ -717,14 +756,13 @@ public class CarJoinActivity extends AppCompatActivity {
 
             }
 
-
             return null;
+
         }
 
         @Override
         public void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
-
         }
 
         public void onPostExecute(String result) {
@@ -782,8 +820,6 @@ public class CarJoinActivity extends AppCompatActivity {
                 e.printStackTrace();
 
             }
-
-
             return null;
         }
 
@@ -853,7 +889,7 @@ public class CarJoinActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             Log.d("CarJoinActivity", "distance 계산 후: " + distance);
-            if(distance > -1) {
+            if (distance > -1) {
                 Log.d("CarJoinActivity", "distance > -1 " + distance);
                 final float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
                 kilometer = Float.toString(distanceKM);
@@ -862,10 +898,10 @@ public class CarJoinActivity extends AppCompatActivity {
                 String short_start = startPlace;
                 String short_end = endPlace;
 
-                if(startPlace.length() > 8) {
-                    short_start = startPlace.substring(0,8) + "..";
+                if (startPlace.length() > 8) {
+                    short_start = startPlace.substring(0, 8) + "..";
                 }
-                if(endPlace.length() > 8) {
+                if (endPlace.length() > 8) {
                     short_end = endPlace.substring(0, 8) + "..";
                 }
                 userdistanceBuilder.setTitle(short_start + "→" + short_end);
@@ -882,12 +918,13 @@ public class CarJoinActivity extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onNegativeClicked() { }
+                                    public void onNegativeClicked() {
+                                    }
                                 });
                                 editDialog.show();
                             }
                         })
-                        .setNegativeButton("확인", new DialogInterface.OnClickListener(){
+                        .setNegativeButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 distanceText.setText(kilometer);
@@ -933,7 +970,7 @@ public class CarJoinActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean isStart = startPlace.equals("출발지 입력");
                 boolean isDest = endPlace.equals("도착지 입력");
-                if(isStart) {
+                if (isStart) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
                     builder.setMessage(" 출발지를 입력해주세요 ")
                             .setNegativeButton("확인", null)
@@ -942,7 +979,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
                     return;
                 }
-                if(isDest) {
+                if (isDest) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
                     builder.setMessage(" 도착지를 입력해주세요 ")
                             .setNegativeButton("확인", null)
@@ -952,7 +989,7 @@ public class CarJoinActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(startLat == destLat && startLon == destLon) {
+                if (startLat == destLat && startLon == destLon) {
                     Log.d("CarJoin", "출발지==도착지");
                     distanceText.setText(" 0 km");
                     AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
@@ -971,7 +1008,8 @@ public class CarJoinActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNegativeClicked() { }
+                    public void onNegativeClicked() {
+                    }
                 });
                 editDialog.show();
             }

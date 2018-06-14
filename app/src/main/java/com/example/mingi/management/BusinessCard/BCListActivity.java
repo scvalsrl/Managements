@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -36,7 +37,9 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.mingi.management.DrivingJoin.Car;
 import com.example.mingi.management.DrivingJoin.CarJoinActivity;
+import com.example.mingi.management.DrivingJoin.CarListAdapter;
 import com.example.mingi.management.DrivingJoin.CarManegementActivity;
 import com.example.mingi.management.DrivingJoin.DeleteRequest2;
 import com.example.mingi.management.R;
@@ -298,6 +301,13 @@ public class BCListActivity extends AppCompatActivity {
             int count = 0;
             String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo;
             int no;
+
+            if(jsonArray.length()==0) {
+                Drawable drawable = getResources().getDrawable(R.drawable.nobc);
+                ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+                imageView.setImageDrawable(drawable);
+            }
+
             while (count < jsonArray.length()) {
 
                 JSONObject object = jsonArray.getJSONObject(count);

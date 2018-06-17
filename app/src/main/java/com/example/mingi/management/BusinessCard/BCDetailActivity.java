@@ -320,8 +320,7 @@ public class BCDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if( id == android.R.id.home){
-            finish();
-
+            new BackgroundTask2().execute();
             return true;
 
         }

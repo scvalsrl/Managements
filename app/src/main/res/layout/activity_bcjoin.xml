@@ -1,10 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BusinessCard.BCJoinActivity"
     android:orientation="vertical">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent" >
 
 
     <LinearLayout
@@ -29,7 +35,7 @@
         <LinearLayout
             android:layout_marginTop="1dp"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
+            android:layout_height="wrap_content"
             android:background="#ffffff"
             android:orientation="vertical"
             >
@@ -38,12 +44,19 @@
                 android:layout_height="1dp"
                 android:background="@color/bcbackground_outline"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="235dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right" >
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,9 +67,9 @@
                         android:layout_height="@dimen/bcedit_iccam_size"
                         android:src="@drawable/ic_camera"/>
                     <TextView
+                        android:paddingLeft="7dp"
+                        android:layout_gravity="center"
                         android:id="@+id/cameraTxt"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="카메라"
@@ -71,17 +84,19 @@
                         android:id="@+id/uploadBtn"
                         android:layout_width="@dimen/bcedit_iccam_size"
                         android:layout_height="@dimen/bcedit_iccam_size"
-                        android:src="@drawable/ic_album"
-                        android:layout_marginRight="6dp"/>
+                        android:src="@drawable/ic_album" />
                     <TextView
+                        android:paddingLeft="7dp"
                         android:id="@+id/uploadTxt"
-                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="앨범"
                         android:textColor="@color/black"/>
                 </LinearLayout>
             </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,9 +119,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="18dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="18dp"
                 android:background="#ffffff"
                 android:orientation="vertical">
                 <LinearLayout
@@ -218,4 +234,6 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

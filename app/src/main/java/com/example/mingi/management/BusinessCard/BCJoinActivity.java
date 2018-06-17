@@ -64,12 +64,12 @@ public class BCJoinActivity extends AppCompatActivity {
     private static final int CROP_FROM_CAMERA = 2;
 
     Uri photoUri;
-
+   private  AlertDialog.Builder builder;
     ImageView imageView, uploadBtn, camBtn;
     EditText bcname, bclevel, bccom, bcphone, bcemail, bcadd;
     TextView camTxt, uploadTxt;
     String bcadd_str, bclat, bclon;
-
+    int no_i;
     String isGPSEnable;
     String nowLat;
     String nowLon;
@@ -98,6 +98,7 @@ public class BCJoinActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcjoin);
+        builder = new AlertDialog.Builder(BCJoinActivity.this);
         checkPermissions();
         initView();
 
@@ -234,9 +235,11 @@ public class BCJoinActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
-            BCJoinActivity.this.startActivity(intent);
-            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+
             finish();
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            BCJoinActivity.this.startActivity(intent);
+
             overridePendingTransition(0, 0);
 
         }
@@ -355,8 +358,6 @@ public class BCJoinActivity extends AppCompatActivity {
 
             } catch (MalformedURLException ex) {
 
-
-                dialog.dismiss();
                 ex.printStackTrace();
 
                 runOnUiThread(new Runnable() {
@@ -371,7 +372,6 @@ public class BCJoinActivity extends AppCompatActivity {
                 Log.e("Upload file to server", "error: " + ex.getMessage(), ex);
 
             } catch (Exception e) {
-                dialog.dismiss();
 
                 e.printStackTrace();
 
@@ -384,7 +384,6 @@ public class BCJoinActivity extends AppCompatActivity {
 
                 });
             }
-            dialog.dismiss();
 
             return serverResponseCode;
 
@@ -658,11 +657,8 @@ public class BCJoinActivity extends AppCompatActivity {
 
         if( id == R.id.vbcjoin ) {
 
-
-            Log.d("김민기기기", "onOptionsItemSelected: " + bcname.getText().toString());
             if (bcname.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 이름을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -671,7 +667,6 @@ public class BCJoinActivity extends AppCompatActivity {
             }
             else  if (bclevel.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 직급을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -680,7 +675,6 @@ public class BCJoinActivity extends AppCompatActivity {
             }
             else  if (bccom.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 회사명을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -690,7 +684,7 @@ public class BCJoinActivity extends AppCompatActivity {
 
             else  if (bcphone.getText().toString().equals("")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
+
                 builder.setMessage(" 휴대폰을 입력해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -699,7 +693,6 @@ public class BCJoinActivity extends AppCompatActivity {
 
             else  if (uploadFileName.equals("")  || uploadFileName.equals(null)  ) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                 builder.setMessage(" 사진을 등록해주세요 ")
                         .setNegativeButton("확인", null)
                         .create()
@@ -708,9 +701,6 @@ public class BCJoinActivity extends AppCompatActivity {
             }
 
             else {
-
-
-                dialog = ProgressDialog.show(BCJoinActivity.this, "", "등록 중입니다", true);
 
                 new Thread(new Runnable() {
                     public void run() {
@@ -740,15 +730,119 @@ public class BCJoinActivity extends AppCompatActivity {
 
                                             if (success) {
 
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
-
                                                 builder.setMessage("성공적으로 등록 되었습니다")
                                                         .setPositiveButton("확인", null)
                                                         .create()
                                                         .show();
-                                                new BackgroundTask2().execute();
+
+
+                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        try {
+
+
+                                                            JSONObject jsonResponse = new JSONObject(response);
+                                                            boolean success = jsonResponse.getBoolean("success");
+
+                                                            String BC_name, BC_level, BC_com, BC_phone, BC_mail, BC_add, BC_lat, BC_lon, BC_photo;
+                                                            String no;
+                                                            BC_name = jsonResponse.getString("BC_name");
+                                                            BC_level = jsonResponse.getString("BC_level");
+                                                            BC_com = jsonResponse.getString("BC_com");
+                                                            BC_phone = jsonResponse.getString("BC_phone");
+                                                            BC_mail = jsonResponse.getString("BC_mail");
+                                                            BC_add = jsonResponse.getString("BC_add");
+                                                            BC_lat = jsonResponse.getString("BC_lat");
+                                                            BC_lon = jsonResponse.getString("BC_lon");
+                                                            BC_photo = jsonResponse.getString("BC_photo");
+                                                            no = jsonResponse.getString("no");
+
+
+                                                            if (success) {
+
+                                                                // 주소가 없다면
+                                                                if (BC_lat.equals("0") || BC_lon.equals("0") || BC_add.equals("")) {
+                                                                    Log.d("BCListActivity-check","lat: " + BC_lat + ", lon: " + BC_lon);
+                                                                    BC_lat = "0";
+                                                                    BC_lon = "0";
+                                                                    BC_add = "";
+                                                                    // 인텐드에 넣기
+                                                                    Intent intent = new Intent(BCJoinActivity.this, BCDetailNoAddActivity.class);
+
+                                                                    intent.putExtra("BC_name", BC_name);
+                                                                    intent.putExtra("BC_level", BC_level);
+                                                                    intent.putExtra("BC_com", BC_com);
+                                                                    intent.putExtra("BC_phone", BC_phone);
+                                                                    intent.putExtra("BC_mail", BC_mail);
+                                                                    intent.putExtra("BC_add", BC_add);
+                                                                    intent.putExtra("BC_lat", BC_lat);
+                                                                    intent.putExtra("BC_lon", BC_lon);
+                                                                    intent.putExtra("BC_photo", BC_photo);
+                                                                    intent.putExtra("no", no);
+
+
+                                                                    intent.putExtra("userID", userID);
+                                                                    intent.putExtra("isGPSEnable", isGPSEnable);
+                                                                    intent.putExtra("nowLat", nowLat);
+                                                                    intent.putExtra("nowLon", nowLon);
+                                                                    intent.putExtra("nowName", nowName);
+
+                                                                    finish();
+                                                                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                    BCJoinActivity.this.startActivity(intent);
+
+
+                                                                    // 화면전환 넣기 //
+
+                                                                } else{
+
+                                                                    // 인텐드에 넣기
+                                                                    Intent intent = new Intent(BCJoinActivity.this, BCDetailActivity.class);
+
+                                                                    intent.putExtra("BC_name", BC_name);
+                                                                    intent.putExtra("BC_level", BC_level);
+                                                                    intent.putExtra("BC_com", BC_com);
+                                                                    intent.putExtra("BC_phone", BC_phone);
+                                                                    intent.putExtra("BC_mail", BC_mail);
+                                                                    intent.putExtra("BC_add", BC_add);
+                                                                    intent.putExtra("BC_lat", BC_lat);
+                                                                    intent.putExtra("BC_lon", BC_lon);
+                                                                    intent.putExtra("BC_photo", BC_photo);
+                                                                    intent.putExtra("no", no);
+
+
+                                                                    intent.putExtra("userID", userID);
+                                                                    intent.putExtra("isGPSEnable", isGPSEnable);
+                                                                    intent.putExtra("nowLat", nowLat);
+                                                                    intent.putExtra("nowLon", nowLon);
+                                                                    intent.putExtra("nowName", nowName);
+
+                                                                    finish();
+                                                                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                    BCJoinActivity.this.startActivity(intent);
+                                                                }
+
+                                                            } else {
+
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
+
+                                                };
+
+                                                BCDetailRequest bcDetailRequest = new BCDetailRequest(no_i, responseListener);
+                                                RequestQueue queue = Volley.newRequestQueue(BCJoinActivity.this);
+                                                queue.add(bcDetailRequest);
+
+
+
                                             } else {
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(BCJoinActivity.this);
                                                 builder.setMessage("등록에 실패 했습니다.")
                                                         .setNegativeButton("다시시도", null).create().show();
                                                 Intent intent = new Intent(BCJoinActivity.this, BCJoinActivity.class);
@@ -764,7 +858,7 @@ public class BCJoinActivity extends AppCompatActivity {
                                 };
                                 String no_s = jsonResponse.getString("no");
 
-                                int no_i = Integer.parseInt(no_s);
+                                no_i = Integer.parseInt(no_s);
                                 no_i++;
 
                                 String id = "2109812";

@@ -26,7 +26,7 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                >
@@ -41,11 +41,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp"
+                        android:paddingLeft="30dp"
                         android:gravity="center"
                         android:background="#f5f6f7">
 
                         <Button
-                            android:layout_marginLeft="45dp"
                             android:id="@+id/left_btn"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
@@ -55,8 +55,8 @@
                             android:id="@+id/txt_year_month_picker"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="60dp"
-                            android:layout_marginRight="60dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
                             android:text=""
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="16dp"
@@ -70,7 +70,6 @@
 
 
                             <ImageView
-                                android:layout_marginLeft="20dp"
                                 android:background="@drawable/ic_arrow_drop_down_black_24dp"
                                 android:id="@+id/txtlist"
                                 android:gravity="right"

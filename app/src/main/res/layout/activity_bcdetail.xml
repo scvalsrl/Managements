@@ -94,6 +94,7 @@
                     <!-- 휴대폰 시작-->
 
                     <LinearLayout
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -123,8 +124,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="휴대폰"
-                                        android:textSize="18dp"
-                                        android:textColor="@color/colorAccent" />
+                                        android:textSize="14dp"
+                                        android:textColor="#6D6E70" />
                                     <TextView
                                         android:id="@+id/bcphone"
                                         android:layout_width="wrap_content"
@@ -163,6 +164,8 @@
 
 
                             <View
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:layout_centerInParent="true"
@@ -209,8 +212,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="이메일"
-                                        android:textSize="18dp"
-                                        android:textColor="@color/colorAccent" />
+                                        android:textSize="14dp"
+                                        android:textColor="#6D6E70" />
                                     <TextView
                                         android:id="@+id/bcemail"
                                         android:textSize="18dp"
@@ -245,6 +248,8 @@
 
 
                             <View
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="2dp"
                                 android:layout_centerInParent="true"
@@ -285,15 +290,17 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="주소"
-                                        android:textSize="18dp"
-                                        android:textColor="@color/colorAccent" />
+                                        android:textSize="14dp"
+                                        android:textColor="#6D6E70" />
+
+
                                     <TextView
                                         android:id="@+id/bcadd"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
                                         android:text="서울시 강남구 123123123123123"
                                         android:textColor="@color/black"
-                                        android:textSize="18dp" />
+                                        android:textSize="17dp" />
 
 
                                 </LinearLayout>

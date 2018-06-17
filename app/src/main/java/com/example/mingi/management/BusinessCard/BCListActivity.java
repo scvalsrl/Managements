@@ -315,7 +315,9 @@ public class BCListActivity extends AppCompatActivity {
                 BC_name = object.getString("BC_name");
                 BC_level = object.getString("BC_level");
                 BC_com = object.getString("BC_com");
+                Log.d("김민기", "BC_name: "+ BC_name);
                 BC_phone = object.getString("BC_phone");
+                Log.d("김민기", "BC_phone: "+ BC_phone);
                 BC_mail = object.getString("BC_mail");
 
                 BC_add = object.getString("BC_add");

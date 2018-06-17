@@ -2,10 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_height="match_parent"
     tools:context=".BusinessCard.BCEditActivity"
     android:orientation="vertical">
 
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,50 +44,58 @@
                 android:layout_height="1dp"
                 android:background="@color/bcbackground_outline"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="235dp">
+            <FrameLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent">
                 <LinearLayout
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp">
-                    <ImageView
-                        android:id="@+id/cameraBtn"
-                        android:layout_width="@dimen/bcedit_iccam_size"
-                        android:layout_height="@dimen/bcedit_iccam_size"
-                        android:src="@drawable/ic_camera"/>
-                    <TextView
-                        android:id="@+id/cameraTxt"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginTop="5dp"
+                    android:layout_gravity="right" >
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="카메라"
-                        android:textColor="@color/black"
-                        android:textSize="15dp"/>
+                        android:layout_marginRight="5dp">
+                        <ImageView
+                            android:id="@+id/cameraBtn"
+                            android:layout_width="@dimen/bcedit_iccam_size"
+                            android:layout_height="@dimen/bcedit_iccam_size"
+                            android:src="@drawable/ic_camera"/>
+                        <TextView
+                            android:paddingLeft="7dp"
+                            android:layout_gravity="center"
+                            android:id="@+id/cameraTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="카메라"
+                            android:textColor="@color/black"
+                            android:textSize="15dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/uploadBtn"
+                            android:layout_width="@dimen/bcedit_iccam_size"
+                            android:layout_height="@dimen/bcedit_iccam_size"
+                            android:src="@drawable/ic_album" />
+                        <TextView
+                            android:paddingLeft="7dp"
+                            android:id="@+id/uploadTxt"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="앨범"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <ImageView
-                        android:id="@+id/uploadBtn"
-                        android:layout_width="@dimen/bcedit_iccam_size"
-                        android:layout_height="@dimen/bcedit_iccam_size"
-                        android:src="@drawable/ic_album"
-                        android:layout_marginRight="6dp"/>
-                    <TextView
-                        android:id="@+id/uploadTxt"
-                        android:layout_marginTop="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="앨범"
-                        android:textColor="@color/black"/>
-                </LinearLayout>
-            </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,8 +118,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginLeft="18dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="18dp"
                 android:background="#ffffff"
                 android:orientation="vertical">
                 <LinearLayout
@@ -210,7 +225,6 @@
                         android:id="@+id/bcadd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
                         android:textColor="@color/black"
                         android:hint="주소" />
                 </LinearLayout>
@@ -218,4 +232,5 @@
 
         </LinearLayout>
     </LinearLayout>
+    </ScrollView>
 </LinearLayout>

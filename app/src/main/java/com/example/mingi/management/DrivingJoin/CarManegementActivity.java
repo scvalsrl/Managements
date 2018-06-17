@@ -341,6 +341,7 @@ public class CarManegementActivity extends AppCompatActivity {
             String end = year_s + "/" + month_s + "/" + day;
 
             target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end;
+
         }
 
         @Override

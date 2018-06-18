@@ -211,7 +211,6 @@ public class ListActivity extends AppCompatActivity {
 
             finalCurLat = Double.toString(location.getLatitude());
             finalCurLong = Double.toString(location.getLongitude());
-            Toast.makeText(getApplicationContext(), "lat: " + finalCurLat + "lon: " + finalCurLong, Toast.LENGTH_LONG).show();
         }
 
         @Override

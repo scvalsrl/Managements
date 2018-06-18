@@ -1,8 +1,16 @@
 
 package com.example.mingi.management.DrivingJoin;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,13 +54,17 @@ public class SearchAddrActivity extends AppCompatActivity {
     String mLat = null;
     String mLng = null;
     String mName = null;
+    String startname, finalCurLat = "-1", finalCurLong = "-1"; // current info
 
     public static String defaultUrl = "https://api2.sktelecom.com/tmap/pois?version=1&appKey=03772af9-f665-47d1-9008-207ca403d775&searchKeyword=";
+    public static String currentUrl = "https://api2.sktelecom.com/tmap/geo/reversegeocoding?version=1&appKey=03772af9-f665-47d1-9008-207ca403d775&lat=";
+
     Handler handler = new Handler();
     int jsonResultsLength = 0;
 
     Intent destIntent;
 
+    LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,13 +86,15 @@ public class SearchAddrActivity extends AppCompatActivity {
         search_text = (EditText) findViewById(R.id.search_text);
         search_btn = (Button) findViewById(R.id.search_btn);
         nowLoc_btn = (ImageView) findViewById(R.id.nowLoc_btn);
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+        checkPermissions();
 
         Intent outIntent = getIntent();
         destIntent = new Intent(getApplicationContext(), CarJoinActivity.class);
 
-        final String startname = outIntent.getStringExtra("curAddr");
-        final String finalCurLat = outIntent.getStringExtra("curLat");
-        final String finalCurLong = outIntent.getStringExtra("curLon");
+        startname = outIntent.getStringExtra("curAddr");
+        finalCurLat = outIntent.getStringExtra("curLat");
+        finalCurLong = outIntent.getStringExtra("curLon");
 
         search_text.setOnKeyListener(new View.OnKeyListener() {
 
@@ -133,15 +147,99 @@ public class SearchAddrActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(startname != null){
-                    searchLocation(finalCurLat, finalCurLong, startname);
+                    destIntent.putExtra("destname", startname);
+                    destIntent.putExtra("destlat", finalCurLat);
+                    destIntent.putExtra("destlon", finalCurLong);
+                    setResult(3, destIntent);
+                    finish();
                 }
                 else {
-                    Toast.makeText(getApplicationContext(), "현재 위치를 가져올 수 없습니다." , Toast.LENGTH_SHORT).show();
+                    requestMyLocation();
+                    Log.d("finalCur", "Lat: " + finalCurLat + "Long" + finalCurLong);
+
+                    if(Double.parseDouble(finalCurLat) >= 0 && Double.parseDouble(finalCurLong) >= 0) {
+                        String fullCurrentUrl = currentUrl + finalCurLat + "&lon=" + finalCurLong;
+                        CurrentThread currentThread = new CurrentThread(fullCurrentUrl);
+                        currentThread.start();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "현재 위치를 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
         });
     }
+
+    private void checkPermissions() {
+        //마시멜로 이상이면 권한 요청
+        if(Build.VERSION.SDK_INT >= 23) {
+            //권한 없는 경우
+            if (ContextCompat.checkSelfPermission(SearchAddrActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(SearchAddrActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(SearchAddrActivity.this, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+            // 권한 있는 경우
+            else {
+                Log.d("Permission", "마시멜로 이상 권한 있음");
+                requestMyLocation();
+            }
+        }
+        //마시멜로 아래
+        else {
+            Log.d("Permission", "마시멜로 이하 권한 있음");
+            requestMyLocation();
+        }
+    }
+
+    public void requestMyLocation() {
+        if (ContextCompat.checkSelfPermission(SearchAddrActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(SearchAddrActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("requestMyLocation", "if문 안");
+            return;
+        }
+        //요청
+        Log.d("requestMyLocation", "요청 전");
+        if(locationManager == null) {
+            Log.d("locationManager" , "null");
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        //위치정보 구하기 리스너
+    }
+
+    LocationListener locationListener =   new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.d("onLocationChanged", "들어옴");
+            if (ContextCompat.checkSelfPermission(SearchAddrActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(SearchAddrActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d("onLocationChanged", "if안");
+                return;
+            }
+            // 나의 위치를 한번만 가져오기 위해
+            Log.d("requestMyLocation", "remove 전");
+            locationManager.removeUpdates(locationListener);
+            Log.d("requestMyLocation", "remove  후");
+            finalCurLat = Double.toString(location.getLatitude());
+            finalCurLong = Double.toString(location.getLongitude());
+            Log.d("현위치", "lat: " + location.getLatitude() + "lon: " + location.getLongitude());
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 
     private void searchLocation(String finalCurLat, String finalCurLong, String startname) {
         String userStr = search_text.getText().toString();
@@ -277,6 +375,84 @@ public class SearchAddrActivity extends AppCompatActivity {
                 });
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    class CurrentThread extends Thread {
+        String urlStr;
+        public CurrentThread(String inStr) { urlStr = inStr; }
+        public void run() {
+            final String output = request(urlStr);
+            try {
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if(output != null) {
+                            findAddr(output);
+                        }
+                    }
+                });
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        private String request(String urlStr) {
+            StringBuilder output = new StringBuilder();
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                if(conn != null) {
+                    conn.setConnectTimeout(10000);
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setRequestProperty("Accept-Charset", "UTF-8");
+
+                    int resCode = conn.getResponseCode();
+
+                    Log.d("geo resCode", String.valueOf(resCode));
+
+                    if(resCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        String line = null;
+                        while(true) {
+                            line = reader.readLine();
+                            if(line == null) {
+                                break;
+                            }
+                            output.append(line + "\n");
+                        }
+                        Log.d("geo result", "HTTP_OK finish");
+                        reader.close();
+                        conn.disconnect();
+                    }
+                }
+            } catch (MalformedURLException e) {
+                Log.e("geo SampleHTTP", "Exception in processing response.", e);
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return output.toString();
+        }
+    }
+
+    private void findAddr(String output) {
+        Log.d("김민기 findAddr", "들어옴");
+
+        try {
+            JSONObject jobj = new JSONObject(output).getJSONObject("addressInfo");
+            startname = jobj.optString("fullAddress");
+            destIntent.putExtra("destname", startname);
+            destIntent.putExtra("destlat", finalCurLat);
+            destIntent.putExtra("destlon", finalCurLong);
+            setResult(3, destIntent);
+            finish();
+
+        } catch (JSONException e) {
+            Log.d("김민기 findAddr", "***예외발생****");
             e.printStackTrace();
         }
     }

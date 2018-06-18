@@ -633,7 +633,7 @@ public class BCListActivity extends AppCompatActivity {
 
             String start = str_yy + "/"+str_mm+"/1";
             String end = str_yy + "/"+str_mm+"/"+day;
-            target = "http://scvalsrl.cafe24.com/CarList2.php?start="+start+"&end="+end;
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end +"&userid="+userID;
         }
 
         @Override
@@ -743,7 +743,7 @@ public class BCListActivity extends AppCompatActivity {
                 listname="등록순";
             }
 
-            target = "http://scvalsrl.cafe24.com/BCList2.php?list="+list+"&list2="+list2;
+            target = "http://scvalsrl.cafe24.com/BCList2.php?list="+list+"&list2="+list2+"&userid="+userID ;
             Log.d("김민기", target);
         }
 

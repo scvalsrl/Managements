@@ -861,7 +861,7 @@ public class BCJoinActivity extends AppCompatActivity {
                                 no_i = Integer.parseInt(no_s);
                                 no_i++;
 
-                                String id = "2109812";
+                                String id = userID;
                                 String bc_name = bcname.getText().toString();
 
                                 String bc_level = bclevel.getText().toString();

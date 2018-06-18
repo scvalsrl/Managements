@@ -340,7 +340,7 @@ public class CarManegementActivity extends AppCompatActivity {
             String start = year_s + "/" + month_s + "/1";
             String end = year_s + "/" + month_s + "/" + day;
 
-            target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end;
+            target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end+"&userid="+userID;
 
         }
 
@@ -440,7 +440,7 @@ public class CarManegementActivity extends AppCompatActivity {
             String start = year_s + "/" + month_s + "/1";
             String end = year_s + "/" + month_s + "/" + day;
 
-            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end;
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end +"&userid="+userID;
         }
 
         @Override
@@ -506,7 +506,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/BCList.php";
+            target = "http://scvalsrl.cafe24.com/BCList.php?userid="+userID;
         }
 
         @Override

@@ -470,7 +470,6 @@ public class CarJoinActivity extends AppCompatActivity {
         }
         if (id == R.id.newPost) {
 
-            final String ids = "2109812";
             String carNum = txtCar.getText().toString();
             String startday = txtDate.getText().toString();
             String endday = txtDate2.getText().toString();
@@ -632,14 +631,14 @@ public class CarJoinActivity extends AppCompatActivity {
                                 int no = no_i;
 
                                 // 화면전환 넣기 //
-                                String id = "2109812";
+                                String id = userID;
                                 String carNum = txtCar.getText().toString();
                                 String startday = txtDate.getText().toString();
                                 String endday = txtDate2.getText().toString();
                                 String startTime = txtTime.getText().toString();
                                 String endTime = txtTime2.getText().toString();
 
-                                CarJoinRequest carJoinRequest = new CarJoinRequest(ids, carNum, startPlace, endPlace, kilometer, startday, endday, startTime, endTime, no, startLat, startLon, destLat, destLon, responseListener);
+                                CarJoinRequest carJoinRequest = new CarJoinRequest(id, carNum, startPlace, endPlace, kilometer, startday, endday, startTime, endTime, no, startLat, startLon, destLat, destLon, responseListener);
                                 RequestQueue queue = Volley.newRequestQueue(CarJoinActivity.this);
 
                                 queue.add(carJoinRequest);
@@ -725,7 +724,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
             String start = str_yy + "/" + str_mm + "/1";
             String end = str_yy + "/" + str_mm + "/" + day;
-            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end;
+            target = "http://scvalsrl.cafe24.com/CarList2.php?start=" + start + "&end=" + end +"&userid="+userID;
 
         }
 
@@ -791,7 +790,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/BCList.php";
+            target = "http://scvalsrl.cafe24.com/BCList.php?userid="+userID;
         }
 
         @Override

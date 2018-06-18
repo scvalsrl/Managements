@@ -104,7 +104,7 @@ public class Splashscreen extends Activity implements LocationListener{
                     }
                     else { // not sucess
                         intent.putExtra("isGPSEnable", String.valueOf(1));
-                        // Toast.makeText(this, "?꾩옱 ?꾩튂瑜?諛쏆븘?ㅼ? 紐삵뻽?듬땲??", Toast.LENGTH_SHORT);
+                        // Toast.makeText(this, "   ?꾩옱 ?꾩튂瑜?諛쏆븘?ㅼ? 紐삵뻽?듬땲??", Toast.LENGTH_SHORT);
                     }
                     intent.putExtra("nowLat", String.valueOf(nowLat));
                     intent.putExtra("nowLon", String.valueOf(nowLon));

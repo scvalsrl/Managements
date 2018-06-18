@@ -54,8 +54,10 @@ public class DestListActivity extends AppCompatActivity {
     String mLat = null;
     String mLng = null;
     String mName = null;
+    String startname, finalCurLat, finalCurLong;
 
     public static String defaultUrl = "https://api2.sktelecom.com/tmap/pois?version=1&appKey=03772af9-f665-47d1-9008-207ca403d775&searchKeyword=";
+    public static String currentUrl = "https://api2.sktelecom.com/tmap/geo/reversegeocoding?version=1&appKey=03772af9-f665-47d1-9008-207ca403d775&lat=";
     Handler handler = new Handler();
     int jsonResultsLength = 0;
 
@@ -143,7 +145,11 @@ public class DestListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(startname != null){
-                    searchLocation(finalCurLat, finalCurLong, startname);
+                    destIntent.putExtra("destname", startname);
+                    destIntent.putExtra("destlat", finalCurLat);
+                    destIntent.putExtra("destlon", finalCurLong);
+                    setResult(0, destIntent);
+                    finish();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "현재 위치를 가져올 수 없습니다." , Toast.LENGTH_SHORT).show();

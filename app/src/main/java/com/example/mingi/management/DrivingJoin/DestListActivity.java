@@ -127,10 +127,7 @@ public class DestListActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String userStr = search_text.getText().toString();
-                String urlStr = defaultUrl + userStr + "&centerLat=" + finalCurLat + "&centerLon=" + finalCurLong;
-                ConnectThread thread = new ConnectThread(urlStr);
-                thread.start();
+                searchLocation(finalCurLat, finalCurLong, startname);
             }
 
             @Override
@@ -253,6 +250,7 @@ public class DestListActivity extends AppCompatActivity {
         String userStr = search_text.getText().toString();
         String urlStr = defaultUrl + userStr + "&centerLat="+ finalCurLat + "&centerLon=" + finalCurLong;
         if(startname == null) {
+            Log.d("noAddrSearchLocation", "here");
             urlStr = defaultUrl + userStr + "&centerLat=35.1473&centerLon=129.0673";
         }
         ConnectThread thread = new ConnectThread(urlStr);

@@ -35,6 +35,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.mingi.management.BusinessCard.BCListActivity;
 import com.example.mingi.management.R;
+import com.example.mingi.management.login.BackPressCloseHandler;
 import com.example.mingi.management.login.LoginActivity;
 
 import org.json.JSONArray;
@@ -65,6 +66,8 @@ public class CarManegementActivity extends AppCompatActivity {
     String year_s, month_s;
     int year_i, month_i;
     int check = 0 ;
+    private BackPressCloseHandler backPressCloseHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class CarManegementActivity extends AppCompatActivity {
         Button left_btn = (Button) findViewById(R.id.left_btn);
         Button right_btn = (Button) findViewById(R.id.right_btn);
         ImageView txtlist = (ImageView)findViewById(R.id.txtlist);
-
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         txtlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -613,4 +616,11 @@ public class CarManegementActivity extends AppCompatActivity {
 
         }
     };
+
+    // 뒤로가기 두번 누르면 종료
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
+    }
 }

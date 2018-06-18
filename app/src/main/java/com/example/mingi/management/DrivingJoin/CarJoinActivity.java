@@ -41,6 +41,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.mingi.management.BusinessCard.BCListActivity;
+import com.example.mingi.management.login.BackPressCloseHandler;
 import com.example.mingi.management.login.LoginActivity;
 import com.example.mingi.management.R;
 import com.example.mingi.management.login.Splashscreen;
@@ -87,6 +88,8 @@ public class CarJoinActivity extends AppCompatActivity {
     String nowLat = "129.065782";
     String nowLon = "35.145404";
 
+    private BackPressCloseHandler backPressCloseHandler;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +106,7 @@ public class CarJoinActivity extends AppCompatActivity {
         setStartDestTxt();
         ChangeStartDest();
         setCar();
+
     }
 
     private void getFromIntent() {
@@ -438,6 +442,7 @@ public class CarJoinActivity extends AppCompatActivity {
         bottomnav = findViewById(R.id.bottom_navigation);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
         totalBox = (LinearLayout) findViewById(R.id.totalBox);
+        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
 
@@ -1014,6 +1019,14 @@ public class CarJoinActivity extends AppCompatActivity {
             }
         });
     }
+
+    // 뒤로가기 두번 누르면 종료
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
+    }
+
 
 
 }

@@ -43,6 +43,7 @@ import com.example.mingi.management.DrivingJoin.CarListAdapter;
 import com.example.mingi.management.DrivingJoin.CarManegementActivity;
 import com.example.mingi.management.DrivingJoin.DeleteRequest2;
 import com.example.mingi.management.R;
+import com.example.mingi.management.login.BackPressCloseHandler;
 import com.example.mingi.management.login.LoginActivity;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -67,6 +68,7 @@ public class BCListActivity extends AppCompatActivity {
     private BCListAdapter adapter;
     private List<BC> userList;
     private FloatingActionButton fab;
+    private BackPressCloseHandler backPressCloseHandler;
 
     int check=0;
     String isGPSEnable;
@@ -562,6 +564,7 @@ public class BCListActivity extends AppCompatActivity {
 
         bottomnav.setSelectedItemId(R.id.nav_search);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
+        backPressCloseHandler = new BackPressCloseHandler(this);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -791,6 +794,13 @@ public class BCListActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         }
+    }
+
+    // 뒤로가기 두번 누르면 종료
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
     }
 
 

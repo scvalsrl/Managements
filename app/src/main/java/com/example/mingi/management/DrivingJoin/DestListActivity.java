@@ -54,7 +54,6 @@ import java.util.ArrayList;
 
 public class DestListActivity extends AppCompatActivity {
     EditText search_text;
-    Button search_btn;
     ImageView nowLoc_btn;
     ListView search_list;
 
@@ -93,7 +92,7 @@ public class DestListActivity extends AppCompatActivity {
 
 
         search_text = (EditText) findViewById(R.id.search_text);
-        search_btn = (Button) findViewById(R.id.search_btn);
+
         nowLoc_btn = (ImageView) findViewById(R.id.nowLoc_btn);
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
@@ -137,17 +136,6 @@ public class DestListActivity extends AppCompatActivity {
         });
 
 
-        search_btn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                String userStr = search_text.getText().toString();
-                Log.d("도착지 리스트", "검색 버튼 누름" + userStr);
-                String urlStr = defaultUrl + userStr + "&centerLat=" + finalCurLat + "&centerLon=" + finalCurLong;
-                ConnectThread thread = new ConnectThread(urlStr);
-                thread.start();
-            }
-        });
 
 
         nowLoc_btn.setOnClickListener(new View.OnClickListener() {

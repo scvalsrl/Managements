@@ -602,8 +602,7 @@ public class CarUpdateActivity extends AppCompatActivity {
 
             String start = str_yy + "/" + str_mm + "/1";
             String end = str_yy + "/" + str_mm + "/" + day;
-
-            target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end;
+            target = "http://scvalsrl.cafe24.com/CarList.php?start=" + start + "&end=" + end+"&userid="+userID;
         }
 
 

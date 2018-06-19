@@ -66,7 +66,10 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         textviewTitle.setText("명함상세");
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
+
         abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setHomeButtonEnabled(true);
     }
 
     private void fromIntent() {
@@ -266,8 +269,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if( id == android.R.id.home){
-            finish();
-
+            new BackgroundTask2().execute();
             return true;
 
         }

@@ -45,7 +45,6 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
     EditText search_text;
-    Button search_btn;
     ImageView nowLoc_btn;
     ListView search_list;
 
@@ -83,7 +82,6 @@ public class ListActivity extends AppCompatActivity {
         abar.setHomeButtonEnabled(true);
 
         search_text = (EditText) findViewById(R.id.search_text);
-        search_btn = (Button) findViewById(R.id.search_btn);
         nowLoc_btn = (ImageView) findViewById(R.id.nowLoc_btn);
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
@@ -126,13 +124,6 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-        search_btn.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                searchLocation(finalCurLat, finalCurLong, startname);
-            }
-        });
 
 
         nowLoc_btn.setOnClickListener(new View.OnClickListener() {

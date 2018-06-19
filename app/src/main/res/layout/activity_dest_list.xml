@@ -15,15 +15,16 @@
         android:orientation="horizontal">
         <!--only for gray outline-->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="7dp"
             android:background="@color/listeditbox"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:orientation="horizontal"
@@ -31,7 +32,7 @@
 
                 <EditText
                     android:id="@+id/search_text"
-                    android:layout_width="255dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="6.5dp"
                     android:background="@drawable/all_side_line"
@@ -42,38 +43,26 @@
                     android:ems="10"
                     android:lines="1"/>
 
-                <ImageView
-                    android:id="@+id/nowLoc_btn"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/transparency"
-                    android:src="@drawable/ic_current_info" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <ImageView
+                        android:layout_gravity="right"
+                        android:id="@+id/nowLoc_btn"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginRight="7dp"
+                        android:background="@color/transparency"
+                        android:src="@drawable/ic_current_info" />
+                </FrameLayout>
+
+
             </LinearLayout>
         </LinearLayout>
 
-        <!--only for shadow effect-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:elevation="5dp"
-            android:padding="1dp" >
-            <Button
-                android:layout_marginBottom="4dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginTop="5.5dp"
-                android:id="@+id/search_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:textSize="19dp"
-                android:background="@drawable/rounded_search_btn"
-                android:shadowColor="@color/listeditbox"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:text="검색"
-                android:textColor="@color/listpink" />
-        </LinearLayout>
+
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="7dp"

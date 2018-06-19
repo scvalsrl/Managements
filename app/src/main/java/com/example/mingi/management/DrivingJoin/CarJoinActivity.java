@@ -6,6 +6,8 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -125,6 +127,8 @@ public class CarJoinActivity extends AppCompatActivity {
             if (nowName != null) {
                 startPlace = nowName;
                 startText.setText(startPlace);
+                destText.setTextColor(Color.BLACK);
+                destText.setTypeface(null, Typeface.BOLD);
             }
 
             startLat = nowLat;
@@ -193,6 +197,8 @@ public class CarJoinActivity extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int id) {
                                         String strName = adapter.getItem(id);
                                         txtCar.setText(strName);
+                                        txtCar.setTextColor(Color.BLACK);
+                                        txtCar.setTypeface(null, Typeface.BOLD);
                                     }
                                 });
                         alertBuilder.show();
@@ -214,7 +220,11 @@ public class CarJoinActivity extends AppCompatActivity {
                 boolean isChange = false;
 
                 boolean isStart = startPlace.equals("출발지 입력"); // true: 입력X, false: 입력O
+
+
                 boolean isDest = endPlace.equals("도착지 입력");
+
+
                 Animation anim = AnimationUtils.loadAnimation(
                         getApplicationContext(),
                         R.anim.rotation);
@@ -229,6 +239,10 @@ public class CarJoinActivity extends AppCompatActivity {
                         destLat = null;
                         destLon = null;
                         endPlace = "도착지 입력";
+                        destText.setTextColor(Color.GRAY);
+                        destText.setTypeface(null, Typeface.NORMAL);
+                        startText.setTextColor(Color.BLACK);
+                        startText.setTypeface(null, Typeface.BOLD);
                         isChange = true;
                     }
 
@@ -253,6 +267,10 @@ public class CarJoinActivity extends AppCompatActivity {
                         destLon = startLon;
 
                         startPlace = "출발지 입력";
+                        startText.setTextColor(Color.GRAY);
+                        startText.setTypeface(null, Typeface.NORMAL);
+                        destText.setTextColor(Color.BLACK);
+                        destText.setTypeface(null, Typeface.BOLD);
                         startLat = null;
                         startLon = null;
                         isChange = true;
@@ -264,6 +282,7 @@ public class CarJoinActivity extends AppCompatActivity {
                 if (isChange) {
                     startText.setText(startPlace);
                     destText.setText(endPlace);
+
                     changeBtn.startAnimation(anim);
 
                 }
@@ -314,6 +333,8 @@ public class CarJoinActivity extends AppCompatActivity {
                         i1 += 1;
                         end_day = i + "/" + i1 + "/" + i2;
                         txtDate2.setText(end_day);
+                        txtDate2.setTextColor(Color.BLACK);
+                        txtDate2.setTypeface(null, Typeface.BOLD);
 
                     }
                 }, y, m, d);
@@ -342,6 +363,8 @@ public class CarJoinActivity extends AppCompatActivity {
                         String t = hourOfDay + ":" + minute + " " + format;
                         end_time = hourOfDay + ":" + minute ;
                         txtTime2.setText(t);
+                        txtTime2.setTextColor(Color.BLACK);
+                        txtTime2.setTypeface(null, Typeface.BOLD);
 
                     }
                 }, hour, minute, true);
@@ -371,6 +394,8 @@ public class CarJoinActivity extends AppCompatActivity {
                         i1 += 1;
                         start_day = i + "/" + i1 + "/" + i2;
                         txtDate.setText(start_day);
+                        txtDate.setTextColor(Color.BLACK);
+                        txtDate.setTypeface(null, Typeface.BOLD);
 
 
                     }
@@ -400,6 +425,8 @@ public class CarJoinActivity extends AppCompatActivity {
                         String t = hourOfDay + ":" + minute + " " + format;
                         start_time = hourOfDay + ":" + minute;
                         txtTime.setText(t);
+                        txtTime.setTextColor(Color.BLACK);
+                        txtTime.setTypeface(null, Typeface.BOLD);
 
 
                     }
@@ -906,14 +933,14 @@ public class CarJoinActivity extends AppCompatActivity {
                 String short_start = startPlace;
                 String short_end = endPlace;
 
-                if (startPlace.length() > 8) {
-                    short_start = startPlace.substring(0, 8) + "..";
+                if (startPlace.length() > 12) {
+                    short_start = startPlace.substring(0, 12) + "..";
                 }
-                if (endPlace.length() > 8) {
-                    short_end = endPlace.substring(0, 8) + "..";
+                if (endPlace.length() > 12) {
+                    short_end = endPlace.substring(0, 12) + "..";
                 }
-                userdistanceBuilder.setTitle(short_start + "→" + short_end);
-                userdistanceBuilder.setMessage(kilometer + "km")
+                userdistanceBuilder.setTitle("출발지 : "+ short_start +"\n"  + "도착지 : "+ short_end + "\n" );
+                userdistanceBuilder.setMessage("예상 거리 : "+kilometer + "km")
                         .setCancelable(false)
                         .setPositiveButton("직접입력", new DialogInterface.OnClickListener() {
                             @Override
@@ -923,6 +950,8 @@ public class CarJoinActivity extends AppCompatActivity {
                                     @Override
                                     public void onPositiveClicked(String km) {
                                         distanceText.setText(km);
+                                        distanceText.setTextColor(Color.BLACK);
+                                        distanceText.setTypeface(null, Typeface.BOLD);
                                     }
 
                                     @Override
@@ -936,6 +965,8 @@ public class CarJoinActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 distanceText.setText(kilometer);
+                                distanceText.setTextColor(Color.BLACK);
+                                distanceText.setTypeface(null, Typeface.BOLD);
                             }
                         });
 
@@ -955,6 +986,8 @@ public class CarJoinActivity extends AppCompatActivity {
                 startLon = data.getStringExtra("startlon");
 
                 startText.setText(startPlace);
+                startText.setTextColor(Color.BLACK);
+                startText.setTypeface(null, Typeface.BOLD);
             }
         }
         if (requestCode == 1) {
@@ -964,6 +997,8 @@ public class CarJoinActivity extends AppCompatActivity {
                 destLon = data.getStringExtra("destlon");
 
                 destText.setText(endPlace);
+                destText.setTextColor(Color.BLACK);
+                destText.setTypeface(null, Typeface.BOLD);
             }
         }
 

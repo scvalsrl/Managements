@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
@@ -63,7 +64,7 @@ public class BCJoinActivity extends AppCompatActivity {
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_CAMERA = 2;
 
-    Uri photoUri;
+    static Uri photoUri;
    private  AlertDialog.Builder builder;
     ImageView imageView, uploadBtn, camBtn;
     EditText bcname, bclevel, bccom, bcphone, bcemail, bcadd;
@@ -472,11 +473,33 @@ public class BCJoinActivity extends AppCompatActivity {
         startActivityForResult(takePicture, PICK_FROM_ALBUM);
     }
 
+    private Uri getLastCaptureImageUri() {
+        Uri uri = null;
+        String [] IMAGE_PROJECTION = {
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns._ID,
+        };
+        try {
+            Cursor cursorImages = getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    IMAGE_PROJECTION, null, null, null);
+            if(cursorImages != null && cursorImages.moveToLast()) {
+                uri = Uri.parse(cursorImages.getString(0)); // 경로
+                int id = cursorImages.getInt(1); // id
+                cursorImages.close();
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+
     private void takePhoto() {
         Intent goCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
         try {
             photoFile = createImageFile();
+            Log.d("photo", "photoFile createImageFile");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -485,9 +508,15 @@ public class BCJoinActivity extends AppCompatActivity {
         }
 
         if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(this,
+           photoUri = FileProvider.getUriForFile(BCJoinActivity.this,
                     "com.example.mingi.management.provider", photoFile);
+            //photoUri = getLastCaptureImageUri();
+            Log.d("photo", "goCamera전");
+            if(photoUri == null) {
+                Log.d("photo", "Uri null");
+            }
             goCamera.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            Log.d("photo", "goCamera후");;
             startActivityForResult(goCamera, PICK_FROM_CAMERA);
         }
     }
@@ -523,17 +552,20 @@ public class BCJoinActivity extends AppCompatActivity {
                 Log.d("onActivityResult", "PICK_FROM_ALBUM but data is NULL");
                 return;
             }
-
+            Log.d("onActivityResult", "PICK_FROM_ALBUM but data is not NULL");
             if (resultCode == Activity.RESULT_OK) {
+                Log.d("onActivityResult", "PICK_FROM_ALBUM RESULT_OK");
                 photoUri = data.getData();
+                Log.d("onActivityResult", "PICK_FROM_ALBUM getData 이후");
                 cropImage();
+                Log.d("onActivityResult", "PICK_FROM_ALBUM cropImage이후");
             }
+
         } else if (requestCode == PICK_FROM_CAMERA) {
-            if (data == null) {
-                Log.d("onActivityResult", "PICK_FROM_CAMERA but data is NULL");
-                return;
-            } else {
+            if(resultCode == Activity.RESULT_OK) {
+                Log.d("onActivityResult", "Camera RESULT_OK");
                 cropImage();
+                Log.d("onActivityResult", "PICK_FROM_CAMERA cropImage 이후");
                 // for showing photo on album
                 MediaScannerConnection.scanFile(this, new String[]{photoUri.getPath()}, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
@@ -542,6 +574,9 @@ public class BCJoinActivity extends AppCompatActivity {
 
                             }
                         });
+            } else {
+                Log.d("onActivityResult", "Camera Canceled");
+                return;
             }
         } else if (requestCode == CROP_FROM_CAMERA) {
             if (data == null) {
@@ -549,12 +584,18 @@ public class BCJoinActivity extends AppCompatActivity {
                 return;
             } else {
                 try {
+                    Log.d("onActivityResult", "CROP_FROM_CAMERA but data is not NULL");
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                    Log.d("onActivityResult", "CROP_FROM_CAMERA 1");
                     Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 1000, 500);
+                    Log.d("onActivityResult", "CROP_FROM_CAMERA 2");
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                    Log.d("onActivityResult", "CROP_FROM_CAMERA 3");
 
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs);
+                    Log.d("onActivityResult", "CROP_FROM_CAMERA 4");
                     imageView.setImageBitmap(thumbImage);
+                    Log.d("onActivityResult", "CROP_FROM_CAMERA 5");
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("ERROR", e.getMessage().toString());

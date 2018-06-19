@@ -19,11 +19,15 @@ public class BCFullMapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bcfull_map);
+
+
         if (Build.VERSION.SDK_INT >= 21) {
             getSupportActionBar().hide();
         } else {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
+
+
         Intent outIntent = getIntent();
         lat = outIntent.getStringExtra("lat");
         lon = outIntent.getStringExtra("lon");

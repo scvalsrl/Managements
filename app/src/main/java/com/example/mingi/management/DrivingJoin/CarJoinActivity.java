@@ -71,6 +71,7 @@ public class CarJoinActivity extends AppCompatActivity {
     String gps , start_day, end_day, start_time, end_time;
     BottomNavigationView bottomnav;
 
+    boolean preventButtonTouch = false;
     int y, m, d;
     long sec;
     int compare;
@@ -454,7 +455,9 @@ public class CarJoinActivity extends AppCompatActivity {
 
         if (id == R.id.logout) {
 
+            if (preventButtonTouch == true) { return true; }
 
+            preventButtonTouch = true;
             Intent intent = new Intent(CarJoinActivity.this, LoginActivity.class);
 
             intent.putExtra("nowLat", nowLat);
@@ -602,7 +605,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
 
-
+                                                preventButtonTouch = false;
                                                 builder.setMessage("성공적으로 등록 되었습니다")
                                                         .setPositiveButton("확인", null)
                                                         .create()
@@ -610,6 +613,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
                                             } else {
 
+                                                preventButtonTouch = false;
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
                                                 builder.setMessage("등록에 실패 했습니다.")
                                                         .setNegativeButton("다시시도", null).create().show();

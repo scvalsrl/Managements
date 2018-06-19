@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.mingi.management.DrivingJoin.DeleteRequest2;
 import com.example.mingi.management.DrivingJoin.MainFragment;
 import com.example.mingi.management.R;
@@ -40,7 +41,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class BCDetailActivity extends AppCompatActivity {
-    ImageView emailBtn, callBtn, msgBtn, bcfullmap;
+    ImageView emailBtn, callBtn, msgBtn, bcfullmap,img;
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
@@ -77,6 +78,7 @@ public class BCDetailActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.mainFragment2, mainFragment, "main")
                     .commit();
+
         }
         initView();
 
@@ -85,6 +87,7 @@ public class BCDetailActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
+
         final ActionBar abar = getSupportActionBar();;//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.title_layout, null);
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
@@ -95,9 +98,11 @@ public class BCDetailActivity extends AppCompatActivity {
         textviewTitle.setText("명함상세");
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
+
         abar.setDisplayShowTitleEnabled(false);
         abar.setDisplayHomeAsUpEnabled(true);
         abar.setHomeButtonEnabled(true);
+
     }
 
     private void fromIntent() {
@@ -131,7 +136,6 @@ public class BCDetailActivity extends AppCompatActivity {
         bcemail = (TextView) findViewById(R.id.bcemail);
         bcadd = (TextView) findViewById(R.id.bcadd);
         bcno = (TextView) findViewById(R.id.bcno);
-
 
         new BCDetailActivity.DownloadImageTask((ImageView) findViewById(R.id.imgView))
                 .execute("http://scvalsrl.cafe24.com/uploads/" + bcphoto_str);
@@ -247,7 +251,7 @@ public class BCDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/BCList.php";
+            target = "http://scvalsrl.cafe24.com/BCList.php?userid="+userID;
         }
 
         @Override

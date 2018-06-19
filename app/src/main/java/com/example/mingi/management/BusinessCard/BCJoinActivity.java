@@ -63,7 +63,7 @@ public class BCJoinActivity extends AppCompatActivity {
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int CROP_FROM_CAMERA = 2;
-
+    boolean preventButtonTouch = false;
     static Uri photoUri;
    private  AlertDialog.Builder builder;
     ImageView imageView, uploadBtn, camBtn;
@@ -698,6 +698,11 @@ public class BCJoinActivity extends AppCompatActivity {
 
         if( id == R.id.vbcjoin ) {
 
+            if (preventButtonTouch == true){
+                return true;
+            }
+
+            preventButtonTouch = true;
             if (bcname.getText().toString().equals("")) {
 
                 builder.setMessage(" 이름을 입력해주세요 ")
@@ -833,7 +838,9 @@ public class BCJoinActivity extends AppCompatActivity {
 
                                                                     finish();
                                                                     intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                    preventButtonTouch = false;
                                                                     BCJoinActivity.this.startActivity(intent);
+
 
 
                                                                     // 화면전환 넣기 //
@@ -863,6 +870,7 @@ public class BCJoinActivity extends AppCompatActivity {
 
                                                                     finish();
                                                                     intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                    preventButtonTouch = false;
                                                                     BCJoinActivity.this.startActivity(intent);
                                                                 }
 
@@ -884,6 +892,7 @@ public class BCJoinActivity extends AppCompatActivity {
 
 
                                             } else {
+                                                preventButtonTouch = false;
                                                 builder.setMessage("등록에 실패 했습니다.")
                                                         .setNegativeButton("다시시도", null).create().show();
                                                 Intent intent = new Intent(BCJoinActivity.this, BCJoinActivity.class);

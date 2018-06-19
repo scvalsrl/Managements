@@ -201,7 +201,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/BCList.php";
+            target = "http://scvalsrl.cafe24.com/BCList.php?userid="+userID;
         }
 
         @Override

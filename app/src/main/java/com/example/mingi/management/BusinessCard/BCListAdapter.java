@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mingi.management.R;
 
 import java.io.InputStream;
@@ -70,6 +71,8 @@ public class BCListAdapter extends BaseAdapter {
             v = View.inflate(context, R.layout.bc, null);
             viewHolder = new PersonViewHolder();
 
+            viewHolder.imageView= (ImageView) v.findViewById(R.id.img);
+
             viewHolder. bc_name = (TextView) v.findViewById(R.id.bc_name);
             viewHolder. bc_level = (TextView) v.findViewById(R.id.bc_level);
             viewHolder. bc_com = (TextView) v.findViewById(R.id.bc_com);
@@ -82,8 +85,8 @@ public class BCListAdapter extends BaseAdapter {
             viewHolder = (PersonViewHolder) v.getTag();
         }
 
+        Glide.with(context).load("http://scvalsrl.cafe24.com/uploads/" + userList.get(i).getBC_photo()).into(viewHolder.imageView);
 
-        new DownloadImageTask((ImageView) v.findViewById(R.id.img)).execute("http://scvalsrl.cafe24.com/uploads/" + userList.get(i).getBC_photo());
         viewHolder.bc_name.setText(userList.get(i).getBC_name());
         Log.d("김민기", " bc_name : "+  viewHolder.bc_name.getText());
         viewHolder. bc_level.setText(userList.get(i).getBC_level());
@@ -94,31 +97,6 @@ public class BCListAdapter extends BaseAdapter {
 
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-
 
     public class PersonViewHolder
     {
@@ -126,6 +104,7 @@ public class BCListAdapter extends BaseAdapter {
         public TextView bc_level ;
         public TextView bc_com ;
         public TextView no ;
+        public ImageView imageView;
 
     }
 

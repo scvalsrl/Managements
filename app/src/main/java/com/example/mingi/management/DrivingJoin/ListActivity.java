@@ -45,7 +45,6 @@ import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
     EditText search_text;
-    Button search_btn;
     ImageView nowLoc_btn;
     ListView search_list;
 
@@ -59,7 +58,6 @@ public class ListActivity extends AppCompatActivity {
     public static String currentUrl = "https://api2.sktelecom.com/tmap/geo/reversegeocoding?version=1&appKey=03772af9-f665-47d1-9008-207ca403d775&lat=";
     Handler handler = new Handler();
     int jsonResultsLength = 0;
-
     Intent destIntent;
 
     LocationManager locationManager;
@@ -83,7 +81,7 @@ public class ListActivity extends AppCompatActivity {
         abar.setHomeButtonEnabled(true);
 
         search_text = (EditText) findViewById(R.id.search_text);
-        search_btn = (Button) findViewById(R.id.search_btn);
+
         nowLoc_btn = (ImageView) findViewById(R.id.nowLoc_btn);
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
@@ -126,13 +124,7 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-        search_btn.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                searchLocation(finalCurLat, finalCurLong, startname);
-            }
-        });
 
 
         nowLoc_btn.setOnClickListener(new View.OnClickListener() {
@@ -423,7 +415,7 @@ public class ListActivity extends AppCompatActivity {
                             midaddrs[i], roadNames[i], roadNos[i],
                             lats[i], lons[i]));
                 }
-                final LocationAdapter adapter = new LocationAdapter(this, datas, getLayoutInflater());
+                LocationAdapter adapter = new LocationAdapter(this, datas, getLayoutInflater());
                 search_list.setAdapter(adapter);
                 search_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

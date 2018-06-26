@@ -127,8 +127,8 @@ public class CarJoinActivity extends AppCompatActivity {
             if (nowName != null) {
                 startPlace = nowName;
                 startText.setText(startPlace);
-                destText.setTextColor(Color.BLACK);
-                destText.setTypeface(null, Typeface.BOLD);
+                startText.setTextColor(Color.BLACK);
+                startText .setTypeface(null, Typeface.BOLD);
             }
 
             startLat = nowLat;
@@ -621,13 +621,27 @@ public class CarJoinActivity extends AppCompatActivity {
                                                 startPlace = "출발지 입력";
                                                 endPlace = "도착지 입력";
                                                 startText.setText(startPlace);
+                                                startText.setTextColor(Color.GRAY);
+                                                startText.setTypeface(null, Typeface.NORMAL);
                                                 destText.setText(endPlace);
+                                                destText.setTextColor(Color.GRAY);
+                                                destText.setTypeface(null, Typeface.NORMAL);
                                                 distanceText.setText("");
                                                 txtCar.setText("차량을 선택해주세요");
+                                                txtCar.setTextColor(Color.GRAY);
+                                                txtCar.setTypeface(null, Typeface.NORMAL);
                                                 txtTime.setText("출발 시간을 선택해주세요");
+                                                txtTime.setTextColor(Color.GRAY);
+                                                txtTime.setTypeface(null, Typeface.NORMAL);
                                                 txtTime2.setText("도착 시간을 선택해주세요");
+                                                txtTime2.setTextColor(Color.GRAY);
+                                                txtTime2.setTypeface(null, Typeface.NORMAL);
                                                 txtDate.setText("출발 날짜를 선택해주세요");
+                                                txtDate.setTextColor(Color.GRAY);
+                                                txtDate.setTypeface(null, Typeface.NORMAL);
                                                 txtDate2.setText("도착 날짜을 선택해주세요");
+                                                txtDate2.setTextColor(Color.GRAY);
+                                                txtDate2.setTypeface(null, Typeface.NORMAL);
 
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);

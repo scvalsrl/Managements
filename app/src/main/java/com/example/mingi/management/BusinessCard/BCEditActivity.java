@@ -356,11 +356,10 @@ public class BCEditActivity extends AppCompatActivity {
                 cropImage();
             }
         } else if (requestCode == PICK_FROM_CAMERA) {
-            if (data == null) {
-                Log.d("onActivityResult", "PICK_FROM_CAMERA but data is NULL");
-                return;
-            } else {
+            if(resultCode == Activity.RESULT_OK) {
+                Log.d("onActivityResult", "Camera RESULT_OK");
                 cropImage();
+                Log.d("onActivityResult", "PICK_FROM_CAMERA cropImage 이후");
                 // for showing photo on album
                 MediaScannerConnection.scanFile(this, new String[]{photoUri.getPath()}, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
@@ -369,6 +368,9 @@ public class BCEditActivity extends AppCompatActivity {
 
                             }
                         });
+            } else {
+                Log.d("onActivityResult", "Camera Canceled");
+                return;
             }
         } else if (requestCode == CROP_FROM_CAMERA) {
             if (data == null) {

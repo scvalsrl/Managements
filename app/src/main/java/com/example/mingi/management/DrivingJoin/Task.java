@@ -22,12 +22,14 @@ class Task extends AsyncTask {
     private String clientKey = "03772af9-f665-47d1-9008-207ca403d775";
     private String str,receiveMsg;
     private String endX, endY, startX, startY;
+    private FromToInfo fromToInfo;
 
     public Task(String destLon, String destLat, String startLon, String startLat) {
         this.endX = destLon;
         this.endY = destLat;
         this.startX = startLon;
         this.startY = startLat;
+        fromToInfo = new FromToInfo(-1, -1);
 
         Log.d("right parameter", "endX: "+endX+",endY: "+endY+",startX: " + startX +",startY: " + startY);
 
@@ -63,17 +65,17 @@ class Task extends AsyncTask {
         return JSONdistanceParser(receiveMsg);
     }
 
-    public int JSONdistanceParser(String jsonString) {
-        int distance = -1;
+    public FromToInfo JSONdistanceParser(String jsonString) {
         try {
             JSONArray features = new JSONObject(jsonString).getJSONArray("features");
             JSONObject jobj = features.getJSONObject(0);
             jobj = jobj.getJSONObject("properties");
-            distance = jobj.optInt("totalDistance");
+            fromToInfo.distance = jobj.optInt("totalDistance");
+            fromToInfo.gotTotTime(jobj.optInt("totalTime"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return distance;
+        return fromToInfo;
     }
 
 }

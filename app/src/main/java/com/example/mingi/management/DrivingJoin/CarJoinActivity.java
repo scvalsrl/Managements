@@ -87,9 +87,10 @@ public class CarJoinActivity extends AppCompatActivity {
     String endPlace = "도착지 입력";
     String startLat, startLon, destLat, destLon, nowName, kilometer;
     int distance = -1;
-
+    int startM;
     String nowLat = "129.065782";
     String nowLon = "35.145404";
+    FromToInfo fromToInfo;
 
     private BackPressCloseHandler backPressCloseHandler;
 
@@ -347,12 +348,9 @@ public class CarJoinActivity extends AppCompatActivity {
         txtTime2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 currentTime = Calendar.getInstance();
                 hour = currentTime.get(Calendar.HOUR_OF_DAY);
                 minute = currentTime.get(Calendar.MINUTE);
-
                 seletedTimeFormat(hour);
 
                 TimePickerDialog timePickerDialog = new TimePickerDialog(CarJoinActivity.this, new TimePickerDialog.OnTimeSetListener() {
@@ -360,9 +358,8 @@ public class CarJoinActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
                         seletedTimeFormat(hourOfDay);
-                        String t = hourOfDay + ":" + minute + " " + format;
                         end_time = hourOfDay + ":" + minute ;
-                        txtTime2.setText(t);
+                        txtTime2.setText(end_time + " " + format);
                         txtTime2.setTextColor(Color.BLACK);
                         txtTime2.setTypeface(null, Typeface.BOLD);
 
@@ -397,7 +394,9 @@ public class CarJoinActivity extends AppCompatActivity {
                         txtDate.setTextColor(Color.BLACK);
                         txtDate.setTypeface(null, Typeface.BOLD);
 
-
+                        txtDate2.setText(start_day);
+                        txtDate2.setTextColor(Color.BLACK);
+                        txtDate2.setTypeface(null, Typeface.BOLD);
                     }
                 }, y, m, d);
                 pickerDialog.show();
@@ -413,6 +412,7 @@ public class CarJoinActivity extends AppCompatActivity {
                 currentTime = Calendar.getInstance();
                 hour = currentTime.get(Calendar.HOUR_OF_DAY);
                 minute = currentTime.get(Calendar.MINUTE);
+                startM = hour * 60 + minute;
 
                 seletedTimeFormat(hour);
 
@@ -433,6 +433,17 @@ public class CarJoinActivity extends AppCompatActivity {
                 }, hour, minute, true);
 
                 timePickerDialog.show();
+                if(startM > 0 && fromToInfo.totTime > 0) {
+                    int destT = (startM + fromToInfo.totTime) / 60;
+                    int destM = (startM + fromToInfo.totTime) % 60;
+
+                    seletedTimeFormat(destT);
+
+                    end_time = destT + ":" + destM;
+                    txtTime2.setText(end_time + " " + format);
+                    txtTime2.setTextColor(Color.BLACK);
+                    txtTime2.setTypeface(null, Typeface.BOLD);
+                }
 
             }
 
@@ -931,16 +942,17 @@ public class CarJoinActivity extends AppCompatActivity {
                 return;
             }
             try {
-                distance = (int) new Task(destLon, destLat, startLon, startLat).execute().get();
+                fromToInfo = (FromToInfo) new Task(destLon, destLat, startLon, startLat).execute().get();
+                Log.d("fromToInfo", "time: " + fromToInfo.totTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
             Log.d("CarJoinActivity", "distance 계산 후: " + distance);
-            if (distance > -1) {
+            if (fromToInfo.distance > -1) {
                 Log.d("CarJoinActivity", "distance > -1 " + distance);
-                final float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
+                final float distanceKM = (float) (fromToInfo.distance / 1000 + (distance % 1000) * 0.001);
                 kilometer = Float.toString(distanceKM);
                 AlertDialog.Builder userdistanceBuilder = new AlertDialog.Builder(CarJoinActivity.this);
 

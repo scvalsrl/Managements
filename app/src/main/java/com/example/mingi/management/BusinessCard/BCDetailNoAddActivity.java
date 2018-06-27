@@ -40,7 +40,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcno;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
-    String isGPSEnable, nowLat, nowLon, nowName, userID;
+    String isGPSEnable, nowLat, nowLon, nowName, userID,mycar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
         bclon_str = intent.getStringExtra("BC_lon");
         bcphoto_str = intent.getStringExtra("BC_photo");
         no = intent.getStringExtra("no");
+        mycar = intent.getStringExtra("mycar");
         Log.d("김민기 no add ", " : " + bclat_str);
     }
 
@@ -245,6 +246,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
@@ -350,6 +352,7 @@ public class BCDetailNoAddActivity extends AppCompatActivity {
             goEdit.putExtra("nowLon", nowLon);
             goEdit.putExtra("isGPSEnable", isGPSEnable);
             goEdit.putExtra("nowName", nowName);
+            goEdit.putExtra("mycar", mycar);
 
             startActivity(goEdit);
 

@@ -2,6 +2,7 @@ package com.example.mingi.management.login;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.location.Location;
@@ -21,6 +22,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.mingi.management.DrivingJoin.CarJoinActivity;
+import com.example.mingi.management.DrivingJoin.CarMyRequest;
 import com.example.mingi.management.R;
 
 import org.json.JSONException;
@@ -37,6 +43,8 @@ import java.net.URL;
 public class Splashscreen extends Activity implements LocationListener{
 
     // for GPS
+    String mycar,loginId;
+    private Activity parentActivity;
     LocationManager locationManager;
     double nowLat = -1;
     double nowLon = -1;
@@ -89,6 +97,33 @@ public class Splashscreen extends Activity implements LocationListener{
             @Override
             public void run() {
                 try {
+                    SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+
+                    loginId = auto.getString("inputId",null);
+
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {
+                                    mycar = jsonResponse.getString("myCar");
+                                    Log.d("김민기", "mycar: " + mycar);
+                                }
+
+                            } catch (JSONException e) {
+
+                                e.printStackTrace();
+
+                            }
+                        }
+                    };
+
+                    CarMyRequest carMyRequest = new CarMyRequest(loginId, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue( Splashscreen.this);
+                    queue.add(carMyRequest);
+
                     int waited = 0;
                     // Splash screen pause time
                     while (waited < 3500) {
@@ -109,8 +144,7 @@ public class Splashscreen extends Activity implements LocationListener{
                     intent.putExtra("nowLat", String.valueOf(nowLat));
                     intent.putExtra("nowLon", String.valueOf(nowLon));
                     intent.putExtra("nowName", nowName);
-
-                    Log.d("김민기", nowLat + ", " + nowLon + "/ " + isChange + "/ name : " + nowName +"/  cn: " + cn);
+                    intent.putExtra("mycar", mycar);
 
                     startActivity(intent);
                     overridePendingTransition(0, 0);

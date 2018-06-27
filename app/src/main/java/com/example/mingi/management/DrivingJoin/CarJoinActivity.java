@@ -69,8 +69,9 @@ public class CarJoinActivity extends AppCompatActivity {
     TextView txtDate, txtTime, txtDate2, txtTime2, txtCar;
     LinearLayout viewCar, viewStartTxt, viewEndTxt, viewStartDate, viewStartTime, viewEndDate, viewEndTime;
     Calendar currentTime;
+    String first_gps;
     int hour, minute;
-    String format, userID;
+    String format, userID, mycar;
     String gps , start_day, end_day, start_time, end_time;
     BottomNavigationView bottomnav;
 
@@ -119,6 +120,14 @@ public class CarJoinActivity extends AppCompatActivity {
         String isGPSEnable = fromSplash.getStringExtra("isGPSEnable");
         userID = fromSplash.getStringExtra("userID");
         gps = isGPSEnable;
+        mycar = fromSplash.getExtras().getString("mycar");
+
+
+        if(!mycar.equals("차량을 선택해주세요")){
+            txtCar.setText(mycar);
+            txtCar.setTextColor(Color.BLACK);
+            txtCar .setTypeface(null, Typeface.BOLD);
+        }
 
         if (isGPSEnable.compareTo("0") == 0) { // success
             // reverse Geo
@@ -128,6 +137,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
             if (nowName != null) {
                 startPlace = nowName;
+                first_gps = nowName;
                 startText.setText(startPlace);
                 startText.setTextColor(Color.BLACK);
                 startText .setTypeface(null, Typeface.BOLD);
@@ -140,6 +150,9 @@ public class CarJoinActivity extends AppCompatActivity {
             boolean isDest = endPlace.equals("도착지 입력");
             calculateDistance(isStart, isDest);
         }
+
+
+
     }
 
     private void setActionBar() {
@@ -365,7 +378,7 @@ public class CarJoinActivity extends AppCompatActivity {
                         txtTime2.setTypeface(null, Typeface.BOLD);
 
                     }
-                }, hour, minute, true);
+                }, hour, minute, false);
 
                 timePickerDialog.show();
 
@@ -395,6 +408,7 @@ public class CarJoinActivity extends AppCompatActivity {
                         txtDate.setTextColor(Color.BLACK);
                         txtDate.setTypeface(null, Typeface.BOLD);
 
+                        end_day = i + "/" + i1 + "/" + i2;
                         txtDate2.setText(start_day);
                         txtDate2.setTextColor(Color.BLACK);
                         txtDate2.setTypeface(null, Typeface.BOLD);
@@ -441,7 +455,7 @@ public class CarJoinActivity extends AppCompatActivity {
                             }
                         }
                     }
-                }, hour, minute, true);
+                }, hour, minute, false);
                 Log.d("StartTime", "hour: " + hour + "minute: " + minute);
                 timePickerDialog.show();
             }
@@ -498,6 +512,17 @@ public class CarJoinActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
+        if (id == R.id.setting) {
+            Intent intent = new Intent(CarJoinActivity.this, CarSetActivity.class);
+            intent.putExtra("isGPSEnable", gps);
+            intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowName", nowName);
+            startActivity(intent);
+
+        }
         if (id == R.id.logout) {
 
             if (preventButtonTouch == true) { return true; }
@@ -509,7 +534,7 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("nowName", nowName);
             intent.putExtra("isGPSEnable", gps);
-
+            intent.putExtra("mycar", mycar);
             startActivity(intent);
             SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = auto.edit();
@@ -523,7 +548,12 @@ public class CarJoinActivity extends AppCompatActivity {
         }
         if (id == R.id.newPost) {
 
-            String carNum = txtCar.getText().toString();
+            if (preventButtonTouch == true) {
+                return true;
+            }
+
+
+            final String carNum = txtCar.getText().toString();
             String startday = txtDate.getText().toString();
             String endday = txtDate2.getText().toString();
             String startTime = txtTime.getText().toString();
@@ -612,6 +642,9 @@ public class CarJoinActivity extends AppCompatActivity {
 
             }
             else {
+
+                preventButtonTouch = true;
+
                 Response.Listener<String> responseListener2 = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -632,22 +665,16 @@ public class CarJoinActivity extends AppCompatActivity {
                                             JSONObject jsonResponse = new JSONObject(response);
                                             boolean success = jsonResponse.getBoolean("success");
 
-
                                             if (success) {
-
 
                                                 startPlace = "출발지 입력";
                                                 endPlace = "도착지 입력";
-                                                startText.setText(startPlace);
-                                                startText.setTextColor(Color.GRAY);
-                                                startText.setTypeface(null, Typeface.NORMAL);
+                                                startText.setText(first_gps);
                                                 destText.setText(endPlace);
                                                 destText.setTextColor(Color.GRAY);
                                                 destText.setTypeface(null, Typeface.NORMAL);
                                                 distanceText.setText("");
-                                                txtCar.setText("차량을 선택해주세요");
-                                                txtCar.setTextColor(Color.GRAY);
-                                                txtCar.setTypeface(null, Typeface.NORMAL);
+                                                txtCar.setText(carNum);
                                                 txtTime.setText("출발 시간을 선택해주세요");
                                                 txtTime.setTextColor(Color.GRAY);
                                                 txtTime.setTypeface(null, Typeface.NORMAL);
@@ -660,7 +687,6 @@ public class CarJoinActivity extends AppCompatActivity {
                                                 txtDate2.setText("도착 날짜을 선택해주세요");
                                                 txtDate2.setTextColor(Color.GRAY);
                                                 txtDate2.setTypeface(null, Typeface.NORMAL);
-
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(CarJoinActivity.this);
 
@@ -843,6 +869,7 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("userID", userID);
             intent.putExtra("str_yy", str_yy);
             intent.putExtra("str_mm", str_mm);
+            intent.putExtra("mycar", mycar);
             CarJoinActivity.this.startActivity(intent);
 
             finish();
@@ -905,6 +932,7 @@ public class CarJoinActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", gps);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
             intent.putExtra("listname", "등록순");
             CarJoinActivity.this.startActivity(intent);
             finish();
@@ -973,27 +1001,8 @@ public class CarJoinActivity extends AppCompatActivity {
                     short_end = endPlace.substring(0, 12) + "..";
                 }
                 userdistanceBuilder.setTitle("출발지 : "+ short_start +"\n"  + "도착지 : "+ short_end + "\n" );
-                userdistanceBuilder.setMessage("예상 거리 : "+kilometer + "km")
+                userdistanceBuilder.setMessage("예상 거리 : "+kilometer + "km"  +"\n" +"예상 소요시간 : "+ fromToInfo.totTime + "분")
                         .setCancelable(false)
-                        .setPositiveButton("직접입력", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                EditDialog editDialog = new EditDialog(CarJoinActivity.this);
-                                editDialog.setDialogListener(new MyDialogListener() {
-                                    @Override
-                                    public void onPositiveClicked(String km) {
-                                        distanceText.setText(km);
-                                        distanceText.setTextColor(Color.BLACK);
-                                        distanceText.setTypeface(null, Typeface.BOLD);
-                                    }
-
-                                    @Override
-                                    public void onNegativeClicked() {
-                                    }
-                                });
-                                editDialog.show();
-                            }
-                        })
                         .setNegativeButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

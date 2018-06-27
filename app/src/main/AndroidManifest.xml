@@ -36,8 +36,8 @@
 
         <activity
             android:name=".login.LoginActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/AppTheme.NoActionBar2"></activity>
+            android:theme="@style/AppTheme.NoActionBar2"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".DrivingJoin.CarJoinActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".DrivingJoin.CarManegementActivity" />
@@ -54,7 +54,7 @@
         </activity>
         <activity android:name=".DrivingJoin.DestListActivity" />
         <activity android:name=".DrivingJoin.ListMapActivity" />
-        <activity android:name=".DrivingJoin.CarUpdateActivity"></activity>
+        <activity android:name=".DrivingJoin.CarUpdateActivity" />
         <activity android:name=".BusinessCard.BCJoinActivity" />
         <activity android:name=".BusinessCard.BCListActivity" />
         <activity android:name=".BusinessCard.uploadActivity" />
@@ -62,7 +62,8 @@
         <activity android:name=".BusinessCard.BCDetailActivity" />
         <activity android:name=".BusinessCard.BCEditActivity" />
         <activity android:name=".BusinessCard.BCFullMapActivity" />
-        <activity android:name=".BusinessCard.BCDetailNoAddActivity"></activity>
+        <activity android:name=".BusinessCard.BCDetailNoAddActivity" />
+        <activity android:name=".DrivingJoin.CarSetActivity"></activity>
     </application>
 
 </manifest>

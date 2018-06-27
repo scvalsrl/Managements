@@ -5,6 +5,8 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -53,6 +55,7 @@ public class CarUpdateActivity extends AppCompatActivity {
     String format;
     String gps, str_yy, str_mm;
     String userID, no;
+    FromToInfo fromToInfo;
 
     int y, m, d;
 
@@ -63,7 +66,7 @@ public class CarUpdateActivity extends AppCompatActivity {
     Button changeBtn;
     String startPlace = "출발지 입력";
     String endPlace = "도착지 입력";
-    String startLat, startLon, destLat, destLon, nowName, kilometer;
+    String startLat, startLon, destLat, destLon, nowName, kilometer, mycar;
     int distance = -1;
 
     final Context context = this;
@@ -117,7 +120,8 @@ public class CarUpdateActivity extends AppCompatActivity {
         startLon = fromSplash.getExtras().getString("startLon");
         destLat = fromSplash.getExtras().getString("destLat");
         destLon = fromSplash.getExtras().getString("destLon");
-
+        mycar = fromSplash.getExtras().getString("mycar");
+        Log.d("김민기", "mycar: " + mycar);
 
         txtCar.setText(carNum_);
         startText.setText(startPlace);
@@ -192,7 +196,7 @@ public class CarUpdateActivity extends AppCompatActivity {
 
 
                     }
-                }, hour, minute, true);
+                }, hour, minute, false);
 
                 timePickerDialog.show();
 
@@ -251,7 +255,7 @@ public class CarUpdateActivity extends AppCompatActivity {
 
 
                     }
-                }, hour, minute, true);
+                }, hour, minute, false);
 
                 timePickerDialog.show();
 
@@ -651,6 +655,7 @@ public class CarUpdateActivity extends AppCompatActivity {
             intent.putExtra("userID", userID);
             intent.putExtra("str_yy", str_yy);
             intent.putExtra("str_mm", str_mm);
+            intent.putExtra("mycar", mycar);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             CarUpdateActivity.this.startActivity(intent);
             overridePendingTransition(0, 0);
@@ -673,19 +678,7 @@ public class CarUpdateActivity extends AppCompatActivity {
 
                 return;
             }
-            try {
-                distance = (int) new Task(destLon, destLat, startLon, startLat).execute().get();
-                //Toast.makeText(getApplicationContext(), "distance: " + distance, Toast.LENGTH_SHORT).show();
-                if (distance > -1) {
-                    float distanceKM = (float) (distance / 1000 + (distance % 1000) * 0.001);
-                    kilometer = Float.toString(distanceKM);
-                    distanceText.setText(kilometer);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 

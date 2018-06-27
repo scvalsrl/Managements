@@ -45,19 +45,16 @@ public class BCListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-       // Log.d("김민기1", " getCount() : "+userList.size());
         return userList.size();
     }
 
     @Override
     public Object getItem(int i) {
-      //  Log.d("김민기2", " getItem() : "+userList.get(i));
         return userList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-       // Log.d("김민기3", " getItemId() : "+i);
         return i;
     }
 

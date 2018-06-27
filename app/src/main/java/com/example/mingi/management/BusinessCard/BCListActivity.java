@@ -41,6 +41,7 @@ import com.example.mingi.management.DrivingJoin.Car;
 import com.example.mingi.management.DrivingJoin.CarJoinActivity;
 import com.example.mingi.management.DrivingJoin.CarListAdapter;
 import com.example.mingi.management.DrivingJoin.CarManegementActivity;
+import com.example.mingi.management.DrivingJoin.CarSetActivity;
 import com.example.mingi.management.DrivingJoin.DeleteRequest2;
 import com.example.mingi.management.R;
 import com.example.mingi.management.login.BackPressCloseHandler;
@@ -77,6 +78,7 @@ public class BCListActivity extends AppCompatActivity {
     String nowName;
     String userID;
     String listname;
+    String mycar;
 
     TextView txtlist, txtcount;
     TextView textviewTitle;
@@ -97,7 +99,7 @@ public class BCListActivity extends AppCompatActivity {
         nowName = intent.getStringExtra("nowName");
         userID = intent.getStringExtra("userID");
         listname = intent.getStringExtra("listname");
-        Log.d("김민기", "userID: " + listname);
+        mycar = intent.getStringExtra("mycar");
 
         initView();
         setActionBar();
@@ -115,12 +117,9 @@ public class BCListActivity extends AppCompatActivity {
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
-
                     @Override
                     public void onResponse(String response) {
                         try {
-
-
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
 
@@ -137,9 +136,7 @@ public class BCListActivity extends AppCompatActivity {
                             BC_photo = jsonResponse.getString("BC_photo");
                             no = jsonResponse.getString("no");
 
-
                             if (success) {
-
                                 // 주소가 없다면
                                 if (BC_lat.equals("0") || BC_lon.equals("0") || BC_add.equals("")) {
                                     Log.d("BCListActivity-check","lat: " + BC_lat + ", lon: " + BC_lon);
@@ -159,14 +156,12 @@ public class BCListActivity extends AppCompatActivity {
                                     intent.putExtra("BC_lon", BC_lon);
                                     intent.putExtra("BC_photo", BC_photo);
                                     intent.putExtra("no", no);
-
-
                                     intent.putExtra("userID", userID);
                                     intent.putExtra("isGPSEnable", isGPSEnable);
                                     intent.putExtra("nowLat", nowLat);
                                     intent.putExtra("nowLon", nowLon);
                                     intent.putExtra("nowName", nowName);
-
+                                    intent.putExtra("mycar", mycar);
 
                                     BCListActivity.this.startActivity(intent);
                                     // 화면전환 넣기 //
@@ -175,7 +170,6 @@ public class BCListActivity extends AppCompatActivity {
 
                                     // 인텐드에 넣기
                                     Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
-
                                     intent.putExtra("BC_name", BC_name);
                                     intent.putExtra("BC_level", BC_level);
                                     intent.putExtra("BC_com", BC_com);
@@ -186,13 +180,12 @@ public class BCListActivity extends AppCompatActivity {
                                     intent.putExtra("BC_lon", BC_lon);
                                     intent.putExtra("BC_photo", BC_photo);
                                     intent.putExtra("no", no);
-
-
                                     intent.putExtra("userID", userID);
                                     intent.putExtra("isGPSEnable", isGPSEnable);
                                     intent.putExtra("nowLat", nowLat);
                                     intent.putExtra("nowLon", nowLon);
                                     intent.putExtra("nowName", nowName);
+                                    intent.putExtra("mycar", mycar);
 
 
                                     BCListActivity.this.startActivity(intent);
@@ -289,6 +282,7 @@ public class BCListActivity extends AppCompatActivity {
                 bcList.putExtra("nowLon", nowLon);
                 bcList.putExtra("isGPSEnable", isGPSEnable);
                 bcList.putExtra("nowName", nowName);
+                bcList.putExtra("mycar", mycar);
                 startActivity(bcList);
 
             }
@@ -455,7 +449,7 @@ public class BCListActivity extends AppCompatActivity {
                                         goEdit.putExtra("nowLon", nowLon);
                                         goEdit.putExtra("isGPSEnable", isGPSEnable);
                                         goEdit.putExtra("nowName", nowName);
-
+                                        goEdit.putExtra("mycar", mycar);
                                         startActivity(goEdit);
 
 
@@ -583,6 +577,8 @@ public class BCListActivity extends AppCompatActivity {
                             intent.putExtra("nowLon", nowLon);
                             intent.putExtra("isGPSEnable", isGPSEnable);
                             intent.putExtra("nowName", nowName);
+                            intent.putExtra("mycar", mycar);
+                            Log.d("김민기", "mycar: "+mycar);
                             BCListActivity.this.startActivity(intent);
                             overridePendingTransition(0, 0);
                             finish();
@@ -683,6 +679,7 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("str_yy", str_yy);
             intent.putExtra("str_mm", str_mm);
             intent.putExtra("listname", listname);
+            intent.putExtra("mycar", mycar);
             BCListActivity.this.startActivity(intent);
             finish();
 
@@ -702,7 +699,16 @@ public class BCListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-
+        if (id == R.id.setting) {
+            Intent intent = new Intent(BCListActivity.this, CarSetActivity.class);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowName", nowName);
+            startActivity(intent);
+        }
         if( id == R.id.logout ){
 
             Intent intent = new Intent(BCListActivity.this, LoginActivity.class);
@@ -710,6 +716,7 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("nowLon",nowLon);
             intent.putExtra("nowName", nowName);
             intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("mycar", mycar);
             startActivity(intent);
             SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = auto.edit();
@@ -789,6 +796,7 @@ public class BCListActivity extends AppCompatActivity {
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
             intent.putExtra("listname", listname);
+            intent.putExtra("mycar", mycar);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             BCListActivity.this.startActivity(intent);
             finish();

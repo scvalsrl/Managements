@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:fitsSystemWindows="true">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_navigation">
+
+
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="50dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:text="차량등록"
+                        android:textColor="#445a63"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내차로 등록한 차량은 운행일지 등록시"
+                    android:textSize="18dp"
+                    android:textColor="#a5a5a5"
+                    />
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자동으로 입력됩니다"
+                        android:textSize="18dp"
+                        android:textColor="#a5a5a5"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="17dp"
+                        android:background="#b7b7b7"
+                        android:elevation="3dp"
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingTop="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="43dp"
+                            android:layout_gravity="center"
+                            android:background="#ffffff"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtCar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="9dp"
+                                android:layout_weight="1"
+                                android:text="차량을 선택해주세요"
+                                android:textSize="16dp" />
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="10dp"
+                                android:src="@drawable/ic_directions_car_black_24dp" />
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+        </FrameLayout>
+
+    </RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

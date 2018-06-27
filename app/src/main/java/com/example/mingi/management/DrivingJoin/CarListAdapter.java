@@ -32,12 +32,12 @@ public class CarListAdapter extends BaseAdapter {
     private String nowLat;
     private String nowLon;
     private String nowName;
-
+    private String mycar;
     private String str_mm;
     private String str_yy;
 
 
-    public CarListAdapter(Context context, List<Car> userList, Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName, String str_mm, String str_yy) {
+    public CarListAdapter(Context context, List<Car> userList, Activity parentActivity, String isGPSEnable, String nowLat, String nowLon, String nowName, String mycar, String str_mm, String str_yy) {
         this.context = context;
         this.userList = userList;
         this.parentActivity = parentActivity;
@@ -45,6 +45,7 @@ public class CarListAdapter extends BaseAdapter {
         this.nowLat = nowLat;
         this.nowLon = nowLon;
         this.nowName = nowName;
+        this.mycar = mycar;
         this.str_mm = str_mm;
         this.str_yy = str_yy;
     }
@@ -170,7 +171,7 @@ public class CarListAdapter extends BaseAdapter {
                                 intent.putExtra("nowName", nowName);
                                 intent.putExtra("str_yy", str_yy);
                                 intent.putExtra("str_mm", str_mm);
-
+                                intent.putExtra("mycar", mycar);
 
                                 parentActivity.startActivity(intent);
                                 // 화면전환 넣기 //

@@ -74,7 +74,7 @@ public class BCJoinActivity extends AppCompatActivity {
     String isGPSEnable;
     String nowLat;
     String nowLon;
-    String nowName;
+    String nowName, mycar;
     String userID;
 
     private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -125,7 +125,7 @@ public class BCJoinActivity extends AppCompatActivity {
         nowLon = intent.getStringExtra("nowLon");
         nowName = intent.getStringExtra("nowName");
         userID = intent.getStringExtra("userID");
-
+        mycar = intent.getStringExtra("mycar");
 
         uploadButton = (Button) findViewById(R.id.uploadButton);
 
@@ -180,72 +180,6 @@ public class BCJoinActivity extends AppCompatActivity {
         });
     }
 
-
-    class BackgroundTask2 extends AsyncTask<Void, Void, String> {
-
-        String target;
-
-        @Override
-        protected void onPreExecute() {
-            target = "http://scvalsrl.cafe24.com/BCList.php";
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while ((temp = bufferedReader.readLine()) != null) {
-
-                    stringBuilder.append(temp + "\n");
-
-                }
-
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-
-                return stringBuilder.toString().trim();
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-            }
-
-
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-
-        }
-
-        public void onPostExecute(String result) {
-
-            Intent intent = new Intent(BCJoinActivity.this, BCListActivity.class);
-            intent.putExtra("userList", result);
-            intent.putExtra("nowLat", nowLat);
-            intent.putExtra("nowLon", nowLon);
-            intent.putExtra("isGPSEnable", isGPSEnable);
-            intent.putExtra("nowName", nowName);
-            intent.putExtra("userID", userID);
-
-            finish();
-            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-            BCJoinActivity.this.startActivity(intent);
-
-            overridePendingTransition(0, 0);
-
-        }
-
-    }
 
 
     public void onClick(View v) {
@@ -835,6 +769,7 @@ public class BCJoinActivity extends AppCompatActivity {
                                                                     intent.putExtra("nowLat", nowLat);
                                                                     intent.putExtra("nowLon", nowLon);
                                                                     intent.putExtra("nowName", nowName);
+                                                                    intent.putExtra("mycar", mycar);
 
                                                                     finish();
                                                                     intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -867,6 +802,7 @@ public class BCJoinActivity extends AppCompatActivity {
                                                                     intent.putExtra("nowLat", nowLat);
                                                                     intent.putExtra("nowLon", nowLon);
                                                                     intent.putExtra("nowName", nowName);
+                                                                    intent.putExtra("mycar", mycar);
 
                                                                     finish();
                                                                     intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);

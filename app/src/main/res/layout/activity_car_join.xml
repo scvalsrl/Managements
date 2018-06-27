@@ -247,7 +247,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="33dp"
                         android:layout_marginTop="20dp"
-                        android:text="일정선택"
+                        android:text="출발일자"
                         android:textColor="#ed3e7b"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -346,6 +346,15 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="33dp"
+                        android:layout_marginTop="20dp"
+                        android:text="도착일자"
+                        android:textColor="#ed3e7b"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

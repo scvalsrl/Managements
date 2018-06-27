@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
@@ -33,6 +34,9 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.mingi.management.BusinessCard.BCDetailActivity;
+import com.example.mingi.management.BusinessCard.BCDetailNoAddActivity;
+import com.example.mingi.management.BusinessCard.BCDetailRequest;
 import com.example.mingi.management.BusinessCard.BCListActivity;
 import com.example.mingi.management.R;
 import com.example.mingi.management.login.BackPressCloseHandler;
@@ -62,7 +66,7 @@ public class CarManegementActivity extends AppCompatActivity {
     private CarListAdapter adapter;
     private List<Car> userList;
 
-    String isGPSEnable, nowLat, nowLon, nowName, userID;
+    String isGPSEnable, nowLat, nowLon, nowName, userID,mycar;
     String year_s, month_s;
     int year_i, month_i;
     int check = 0 ;
@@ -138,8 +142,14 @@ public class CarManegementActivity extends AppCompatActivity {
         final String nowLon_ = intent.getStringExtra("nowLon");
         final String nowName_ = intent.getStringExtra("nowName");
         final String userID_ = intent.getStringExtra("userID");
+        mycar = intent.getStringExtra("mycar");
         year_s = intent.getStringExtra("str_yy");
         month_s = intent.getStringExtra("str_mm");
+
+        listView = (ListView) findViewById(R.id.listVView);
+        userList = new ArrayList<Car>();
+        adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_, mycar,month_s, year_s );
+        listView.setAdapter(adapter);
 
         if(month_s.length() == 1 ){
             month_s= "0"+month_s;
@@ -172,11 +182,6 @@ public class CarManegementActivity extends AppCompatActivity {
                  Drawable drawable = getResources().getDrawable(R.drawable.nocarlist);
                 ImageView imageView = (ImageView) findViewById(R.id.imageView1);
                 imageView.setImageDrawable(drawable);
-            }else{
-                listView = (ListView) findViewById(R.id.listVView);
-                userList = new ArrayList<Car>();
-                adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_,month_s, year_s );
-                listView.setAdapter(adapter);
             }
 
 
@@ -249,6 +254,78 @@ public class CarManegementActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("김민기", "김민기김민기김민기김민기: ");
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            String id = jsonResponse.getString("id");
+                            String carNum = jsonResponse.getString("carNum");
+                            String startPlace = jsonResponse.getString("startPlace");
+                            String endPlace = jsonResponse.getString("endPlace");
+                            String startTime = jsonResponse.getString("startTime");
+                            String startDay = jsonResponse.getString("startDay");
+                            String endTime = jsonResponse.getString("endTime");
+                            String endDay = jsonResponse.getString("endDay");
+                            String no = jsonResponse.getString("no");
+                            String kilometer = jsonResponse.getString("kilometer");
+
+                            String startLat = jsonResponse.getString("startLat");
+                            String startLon = jsonResponse.getString("startLon");
+                            String destLat = jsonResponse.getString("destLat");
+                            String destLon = jsonResponse.getString("destLon");
+
+                            if (success) {
+                                // 인텐드에 넣기
+                                Intent intent = new Intent(CarManegementActivity.this, CarUpdateActivity.class);
+
+                                intent.putExtra("id", id);
+                                intent.putExtra("carNum", carNum);
+                                intent.putExtra("startPlace", startPlace);
+                                intent.putExtra("endPlace", endPlace);
+                                intent.putExtra("startTime", startTime);
+                                intent.putExtra("startDay", startDay);
+                                intent.putExtra("endTime", endTime);
+                                intent.putExtra("endDay", endDay);
+                                intent.putExtra("no", no);
+                                intent.putExtra("kilometer", kilometer);
+
+                                intent.putExtra("startLat", startLat);
+                                intent.putExtra("startLon", startLon);
+                                intent.putExtra("destLat", destLat);
+                                intent.putExtra("destLon", destLon);
+                                intent.putExtra("isGPSEnable", isGPSEnable);
+                                intent.putExtra("nowLat", nowLat);
+                                intent.putExtra("nowLon", nowLon);
+                                intent.putExtra("nowName", nowName);
+                                intent.putExtra("str_yy", year_s);
+                                intent.putExtra("str_mm", month_s);
+                                intent.putExtra("mycar", mycar);
+                                CarManegementActivity.this.startActivity(intent);
+                                // 화면전환 넣기 //
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                };
+                UpdateRequest updateRequest = new UpdateRequest(userList.get(i).getNo(), responseListener);
+                RequestQueue queue = Volley.newRequestQueue(CarManegementActivity.this);
+                queue.add(updateRequest);
+
+            }
+        });
 
     }
 
@@ -287,6 +364,7 @@ public class CarManegementActivity extends AppCompatActivity {
                             intent.putExtra("nowLon", nowLon);
                             intent.putExtra("isGPSEnable", isGPSEnable);
                             intent.putExtra("nowName", nowName);
+                            intent.putExtra("mycar", mycar);
                             CarManegementActivity.this.startActivity(intent);
 
                             overridePendingTransition(0, 0);
@@ -395,6 +473,8 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("userID", userID);
             intent.putExtra("str_yy", year_s);
             intent.putExtra("str_mm", month_s);
+            intent.putExtra("mycar", mycar);
+
             CarManegementActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
@@ -494,6 +574,7 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("userID", userID);
             intent.putExtra("str_yy", year_s);
             intent.putExtra("str_mm", month_s);
+            intent.putExtra("mycar", mycar);
             CarManegementActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
@@ -559,6 +640,7 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
             intent.putExtra("listname", "등록순");
+            intent.putExtra("mycar", mycar);
             CarManegementActivity.this.startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
@@ -579,7 +661,17 @@ public class CarManegementActivity extends AppCompatActivity {
 
 
         int id = item.getItemId();
+        if (id == R.id.setting) {
+            Intent intent = new Intent(CarManegementActivity.this, CarSetActivity.class);
+            intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
+            intent.putExtra("nowLat", nowLat);
+            intent.putExtra("nowLon",nowLon);
+            intent.putExtra("nowName", nowName);
+            startActivity(intent);
 
+        }
         if (id == R.id.logout) {
 
             Intent intent = new Intent(CarManegementActivity.this, LoginActivity.class);
@@ -587,6 +679,7 @@ public class CarManegementActivity extends AppCompatActivity {
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("nowName", nowName);
             intent.putExtra("isGPSEnable", isGPSEnable);
+            intent.putExtra("mycar", mycar);
             startActivity(intent);
             SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = auto.edit();

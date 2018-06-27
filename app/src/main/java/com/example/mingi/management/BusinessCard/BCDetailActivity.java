@@ -45,7 +45,7 @@ public class BCDetailActivity extends AppCompatActivity {
     TextView bcname, bclevel, bccom, bcphone, bcemail, bcadd, bcno;
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str, bclat_str, bclon_str, bcphoto_str, no;
-    String isGPSEnable, nowLat, nowLon, nowName, userID;
+    String isGPSEnable, nowLat, nowLon, nowName, userID,mycar;
     String com_name; // for map marker
 
     @Override
@@ -124,8 +124,8 @@ public class BCDetailActivity extends AppCompatActivity {
         bclon_str = intent.getStringExtra("BC_lon");
         bcphoto_str = intent.getStringExtra("BC_photo");
         no = intent.getStringExtra("no");
-        Log.d("김민기", "ㅁㄴㅇㅁㄴㅇ: " + no);
-        Log.d("BCDetailActivity", "fromIntent-lat: "+ bclat_str + ",lon: " + bclon_str);
+        mycar = intent.getStringExtra("mycar");
+        Log.d("김민기", "mycar: " + mycar);
     }
 
     void initView() {
@@ -292,6 +292,7 @@ public class BCDetailActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             BCDetailActivity.this.startActivity(intent);
             finish();
@@ -406,6 +407,7 @@ public class BCDetailActivity extends AppCompatActivity {
             goEdit.putExtra("nowLon", nowLon);
             goEdit.putExtra("isGPSEnable", isGPSEnable);
             goEdit.putExtra("nowName", nowName);
+            goEdit.putExtra("mycar", mycar);
 
             startActivity(goEdit);
 

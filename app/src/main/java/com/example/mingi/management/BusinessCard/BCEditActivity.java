@@ -79,7 +79,7 @@ public class BCEditActivity extends AppCompatActivity {
 
     String bcname_str, bclevel_str, bccom_str, bcphone_str, bcemail_str, bcadd_str;
     String userID, no, bcphoto_str, bclat_str, bclon_str;
-    String isGPSEnable, nowLat, nowLon, nowName;
+    String isGPSEnable, nowLat, nowLon, nowName, mycar;
 
     InputMethodManager imm;
 
@@ -215,6 +215,7 @@ public class BCEditActivity extends AppCompatActivity {
         bcphoto_str = intent.getStringExtra("bcphoto");
         temp = bcphoto_str;
         no = intent.getStringExtra("no");
+        mycar = intent.getStringExtra("mycar");
     }
 
     void setInitView() {
@@ -681,6 +682,7 @@ public class BCEditActivity extends AppCompatActivity {
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
             intent.putExtra("userID", userID);
+            intent.putExtra("mycar", mycar);
             intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
             BCEditActivity.this.startActivity(intent);
             finish();

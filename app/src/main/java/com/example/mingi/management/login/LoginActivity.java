@@ -17,8 +17,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.mingi.management.DrivingJoin.CarJoinActivity;
+import com.example.mingi.management.DrivingJoin.CarMyRequest;
 import com.example.mingi.management.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     String loginId, loginPwd;
     String userID;
     String userPassword;
+    String mycar;
+    boolean preventButtonTouch = false;
     CheckBox checkBox;
 
     @Override
@@ -39,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         final String nowLat = fromSplash.getStringExtra("nowLat");
         final String nowLon = fromSplash.getStringExtra("nowLon");
         final String nowName = fromSplash.getStringExtra("nowName");
+        mycar = fromSplash.getStringExtra("mycar");
 
         final EditText idText = (EditText) findViewById(R.id.idText);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
@@ -52,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
         loginPwd = auto.getString("inputPwd",null);
 
 
-
         // 자동 로그인
         if(loginId !=null && loginPwd != null) {
             Log.d(" 자동로그인 ", "ID : " + loginId);
@@ -63,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("nowLon", nowLon);
             intent.putExtra("isGPSEnable", isGPSEnable);
             intent.putExtra("nowName", nowName);
+            intent.putExtra("mycar", mycar);
             LoginActivity.this.startActivity(intent);
             // 화면전환 넣기 //
             finish();
@@ -86,6 +91,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                if (preventButtonTouch == true) { return; }
+
+                preventButtonTouch = true;
+
 
                 userID = idText.getText().toString();
                 userPassword = passwordText.getText().toString();
@@ -94,14 +103,16 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
+
+
                         try {
                             // 제이슨 생성
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {  // 성공
                                 Log.d("  로그인 상공 : ", "");
-                                String userID = jsonResponse.getString("userID");
-                                String userPassword = jsonResponse.getString("userPassword");
+                                userID = jsonResponse.getString("userID");
+                                userPassword = jsonResponse.getString("userPassword");
 
 
                                 if(checkBox.isChecked() == true) {
@@ -114,20 +125,48 @@ public class LoginActivity extends AppCompatActivity {
                                 }
 
 
-                                // 인텐드에 넣기
-                                Intent intent = new Intent(LoginActivity.this, CarJoinActivity.class);
-                                intent.putExtra("userID", userID);
-                                intent.putExtra("userPassword", userPassword);
-                                intent.putExtra("nowLat", nowLat);
-                                intent.putExtra("nowLon", nowLon);
-                                intent.putExtra("isGPSEnable", isGPSEnable);
-                                intent.putExtra("nowName", nowName);
-                                LoginActivity.this.startActivity(intent);
-                                // 화면전환 넣기 //
-                                finish();
+                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+
+                                            try {
+                                                JSONObject jsonResponse = new JSONObject(response);
+                                                boolean success = jsonResponse.getBoolean("success");
+                                                if (success) {
+                                                    preventButtonTouch = false;
+                                                    mycar = jsonResponse.getString("myCar");
+                                                    Log.d("김민기", "mycarmycar: " + mycar);
+                                                    // 인텐드에 넣기
+                                                    Intent intent = new Intent(LoginActivity.this, CarJoinActivity.class);
+                                                    intent.putExtra("userID", userID);
+                                                    intent.putExtra("userPassword", userPassword);
+                                                    intent.putExtra("nowLat", nowLat);
+                                                    intent.putExtra("nowLon", nowLon);
+                                                    intent.putExtra("isGPSEnable", isGPSEnable);
+                                                    intent.putExtra("nowName", nowName);
+                                                    intent.putExtra("mycar", mycar);
+                                                    LoginActivity.this.startActivity(intent);
+                                                    // 화면전환 넣기 //
+                                                    finish();
+                                                }
+
+                                            } catch (JSONException e) {
+
+                                                e.printStackTrace();
+
+                                            }
+                                        }
+                                    };
+
+                                    CarMyRequest carMyRequest = new CarMyRequest(userID, responseListener);
+                                    RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                                    queue.add(carMyRequest);
+
+
 
 
                             } else {
+                                preventButtonTouch = false;
                                 Log.d("  로그인 실패 : ", "");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("로그인에 실패하였습니다.")

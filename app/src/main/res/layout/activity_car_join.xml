@@ -56,13 +56,12 @@
                         android:paddingTop="1dp">
 
                         <LinearLayout
-
+                            android:id="@+id/viewCar"
                             android:layout_width="match_parent"
                             android:layout_height="43dp"
                             android:layout_gravity="center"
                             android:background="#ffffff"
                             android:orientation="horizontal">
-
                             <TextView
                                 android:id="@+id/txtCar"
                                 android:layout_width="match_parent"
@@ -71,15 +70,13 @@
                                 android:layout_marginLeft="9dp"
                                 android:layout_weight="1"
                                 android:text="차량을 선택해주세요"
-                                android:textSize="16dp" />
-
+                                android:textSize="16dp"/>
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:layout_marginRight="10dp"
                                 android:src="@drawable/ic_directions_car_black_24dp" />
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -121,6 +118,7 @@
                                 android:orientation="vertical">
 
                                 <LinearLayout
+                                    android:id="@+id/viewStartTxt"
                                     android:layout_width="match_parent"
                                     android:layout_height="30dp"
                                     android:layout_marginBottom="5dp"
@@ -143,6 +141,7 @@
                                     android:background="#b7b7b7" />
 
                                 <LinearLayout
+                                    android:id="@+id/viewEndTxt"
                                     android:layout_width="match_parent"
                                     android:layout_height="30dp"
                                     android:layout_marginBottom="5dp"
@@ -283,7 +282,8 @@
 
                                     android:layout_width="match_parent"
                                     android:layout_height="43dp"
-                                    android:background="#ffffff">
+                                    android:background="#ffffff"
+                                    android:id="@+id/viewStartDate">
 
                                     <TextView
                                         android:id="@+id/txtDate"
@@ -321,7 +321,8 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="43dp"
-                                    android:background="#ffffff">
+                                    android:background="#ffffff"
+                                    android:id="@+id/viewStartTime">
 
                                     <TextView
                                         android:id="@+id/txtTime"
@@ -373,7 +374,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="43dp"
                                 android:layout_marginBottom="2dp"
-                                android:background="#ffffff">
+                                android:background="#ffffff"
+                                android:id="@+id/viewEndDate">
 
                                 <TextView
                                     android:id="@+id/txtDate2"
@@ -404,7 +406,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="43dp"
                                 android:background="#ffffff"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:id="@+id/viewEndTime">
 
                                 <TextView
                                     android:id="@+id/txtTime2"

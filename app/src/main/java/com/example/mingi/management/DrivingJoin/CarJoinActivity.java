@@ -67,6 +67,7 @@ import java.util.concurrent.ExecutionException;
 public class CarJoinActivity extends AppCompatActivity {
 
     TextView txtDate, txtTime, txtDate2, txtTime2, txtCar;
+    LinearLayout viewCar, viewStartTxt, viewEndTxt, viewStartDate, viewStartTime, viewEndDate, viewEndTime;
     Calendar currentTime;
     int hour, minute;
     String format, userID;
@@ -87,7 +88,7 @@ public class CarJoinActivity extends AppCompatActivity {
     String endPlace = "도착지 입력";
     String startLat, startLon, destLat, destLon, nowName, kilometer;
     int distance = -1;
-    int startM;
+    int startM = -1;
     String nowLat = "129.065782";
     String nowLon = "35.145404";
     FromToInfo fromToInfo;
@@ -157,12 +158,13 @@ public class CarJoinActivity extends AppCompatActivity {
     }
 
     private void setCar() {
-        txtCar.setOnClickListener(new View.OnClickListener() {
+        viewCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("viewCar", "차량 선택 클릭");
                 switch (v.getId()) {
-                    case R.id.txtCar:
-
+                    case R.id.viewCar:
+                        Log.d("viewCar", "차량 선택 클릭 스위치 안");
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(CarJoinActivity.this, R.style.MyAlertDialogStyle);
                         alertBuilder.setIcon(R.drawable.ic_directions_car_black_24dp);
                         alertBuilder.setTitle("차량을 선택해주세요");
@@ -208,7 +210,6 @@ public class CarJoinActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-
             }
         });
     }
@@ -293,7 +294,7 @@ public class CarJoinActivity extends AppCompatActivity {
 
 
     private void setStartDestTxt() {
-        startText.setOnClickListener(new TextView.OnClickListener() {
+        viewStartTxt.setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CarJoinActivity.this, ListActivity.class);
@@ -304,7 +305,7 @@ public class CarJoinActivity extends AppCompatActivity {
             }
         });
 
-        destText.setOnClickListener(new TextView.OnClickListener() {
+        viewEndTxt.setOnClickListener(new TextView.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -318,7 +319,7 @@ public class CarJoinActivity extends AppCompatActivity {
     }
 
     private void DestDateTime() {
-        txtDate2.setOnClickListener(new View.OnClickListener() {
+        viewEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -345,7 +346,7 @@ public class CarJoinActivity extends AppCompatActivity {
         });
 
 
-        txtTime2.setOnClickListener(new View.OnClickListener() {
+        viewEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentTime = Calendar.getInstance();
@@ -374,7 +375,7 @@ public class CarJoinActivity extends AppCompatActivity {
     }
 
     private void startDateTime() {
-        txtDate.setOnClickListener(new View.OnClickListener() {
+        viewStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -404,15 +405,12 @@ public class CarJoinActivity extends AppCompatActivity {
             }
         });
 
-        txtTime.setOnClickListener(new View.OnClickListener() {
+        viewStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 currentTime = Calendar.getInstance();
                 hour = currentTime.get(Calendar.HOUR_OF_DAY);
                 minute = currentTime.get(Calendar.MINUTE);
-                startM = hour * 60 + minute;
 
                 seletedTimeFormat(hour);
 
@@ -427,24 +425,25 @@ public class CarJoinActivity extends AppCompatActivity {
                         txtTime.setText(t);
                         txtTime.setTextColor(Color.BLACK);
                         txtTime.setTypeface(null, Typeface.BOLD);
+                        startM = hourOfDay * 60 + minute;
 
+                        if(fromToInfo != null) {
+                            if(startM > 0 && fromToInfo.totTime > 0) {
+                                int destT = (startM + fromToInfo.totTime) / 60;
+                                int destM = (startM + fromToInfo.totTime) % 60;
 
+                                seletedTimeFormat(destT);
+
+                                end_time = destT + ":" + destM;
+                                txtTime2.setText(end_time + " " + format);
+                                txtTime2.setTextColor(Color.BLACK);
+                                txtTime2.setTypeface(null, Typeface.BOLD);
+                            }
+                        }
                     }
                 }, hour, minute, true);
-
+                Log.d("StartTime", "hour: " + hour + "minute: " + minute);
                 timePickerDialog.show();
-                if(startM > 0 && fromToInfo.totTime > 0) {
-                    int destT = (startM + fromToInfo.totTime) / 60;
-                    int destM = (startM + fromToInfo.totTime) % 60;
-
-                    seletedTimeFormat(destT);
-
-                    end_time = destT + ":" + destM;
-                    txtTime2.setText(end_time + " " + format);
-                    txtTime2.setTextColor(Color.BLACK);
-                    txtTime2.setTypeface(null, Typeface.BOLD);
-                }
-
             }
 
         });
@@ -482,6 +481,14 @@ public class CarJoinActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
         totalBox = (LinearLayout) findViewById(R.id.totalBox);
         backPressCloseHandler = new BackPressCloseHandler(this);
+
+        viewCar = (LinearLayout) findViewById(R.id.viewCar);
+        viewStartTxt = (LinearLayout) findViewById(R.id.viewStartTxt);
+        viewEndTxt = (LinearLayout) findViewById(R.id.viewEndTxt);
+        viewStartDate = (LinearLayout) findViewById(R.id.viewStartDate);
+        viewStartTime = (LinearLayout) findViewById(R.id.viewStartTime);
+        viewEndDate = (LinearLayout) findViewById(R.id.viewEndDate);
+        viewEndTime = (LinearLayout) findViewById(R.id.viewEndTime);
     }
 
 

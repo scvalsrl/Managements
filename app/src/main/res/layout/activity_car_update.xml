@@ -91,67 +91,69 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="1dp"
-                        android:paddingRight="1dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
-                        android:background="#b7b7b7"
-                        android:layout_marginTop="17dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
+                        android:layout_marginTop="17dp"
+                        android:background="#b7b7b7"
                         android:elevation="3dp"
-                        >
-                        <LinearLayout
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingTop="1dp">
 
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="86dp"
-                            android:orientation="horizontal"
                             android:layout_gravity="center"
-                            android:background="#ffffff">
+                            android:background="#ffffff"
+                            android:orientation="horizontal">
 
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="250dp"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
+
                                 <LinearLayout
-                                    android:layout_width="300dp"
+                                    android:id="@+id/viewStartTxt"
+                                    android:layout_width="match_parent"
                                     android:layout_height="30dp"
-                                    android:background="#ffffff"
                                     android:layout_marginBottom="5dp"
-                                    android:layout_marginTop="8dp">
+                                    android:layout_marginTop="8dp"
+                                    android:background="#ffffff">
+
                                     <TextView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:id="@+id/startText"
-                                        android:text="출발지 입력"
-                                        android:textSize="16dp"
-                                        android:layout_marginLeft="9dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        />
+                                        android:layout_marginLeft="9dp"
+                                        android:text="출발지 입력"
+                                        android:textSize="16dp" />
                                 </LinearLayout>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="1dp"
-                                    android:background="#b7b7b7"/>
+                                    android:background="#b7b7b7" />
 
                                 <LinearLayout
-                                    android:layout_width="300dp"
+                                    android:id="@+id/viewEndTxt"
+                                    android:layout_width="match_parent"
                                     android:layout_height="30dp"
-                                    android:background="#ffffff"
                                     android:layout_marginBottom="5dp"
-                                    android:layout_marginTop="8dp">
+                                    android:layout_marginTop="8dp"
+                                    android:background="#ffffff">
+
                                     <TextView
 
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:id="@+id/endText"
-                                        android:text="도착지 입력"
-                                        android:textSize="16dp"
-                                        android:layout_marginLeft="9dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
                                         android:layout_gravity="center"
-                                        />
+                                        android:layout_marginLeft="9dp"
+                                        android:text="도착지 입력"
+                                        android:textSize="16dp" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -159,16 +161,22 @@
                             <TextView
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="#b7b7b7"/>
+                                android:background="#b7b7b7" />
 
-                            <Button
-                                android:layout_marginLeft="7dp"
-                                android:id="@+id/changeBtn"
-                                android:layout_gravity="center"
-                                android:layout_width="30dp"
-                                android:layout_height="40dp"
-                                android:background="@drawable/change"
-                                />
+                            <LinearLayout
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <Button
+                                    android:id="@+id/changeBtn"
+                                    android:layout_width="30dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+
+                                    android:background="@drawable/change" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

@@ -84,7 +84,7 @@ public class CarJoinActivity extends AppCompatActivity {
     /*yoonju*/
     TextView startText, destText, distanceText;
     View totalBox;
-    Button changeBtn;
+    Button changeBtn,recentPathBtn;
     String startPlace = "출발지 입력";
     String endPlace = "도착지 입력";
     String startLat, startLon, destLat, destLon, nowName, kilometer;
@@ -110,6 +110,7 @@ public class CarJoinActivity extends AppCompatActivity {
         setTotalBox();
         DestDateTime();
         setStartDestTxt();
+        RecentPath();
         ChangeStartDest();
         setCar();
 
@@ -223,6 +224,53 @@ public class CarJoinActivity extends AppCompatActivity {
                     default:
                         break;
                 }
+            }
+        });
+    }
+    private void RecentPath() {
+        recentPathBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if (success) {
+
+                                startPlace = jsonResponse.getString("startPlace");
+                                endPlace =  jsonResponse.getString("endPlace");
+                                kilometer = jsonResponse.getString("kilometer");
+                                startLat = jsonResponse.getString("startLat");
+                                startLon = jsonResponse.getString("startLon");
+                                destLat = jsonResponse.getString("destLat");
+                                destLon = jsonResponse.getString("destLon");
+
+                                startText.setText(startPlace);
+                                startText.setTextColor(Color.BLACK);
+                                startText.setTypeface(null, Typeface.BOLD);
+
+                                destText.setText(endPlace);
+                                destText.setTextColor(Color.BLACK);
+                                destText.setTypeface(null, Typeface.BOLD);
+
+                                distanceText.setText(jsonResponse.getString("kilometer"));
+
+                            }
+                        } catch (JSONException e) {
+
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                CarRecentRequest carRecentRequest = new CarRecentRequest(responseListener);
+                RequestQueue queue = Volley.newRequestQueue(CarJoinActivity.this);
+                queue.add(carRecentRequest);
+
             }
         });
     }
@@ -490,6 +538,7 @@ public class CarJoinActivity extends AppCompatActivity {
         destText = findViewById(R.id.endText);
         distanceText = findViewById(R.id.distancetext);
         changeBtn = findViewById(R.id.changeBtn);
+        recentPathBtn = findViewById(R.id.recentPathBtn);
         txtCar = (TextView) findViewById(R.id.txtCar);
         bottomnav = findViewById(R.id.bottom_navigation);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
@@ -1001,7 +1050,7 @@ public class CarJoinActivity extends AppCompatActivity {
                     short_end = endPlace.substring(0, 12) + "..";
                 }
                 userdistanceBuilder.setTitle("출발지 : "+ short_start +"\n"  + "도착지 : "+ short_end + "\n" );
-                userdistanceBuilder.setMessage("예상 거리 : "+kilometer + "km"  +"\n" +"예상 소요시간 : "+ fromToInfo.totTime + "분")
+                userdistanceBuilder.setMessage("예상 거리 : "+kilometer + "km"  +"\n" +"소요 시간 : "+ fromToInfo.totTime + "분")
                         .setCancelable(false)
                         .setNegativeButton("확인", new DialogInterface.OnClickListener() {
                             @Override

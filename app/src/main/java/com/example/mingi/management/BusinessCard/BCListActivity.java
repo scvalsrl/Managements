@@ -115,6 +115,7 @@ public class BCListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                Log.d("김민기", "리스트 터치: ");
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
                     @Override

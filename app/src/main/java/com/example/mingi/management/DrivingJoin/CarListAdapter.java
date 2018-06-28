@@ -27,6 +27,7 @@ public class CarListAdapter extends BaseAdapter {
     private Context context;
     private List<Car> userList;
     private Activity parentActivity;
+    PersonViewHolder viewHolder;
 
     private String isGPSEnable;
     private String nowLat;
@@ -69,7 +70,6 @@ public class CarListAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View v, ViewGroup viewGroup) {
 
-        final PersonViewHolder viewHolder;
 
         if(v==null) {
             v = View.inflate(context, R.layout.car, null);

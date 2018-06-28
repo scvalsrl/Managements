@@ -189,7 +189,7 @@ public class CarSetActivity extends AppCompatActivity {
                             intent.putExtra("nowLat", nowLat);
                             intent.putExtra("nowLon",nowLon);
                             intent.putExtra("nowName", nowName);
-                            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             CarSetActivity.this.startActivity(intent);
 
                             finish();

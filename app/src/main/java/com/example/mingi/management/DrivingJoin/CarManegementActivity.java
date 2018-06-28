@@ -79,6 +79,7 @@ public class CarManegementActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_car_manegement);
         BottomNavigationView bottomnav = findViewById(R.id.bottom_navigation);
+        listView = (ListView) findViewById(R.id.listVView);
         bottomnav.setSelectedItemId(R.id.nav_favorites);
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
@@ -146,10 +147,92 @@ public class CarManegementActivity extends AppCompatActivity {
         year_s = intent.getStringExtra("str_yy");
         month_s = intent.getStringExtra("str_mm");
 
-        listView = (ListView) findViewById(R.id.listVView);
         userList = new ArrayList<Car>();
+
         adapter = new CarListAdapter(getApplicationContext(), userList, this, isGPSEnable_, nowLat_, nowLon_, nowName_, mycar,month_s, year_s );
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * ListView의 Item을 Click 할 때 수행할 동작
+             * @param parent 클릭이 발생한 AdapterView.
+             * @param view 클릭 한 AdapterView 내의 View(Adapter에 의해 제공되는 View).
+             * @param position 클릭 한 Item의 position
+             * @param id 클릭 된 Item의 Id
+             */
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d("김민기", "리스트 터치: ");
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("김민기", "김민기김민기김민기김민기: ");
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+
+                            String id = jsonResponse.getString("id");
+                            String carNum = jsonResponse.getString("carNum");
+                            String startPlace = jsonResponse.getString("startPlace");
+                            String endPlace = jsonResponse.getString("endPlace");
+                            String startTime = jsonResponse.getString("startTime");
+                            String startDay = jsonResponse.getString("startDay");
+                            String endTime = jsonResponse.getString("endTime");
+                            String endDay = jsonResponse.getString("endDay");
+                            String no = jsonResponse.getString("no");
+                            String kilometer = jsonResponse.getString("kilometer");
+
+                            String startLat = jsonResponse.getString("startLat");
+                            String startLon = jsonResponse.getString("startLon");
+                            String destLat = jsonResponse.getString("destLat");
+                            String destLon = jsonResponse.getString("destLon");
+
+                            if (success) {
+                                // 인텐드에 넣기
+                                Intent intent = new Intent(CarManegementActivity.this, CarUpdateActivity.class);
+
+                                intent.putExtra("id", id);
+                                intent.putExtra("carNum", carNum);
+                                intent.putExtra("startPlace", startPlace);
+                                intent.putExtra("endPlace", endPlace);
+                                intent.putExtra("startTime", startTime);
+                                intent.putExtra("startDay", startDay);
+                                intent.putExtra("endTime", endTime);
+                                intent.putExtra("endDay", endDay);
+                                intent.putExtra("no", no);
+                                intent.putExtra("kilometer", kilometer);
+
+                                intent.putExtra("startLat", startLat);
+                                intent.putExtra("startLon", startLon);
+                                intent.putExtra("destLat", destLat);
+                                intent.putExtra("destLon", destLon);
+                                intent.putExtra("isGPSEnable", isGPSEnable);
+                                intent.putExtra("nowLat", nowLat);
+                                intent.putExtra("nowLon", nowLon);
+                                intent.putExtra("nowName", nowName);
+                                intent.putExtra("str_yy", year_s);
+                                intent.putExtra("str_mm", month_s);
+                                intent.putExtra("mycar", mycar);
+                                CarManegementActivity.this.startActivity(intent);
+                                // 화면전환 넣기 //
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                };
+                UpdateRequest updateRequest = new UpdateRequest(userList.get(position).getNo(), responseListener);
+                RequestQueue queue = Volley.newRequestQueue(CarManegementActivity.this);
+                queue.add(updateRequest);
+
+            }
+        });
+
+
 
         if(month_s.length() == 1 ){
             month_s= "0"+month_s;
@@ -251,79 +334,6 @@ public class CarManegementActivity extends AppCompatActivity {
                     month_i++;
                 }
                 new BackgroundTask2().execute();
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("김민기", "김민기김민기김민기김민기: ");
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            String id = jsonResponse.getString("id");
-                            String carNum = jsonResponse.getString("carNum");
-                            String startPlace = jsonResponse.getString("startPlace");
-                            String endPlace = jsonResponse.getString("endPlace");
-                            String startTime = jsonResponse.getString("startTime");
-                            String startDay = jsonResponse.getString("startDay");
-                            String endTime = jsonResponse.getString("endTime");
-                            String endDay = jsonResponse.getString("endDay");
-                            String no = jsonResponse.getString("no");
-                            String kilometer = jsonResponse.getString("kilometer");
-
-                            String startLat = jsonResponse.getString("startLat");
-                            String startLon = jsonResponse.getString("startLon");
-                            String destLat = jsonResponse.getString("destLat");
-                            String destLon = jsonResponse.getString("destLon");
-
-                            if (success) {
-                                // 인텐드에 넣기
-                                Intent intent = new Intent(CarManegementActivity.this, CarUpdateActivity.class);
-
-                                intent.putExtra("id", id);
-                                intent.putExtra("carNum", carNum);
-                                intent.putExtra("startPlace", startPlace);
-                                intent.putExtra("endPlace", endPlace);
-                                intent.putExtra("startTime", startTime);
-                                intent.putExtra("startDay", startDay);
-                                intent.putExtra("endTime", endTime);
-                                intent.putExtra("endDay", endDay);
-                                intent.putExtra("no", no);
-                                intent.putExtra("kilometer", kilometer);
-
-                                intent.putExtra("startLat", startLat);
-                                intent.putExtra("startLon", startLon);
-                                intent.putExtra("destLat", destLat);
-                                intent.putExtra("destLon", destLon);
-                                intent.putExtra("isGPSEnable", isGPSEnable);
-                                intent.putExtra("nowLat", nowLat);
-                                intent.putExtra("nowLon", nowLon);
-                                intent.putExtra("nowName", nowName);
-                                intent.putExtra("str_yy", year_s);
-                                intent.putExtra("str_mm", month_s);
-                                intent.putExtra("mycar", mycar);
-                                CarManegementActivity.this.startActivity(intent);
-                                // 화면전환 넣기 //
-
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                };
-                UpdateRequest updateRequest = new UpdateRequest(userList.get(i).getNo(), responseListener);
-                RequestQueue queue = Volley.newRequestQueue(CarManegementActivity.this);
-                queue.add(updateRequest);
-
             }
         });
 

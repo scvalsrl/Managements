@@ -106,7 +106,6 @@ public class CarListAdapter extends BaseAdapter {
 
         ImageView deleteButton = (ImageView) v.findViewById(R.id.deleteButton);
 
-
         deleteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -65,13 +65,12 @@ public class CarManegementActivity extends AppCompatActivity {
     private ListView listView;
     private CarListAdapter adapter;
     private List<Car> userList;
-
+    boolean preventButtonTouch = false;
     String isGPSEnable, nowLat, nowLon, nowName, userID,mycar;
     String year_s, month_s;
     int year_i, month_i;
     int check = 0 ;
     private BackPressCloseHandler backPressCloseHandler;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,7 +257,11 @@ public class CarManegementActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Log.d("김민기", "리스트 터치: ");
+
+                if (preventButtonTouch == true) { return; }
+
+                preventButtonTouch = true;
+
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
                     @Override
@@ -285,6 +288,7 @@ public class CarManegementActivity extends AppCompatActivity {
                             String destLon = jsonResponse.getString("destLon");
 
                             if (success) {
+                                preventButtonTouch = false;
                                 // 인텐드에 넣기
                                 Intent intent = new Intent(CarManegementActivity.this, CarUpdateActivity.class);
 

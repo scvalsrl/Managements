@@ -245,6 +245,7 @@ public class CarJoinActivity extends AppCompatActivity {
                                 startPlace = jsonResponse.getString("startPlace");
                                 endPlace =  jsonResponse.getString("endPlace");
                                 kilometer = jsonResponse.getString("kilometer");
+
                                 startLat = jsonResponse.getString("startLat");
                                 startLon = jsonResponse.getString("startLon");
                                 destLat = jsonResponse.getString("destLat");
@@ -258,7 +259,11 @@ public class CarJoinActivity extends AppCompatActivity {
                                 destText.setTextColor(Color.BLACK);
                                 destText.setTypeface(null, Typeface.BOLD);
 
-                                distanceText.setText(jsonResponse.getString("kilometer"));
+                                distanceText  .setText(jsonResponse.getString("kilometer"));
+
+                                boolean isStart = startPlace.equals("출발지 입력"); // true: 입력X, false: 입력O
+                                boolean isDest = endPlace.equals("도착지 입력");
+                                calculateDistance(isStart, isDest);
 
                             }
                         } catch (JSONException e) {
@@ -780,6 +785,7 @@ public class CarJoinActivity extends AppCompatActivity {
                                 String endday = txtDate2.getText().toString();
                                 String startTime = txtTime.getText().toString();
                                 String endTime = txtTime2.getText().toString();
+                                kilometer = distanceText.getText().toString();
 
                                 CarJoinRequest carJoinRequest = new CarJoinRequest(id, carNum, startPlace, endPlace, kilometer, startday, endday, startTime, endTime, no, startLat, startLon, destLat, destLon, responseListener);
                                 RequestQueue queue = Volley.newRequestQueue(CarJoinActivity.this);

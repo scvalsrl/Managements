@@ -26,6 +26,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -68,7 +69,7 @@ public class CarUpdateActivity extends AppCompatActivity {
     String endPlace = "도착지 입력";
     String startLat, startLon, destLat, destLon, nowName, kilometer, mycar;
     int distance = -1;
-
+    View totalBox;
     final Context context = this;
 
     String nowLat = "129.065782";
@@ -317,7 +318,7 @@ public class CarUpdateActivity extends AppCompatActivity {
             }
         });
 
-
+        setTotalBox();
 
         txtCar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,7 +401,7 @@ public class CarUpdateActivity extends AppCompatActivity {
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTime = (TextView) findViewById(R.id.txtTime);
 
-
+        totalBox = (LinearLayout) findViewById(R.id.totalBox);
         txtDate2 = (TextView) findViewById(R.id.txtDate2);
         txtTime2 = (TextView) findViewById(R.id.txtTime2);
 
@@ -521,8 +522,6 @@ public class CarUpdateActivity extends AppCompatActivity {
                                                     DialogInterface dialog, int id) {
                                                 // 프로그램을 종료한다
                                                 new BackgroundTask().execute();
-                                                overridePendingTransition(0, 0);
-                                                finish();
 
                                             }
                                         }).
@@ -706,5 +705,24 @@ public class CarUpdateActivity extends AppCompatActivity {
         boolean isDest = endPlace.equals("도착지 입력");
         calculateDistance(isStart, isDest);
     }
+    void setTotalBox() {
+        totalBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                EditDialog editDialog = new EditDialog(CarUpdateActivity.this);
+                editDialog.setDialogListener(new MyDialogListener() {
+                    @Override
+                    public void onPositiveClicked(String km) {
+                        distanceText.setText(km);
+                    }
+
+                    @Override
+                    public void onNegativeClicked() {
+                    }
+                });
+                editDialog.show();
+            }
+        });
+    }
 }

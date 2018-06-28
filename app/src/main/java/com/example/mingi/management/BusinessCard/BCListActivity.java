@@ -70,7 +70,7 @@ public class BCListActivity extends AppCompatActivity {
     private List<BC> userList;
     private FloatingActionButton fab;
     private BackPressCloseHandler backPressCloseHandler;
-
+    boolean preventButtonTouch = false;
     int check=0;
     String isGPSEnable;
     String nowLat;
@@ -114,8 +114,10 @@ public class BCListActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (preventButtonTouch == true) { return; }
 
-                Log.d("김민기", "리스트 터치: ");
+                preventButtonTouch = true;
+
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
 
                     @Override
@@ -138,6 +140,7 @@ public class BCListActivity extends AppCompatActivity {
                             no = jsonResponse.getString("no");
 
                             if (success) {
+                                preventButtonTouch = false;
                                 // 주소가 없다면
                                 if (BC_lat.equals("0") || BC_lon.equals("0") || BC_add.equals("")) {
                                     Log.d("BCListActivity-check","lat: " + BC_lat + ", lon: " + BC_lon);
@@ -168,7 +171,7 @@ public class BCListActivity extends AppCompatActivity {
                                     // 화면전환 넣기 //
 
                                 } else{
-
+                                    preventButtonTouch = false;
                                     // 인텐드에 넣기
                                     Intent intent = new Intent(BCListActivity.this, BCDetailActivity.class);
                                     intent.putExtra("BC_name", BC_name);

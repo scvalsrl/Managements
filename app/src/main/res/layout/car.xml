@@ -89,14 +89,9 @@
                         android:textColor="#ffffff"
                         android:textSize="1dp" />
 
-                    <Button
-                        android:id="@+id/updateButton"
-                        android:layout_width="29dp"
-                        android:layout_height="23dp"
-                        android:background="@drawable/ic_mode_edit_black_24dp"
-                        android:textSize="18dp" />
 
-                    <Button
+
+                    <ImageView
                         android:id="@+id/deleteButton"
                         android:layout_width="29dp"
                         android:layout_height="27dp"

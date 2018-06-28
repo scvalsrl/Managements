@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -103,101 +104,7 @@ public class CarListAdapter extends BaseAdapter {
         viewHolder.carNum.setText(userList.get(i).getCarNum());
         viewHolder.carNo.setText(String.valueOf(userList.get(i).getNo()));
 
-
-        Button deleteButton = (Button) v.findViewById(R.id.deleteButton);
-        Button updateButton = (Button) v.findViewById(R.id.updateButton);
-
-
-        updateButton.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-
-
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-
-
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-
-                            JSONObject jsonResponse = new JSONObject(response);
-
-                            boolean success = jsonResponse.getBoolean("success");
-
-
-                            String id = jsonResponse.getString("id");
-                            String carNum = jsonResponse.getString("carNum");
-                            String startPlace = jsonResponse.getString("startPlace");
-                            String endPlace = jsonResponse.getString("endPlace");
-                            String startTime = jsonResponse.getString("startTime");
-                            String startDay = jsonResponse.getString("startDay");
-                            String endTime = jsonResponse.getString("endTime");
-                            String endDay = jsonResponse.getString("endDay");
-                            String no = jsonResponse.getString("no");
-                            String kilometer = jsonResponse.getString("kilometer");
-
-                            String startLat = jsonResponse.getString("startLat");
-                            String startLon = jsonResponse.getString("startLon");
-                            String destLat = jsonResponse.getString("destLat");
-                            String destLon = jsonResponse.getString("destLon");
-
-                            if (success) {
-
-
-                                // 인텐드에 넣기
-                                Intent intent = new Intent(parentActivity, CarUpdateActivity.class);
-
-                                intent.putExtra("id", id);
-                                intent.putExtra("carNum", carNum);
-                                intent.putExtra("startPlace", startPlace);
-                                intent.putExtra("endPlace", endPlace);
-                                intent.putExtra("startTime", startTime);
-                                intent.putExtra("startDay", startDay);
-                                intent.putExtra("endTime", endTime);
-                                intent.putExtra("endDay", endDay);
-                                intent.putExtra("no", no);
-                                intent.putExtra("kilometer", kilometer);
-
-                                intent.putExtra("startLat", startLat);
-                                intent.putExtra("startLon", startLon);
-                                intent.putExtra("destLat", destLat);
-                                intent.putExtra("destLon", destLon);
-
-                                intent.putExtra("isGPSEnable", isGPSEnable);
-                                intent.putExtra("nowLat", nowLat);
-                                intent.putExtra("nowLon", nowLon);
-                                intent.putExtra("nowName", nowName);
-                                intent.putExtra("str_yy", str_yy);
-                                intent.putExtra("str_mm", str_mm);
-                                intent.putExtra("mycar", mycar);
-
-                                parentActivity.startActivity(intent);
-                                // 화면전환 넣기 //
-
-
-                            } else {
-
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                };
-
-
-                String carNo_s = viewHolder.carNo.getText().toString();
-                int carNo_i = Integer.parseInt(carNo_s);
-
-                UpdateRequest updateRequest = new UpdateRequest(carNo_i, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(parentActivity);
-                queue.add(updateRequest);
-
-            }
-        });
+        ImageView deleteButton = (ImageView) v.findViewById(R.id.deleteButton);
 
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
